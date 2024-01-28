@@ -5,16 +5,16 @@ services:
     image: mongo:latest
     restart: unless-stopped
     ports:
-      "27017:27017"
+      - "27017:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: password
     volumes:
-      ./data/mongo:/data/db
+      - ./data/mongo:/data/db
     container_name: mongodb
     command: mongod --auth
     networks:
-      capstone
+      - capstone
 
 networks:
   capstone:
