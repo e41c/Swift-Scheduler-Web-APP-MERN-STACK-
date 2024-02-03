@@ -1,0 +1,40 @@
+classes --->
+
+class schema
+create classes
+update classes (student count)
+deleteing (conflict management)
+read classes (search by style, teacher)
+
+
+calender --->
+
+calender schema
+create days, months
+update calender, days
+deleteing 
+read calender (search by date)
+
+
+User  --->
+
+student schema
+instructor schema
+adding/create user
+assigning roles to users
+deleteing users
+updateing users
+reading users (search by username, first name, ...)
+
+
+
+
+
+
+
+
+
+
+
+
+
