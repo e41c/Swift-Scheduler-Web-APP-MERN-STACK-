@@ -1,12 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const userRouter = require('./routers/user.routes');
+const adminRouter = require('./routers/admin.routes');
+const authRouter = require('./routers/auth.routes');
 const app = express(); 
 
 
 app.use(bodyParser.json());
-app.use('/api', userRouter);
+app.use('/', authRouter);
+app.use('/api', adminRouter);
 
 //const config = require('./config/config.js');
 const PORT = 3000;
