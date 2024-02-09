@@ -18,5 +18,25 @@ function isAdmin(req, res, next) {
     }
   }
   
-  module.exports = { isAdmin, isTeacher };
+  const jwt = require('jsonwebtoken');
+
+function authenticate(req, res, next) {
+  // Get token from request headers
+  const token = req.headers.authorization;
+
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+
+  try {
+    // Verify token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (error) {
+    return res.status(401).json({ message: 'Invalid token' });
+  }
+}
+
+  module.exports = { isAdmin, isTeacher, authenticate};
   
