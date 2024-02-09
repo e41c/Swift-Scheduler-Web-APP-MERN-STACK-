@@ -1,0 +1,42 @@
+Class.Model{
+    teacher,
+    date,
+    time,
+    classroom,
+    rating,
+    capacity,
+    studentsEnrolled,
+    level,
+    cat,
+}
+
+Teacher.Model{
+    first name,
+    last name,
+    e-mail,
+    password,
+    phone #,
+    bio,
+    rating,
+}
+
+Student.Model{
+    e-mail,
+    password,
+    first name,
+    last name,
+    phone #,
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
