@@ -1,16 +1,18 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const adminRouter = require('./routers/admin.routes');
 const authRouter = require('./routers/auth.routes');
-const app = express(); 
+const classRouter = require('./routers/classRoutes');
+const protectedRouter = require('./routes/protectedRoute'); // Assuming the correct path to the protectedRoute.js file
+const app = express();
 
 // Middleware
 app.use(bodyParser.json());
 
 // Routes
-app.use('/', authRouter); // Authentication routes should come before other routes
-app.use('/api', adminRouter);
+app.use('/auth', authRouter); // Authentication routes
+app.use('/classes', classRouter); // Class routes
+app.use('/protected', protectedRouter); // Protected route
 
 // MongoDB connection
 const PORT = 3000;

@@ -1,22 +1,27 @@
+// routers/classRoutes.js
 const express = require('express');
 const router = express.Router();
-const { isAdmin, isTeacher, isStudent } = require('../middleware/authenticate');
+const { isAdmin } = require('../middleware/authenticate'); // Import isAdmin middleware
 const { createClass, updateClass, getAllClasses, deleteClass } = require('../controllers/classController');
+const { isStudent } = require('./middleware');
 
 // Admin routes
 router.post('/admin/classes', isAdmin, createClass);
 router.put('/admin/classes/:date/:time', isAdmin, updateClass);
-router.get('/admin/classes', isAdmin, getAllClasses);
+router.get('/admin/classes', isAdmin, getAllClasses); // Use isAdmin middleware here
 router.delete('/admin/classes/:date/:time', isAdmin, deleteClass);
 
 // Teacher routes
-router.post('/teacher/classes', isTeacher, createClass);
-router.put('/teacher/classes/:date/:time', isTeacher, updateClass);
-router.get('/teacher/classes', isTeacher, getAllClasses);
-router.delete('/teacher/classes/:date/:time', isTeacher, deleteClass);
+router.post('/teacher/classes', createClass);
+router.put('/teacher/classes/:date/:time', updateClass);
+router.get('/teacher/classes', getAllClasses); // Removed isTeacher middleware
+router.delete('/teacher/classes/:date/:time', deleteClass);
 
 // Student routes
 router.get('/student/classes', isStudent, getAllClasses);
 
-module.exports = router;
 
+// Define your routes
+router.get('/student/classes', isStudent, getAllClasses);
+
+module.exports = router;

@@ -1,4 +1,4 @@
-// middleware/authenticate.js
+const jwt = require('jsonwebtoken');
 
 function isAdmin(req, res, next) {
     // Check if user is authenticated and has admin role
@@ -9,7 +9,7 @@ function isAdmin(req, res, next) {
     }
   }
   
-  function isTeacher(req, res, next) {
+function isTeacher(req, res, next) {
     // Check if user is authenticated and has teacher role
     if (req.user && req.user.role === 'teacher') {
       next(); // Allow access to the next middleware
@@ -17,8 +17,15 @@ function isAdmin(req, res, next) {
       res.status(403).json({ message: 'Teacher access required' });
     }
   }
-  
-  const jwt = require('jsonwebtoken');
+
+function isStudent(req, res, next) {
+  // Check if user is authenticated and has student role
+  if (req.user && req.user.role === 'student') {
+    next(); // Allow access to the next middleware
+  } else {
+    res.status(403).json({ message: 'Student access required' });
+  }
+}
 
 function authenticate(req, res, next) {
   // Get token from request headers
@@ -38,5 +45,4 @@ function authenticate(req, res, next) {
   }
 }
 
-  module.exports = { isAdmin, isTeacher, authenticate};
-  
+module.exports = { isAdmin, isTeacher, isStudent, authenticate };
