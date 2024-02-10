@@ -3,11 +3,11 @@ Class.Model{
     date,
     time,
     classroom,
-    rating,
+    rating(1-5),
     capacity,
-    studentsEnrolled,
-    level,
-    cat,
+    studentsEnrolled (array of student id's, that will max at 30 per class),
+    Student level (Beginner, Intermediate, Advanced),
+    category of dance (Ballet, Ballroom, Contemporary, Hip Hop, Jazz ),
 }
 
 Teacher.Model{
@@ -26,6 +26,8 @@ Student.Model{
     first name,
     last name,
     phone #,
+    bio,
+
 }
 
 

@@ -1,20 +1,22 @@
-// routes/classRoutes.js
-
 const express = require('express');
 const router = express.Router();
-const { isAdmin, isTeacher } = require('../middleware/authenticate');
+const { isAdmin, isTeacher, isStudent } = require('../middleware/authenticate');
 const { createClass, updateClass, getAllClasses, deleteClass } = require('../controllers/classController');
 
 // Admin routes
-router.post('/classes', isAdmin, createClass);
-router.put('/classes/:date/:time', isAdmin, updateClass);
-router.get('/classes', isAdmin, getAllClasses);
-router.delete('/classes/:date/:time', isAdmin, deleteClass);
+router.post('/admin/classes', isAdmin, createClass);
+router.put('/admin/classes/:date/:time', isAdmin, updateClass);
+router.get('/admin/classes', isAdmin, getAllClasses);
+router.delete('/admin/classes/:date/:time', isAdmin, deleteClass);
 
 // Teacher routes
-router.post('/classes', isTeacher, createClass);
-router.put('/classes/:date/:time', isTeacher, updateClass);
-router.get('/classes', isTeacher, getAllClasses);
-router.delete('/classes/:date/:time', isTeacher, deleteClass);
+router.post('/teacher/classes', isTeacher, createClass);
+router.put('/teacher/classes/:date/:time', isTeacher, updateClass);
+router.get('/teacher/classes', isTeacher, getAllClasses);
+router.delete('/teacher/classes/:date/:time', isTeacher, deleteClass);
+
+// Student routes
+router.get('/student/classes', isStudent, getAllClasses);
 
 module.exports = router;
+

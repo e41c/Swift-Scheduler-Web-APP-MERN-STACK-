@@ -1,5 +1,5 @@
 {
-  "name": "Swift Schedule",
+  "name": "SwiftSchedule",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,7 +9,7 @@
     "start": "node server.js"
   },
   "keywords": [],
-  "author": "Group 26 - Eric Grigor, Ryan Lee",
+  "author": "Group 26 - Eric Grigor,",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
