@@ -1,4 +1,4 @@
-// middleware/authenticate.js
+// backend/middleware/authenticate.js
 
 function isAdmin(req, res, next) {
     // Check if user is authenticated and has admin role
