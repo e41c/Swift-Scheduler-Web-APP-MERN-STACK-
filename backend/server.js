@@ -1,24 +1,28 @@
+// backend/server.js
+
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const adminRouter = require('./routers/admin.routes');
-const authRouter = require('./routers/auth.routes');
-const app = express(); 
+const authRouter = require('./routers/authRoutes');
+const app = express();
+require('dotenv').config();
+
 
 // Middleware
 app.use(bodyParser.json());
 
 // Routes
-app.use('/', authRouter); // Authentication routes should come before other routes
-app.use('/api', adminRouter);
+app.use('/auth', authRouter); // Authentication routes should come before other routes
 
 // MongoDB connection
-const PORT = 3000;
+const PORT = process.env.PORT || 3000; // Use environment variable for port, if available
 mongoose.connect('mongodb://admin:password@localhost:27017')
     .then(() => console.log('MongoDB connected...'))
     .catch(err => console.log(err));
 
 // Start server
 app.listen(PORT, () => {
-    console.log(`listening at http://localhost:${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });
+
+console.log('JWT_SECRET:', process.env.JWT_SECRET);
