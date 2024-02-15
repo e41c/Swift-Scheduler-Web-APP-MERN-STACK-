@@ -56,7 +56,7 @@ exports.studentLogin = async (req, res) => {
 
 exports.studentRegister = async (req, res) => {
   try {
-    const { email, password, name } = req.body;
+    const { email, password, firstName, lastName, bio } = req.body;
 
     // Check if the student already exists
     const existingStudent = await Student.findOne({ email });
@@ -65,12 +65,20 @@ exports.studentRegister = async (req, res) => {
     }
 
     // Create a new student object
-    const newStudent = new Student({
+    const newStudentData = {
       email,
       password: await bcrypt.hash(password, 10), // Hash the password
-      name,
-      // Assign other fields as needed
-    });
+      firstName,
+      lastName,
+    };
+
+    // Add bio if provided
+    if (bio) {
+      newStudentData.bio = bio;
+    }
+
+    // Create a new student instance
+    const newStudent = new Student(newStudentData);
 
     // Save the student to the database
     await newStudent.save();

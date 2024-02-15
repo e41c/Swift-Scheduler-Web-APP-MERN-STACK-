@@ -5,6 +5,8 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const authRouter = require('./routers/authRoutes');
 const app = express();
+require('dotenv').config();
+
 
 // Middleware
 app.use(bodyParser.json());
@@ -22,3 +24,5 @@ mongoose.connect('mongodb://admin:password@localhost:27017')
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
+console.log('JWT_SECRET:', process.env.JWT_SECRET);
