@@ -1,6 +1,8 @@
+// backend/routers/classRoutes.js
+
 const express = require('express');
 const router = express.Router();
-const { isAdmin, isTeacher, isStudent } = require('../middleware/authenticate');
+const { isAdmin, isTeacher, isStudent } = require('../middleware/authMiddleware');
 const { createClass, updateClass, getAllClasses, deleteClass } = require('../controllers/classController');
 
 // Admin routes
