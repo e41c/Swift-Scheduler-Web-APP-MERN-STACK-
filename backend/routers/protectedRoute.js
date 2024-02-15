@@ -2,7 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
-const authenticate = require('../middleware/authenticate');
+const authenticate = require('../middleware/authMiddleware');
 
 // Protected route
 router.get('/', authenticate, (req, res) => {

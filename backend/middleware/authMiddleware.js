@@ -1,4 +1,4 @@
-// middleware/authenticate.js
+// middleware/authMiddleware.js
 
 function isAdmin(req, res, next) {
     // Check if user is authenticated and has admin role
@@ -20,7 +20,7 @@ function isAdmin(req, res, next) {
   
   const jwt = require('jsonwebtoken');
 
-function authenticate(req, res, next) {
+function authMiddleware(req, res, next) {
   // Get token from request headers
   const token = req.headers.authorization;
 
@@ -38,5 +38,5 @@ function authenticate(req, res, next) {
   }
 }
 
-  module.exports = { isAdmin, isTeacher, authenticate};
+  module.exports = { isAdmin, isTeacher, authenticate: authMiddleware};
   
