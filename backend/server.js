@@ -3,7 +3,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const adminRouter = require('./routers/adminRoutes');
 const authRouter = require('./routers/authRoutes');
 const app = express();
 
@@ -12,7 +11,6 @@ app.use(bodyParser.json());
 
 // Routes
 app.use('/auth', authRouter); // Authentication routes should come before other routes
-app.use('/api', adminRouter);
 
 // MongoDB connection
 const PORT = process.env.PORT || 3000; // Use environment variable for port, if available
