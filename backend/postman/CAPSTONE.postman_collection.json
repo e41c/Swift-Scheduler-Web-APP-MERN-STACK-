@@ -7,7 +7,37 @@
 	},
 	"item": [
 		{
-			"name": "http://localhost:3000/auth/register/student",
+			"name": "Teacher Register - http://localhost:3000/auth/register/teacher",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"firstName\": \"John\",\r\n  \"lastName\": \"Doe\",\r\n  \"email\": \"john.doe@example.com\",\r\n  \"password\": \"password123\",\r\n  \"phone\": \"1234567890\",\r\n  \"bio\": \"I am a passionate teacher with years of experience.\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/auth/register/teacher",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"auth",
+						"register",
+						"teacher"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Student Register - http://localhost:3000/auth/register/student Copy",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -31,6 +61,66 @@
 						"auth",
 						"register",
 						"student"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Student Login - http://localhost:3000/auth/register/student Copy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"test2@me.com\",\r\n  \"password\": \"test\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/auth/login/student",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"auth",
+						"login",
+						"student"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Teacher Login - http://localhost:3000/auth/register/teacher",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"test2@me.com\",\r\n  \"password\": \"test\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/auth/login/teacher",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"auth",
+						"login",
+						"teacher"
 					]
 				}
 			},
