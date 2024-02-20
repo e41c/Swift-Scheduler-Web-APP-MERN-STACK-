@@ -10,9 +10,9 @@ app.use(cors())
 //Database connection I used a mongodb Cluster
 mongoose.connect("mongodb+srv://rootadmin:m5NvavxMIOPodOKz@clusterrl.wd5fhyo.mongodb.net/Capstone-ii");
 
-app.post('', (req, res) => {
+app.post('/register', (req, res) => {
     studentModel.create(req.body)
-    .then(students => res.json(employees))
+    .then(students => res.json(students))
     .catch(err => res.json(err))
 })
 

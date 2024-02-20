@@ -12,15 +12,16 @@ function Register() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        axios.post("http://localhost:3001", {firstName, lastName, email, password, phoneNumber, bio})
+        axios.post("http://localhost:3001/register", {firstName, lastName, email, password, phoneNumber, bio})
         .then(result => console.log(result))
         .catch(err => console.log(err))
     }
 
     return (
-        <div className='container'>
-            <div className='header'>
-                <h2>Sign Up</h2>
+        <main class='main'>
+            <section class="home section" id="home">
+            <div class='home__data'>
+                <h1 class="home__title">Sign Up</h1>
                 <div className='underline'></div>
             </div>
             <form onSubmit={handleSubmit}>
@@ -87,7 +88,8 @@ function Register() {
                 <div className='submit'>
                     <a href='./login'>Login</a>
                 </div>
-        </div>
+            </section>
+        </main>
     )
 }
 
