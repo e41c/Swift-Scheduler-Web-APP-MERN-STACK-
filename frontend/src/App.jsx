@@ -16,13 +16,13 @@ function App() {
     <Router className='navbar-container'>
       <Navbar />
       <Routes>
-        {/* <Route path="/" element={<Home />} /> */}
-        <Route path="/About" element={<About />} />
-        <Route path="/Register" element={<Register />} />
-        <Route path="/Login" element={<Login />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </Router>
-    <LandingPage />
+    {/* <LandingPage /> */}
     
     </>
   )

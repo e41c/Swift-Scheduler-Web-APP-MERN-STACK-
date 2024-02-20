@@ -76,6 +76,18 @@ export default function Login() {
           </div>
 
           {/* Submit button */}
+          <div className="flex items-center justify-between">
+            <button
+              className="bg-primary hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              type="button"
+            >
+              Sign In
+            </button>
+            <a className="inline-block align-baseline font-bold text-sm text-primary hover:text-red-800" href="#">
+              Forgot Password?
+            </a>
+
+          </div>
           
 
         </div>
