@@ -263,6 +263,65 @@
 			"response": []
 		},
 		{
+			"name": "Classroom - Create FAILED - TEACHER - http://localhost:3000/classrooms Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Classroom created successfully\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"classroomNumber\", \"101\");\r",
+							"    pm.expect(jsonData).to.have.property(\"capacity\", 30);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": " Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWQ2MjIyNTdiZjhhYjkzNzEzYWU5MzUiLCJyb2xlIjoidGVhY2hlciIsImlhdCI6MTcwODUzMjg3Mn0.yrnshghsA5007QksYt1GZid3jZT67iR30s5KK3GNZHQ",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": " application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"classroomNumber\": \"101\",\r\n    \"capacity\": 30,\r\n    \"currentClasses\": [],\r\n    \"teacher\": [],\r\n    \"students\": []\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/classrooms",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"classrooms"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Search All  - Teachers",
 			"event": [
 				{
