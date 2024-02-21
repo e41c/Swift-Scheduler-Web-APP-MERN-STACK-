@@ -1,11 +1,14 @@
 import { useState } from 'react'
+import axios from 'axios'
+import { useAuth } from '../AuthContext'
 
 export default function Login() {
   const [form, setForm] = useState({
-    username: '',
+    email: '',
     password: '',
     isStudent: true,
   });
+  const { setUserAuthInfo } = useAuth();
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -15,6 +18,25 @@ export default function Login() {
     }));
   };
   const onLogin = async (e) => {
+    e.preventDefault();
+    const loginUrl = form.isStudent ? '/auth/login/student' : '/auth/login/teacher';
+    try {
+      if (form.username === '' || form.password === '') {
+        alert('Please fill in all fields');
+        return;
+      }
+      await axios.post(loginUrl, {
+        email: form.email,
+        password: form.password
+      })
+        .then(res => {
+          console.log(res);
+          setUserAuthInfo({ token: res.data.token });
+        })
+    } catch (err) {
+      console.log(err);
+    }
+    
 
   }
 
@@ -48,15 +70,15 @@ export default function Login() {
           {/* Username input */}
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
-              Username
+              Email
             </label>
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="username"
-              name="username"
+              id="email"
+              name="email"
               type="text"
-              placeholder="Username"
-              value={form.username}
+              placeholder="Email"
+              value={form.email}
               onChange={handleInputChange}
             />
           </div>
@@ -82,7 +104,7 @@ export default function Login() {
           <div className="flex items-center justify-between">
             <button
               className="bg-primary hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              type="button"
+              type="submit"
             >
               Sign In
             </button>
