@@ -11,7 +11,7 @@ export default function LandingPage() {
           <p className='text-center text-lg'>See something you like? Register here.</p>
           <div className='flex justify-center mt-10'>
             {/* <button className='bg-primary text-white p-3 rounded-lg'>Register</button> */}
-            <Link className='bg-primary text-white p-3 rounded-lg' to="/register">Register Now</Link>
+            <Link className='bg-primary text-white p-3 rounded-lg' to="/register" state={{role: "student"}}>Register Now</Link>
           </div>
         </div>
       </section>

@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-//import jwt_decode from 'jwt-decode';
-import * as jwt_decode from 'jwt-decode';
+//import jwt from 'jwt-decode';
+// import * as jwt from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 
 const AuthContext = createContext({});
@@ -17,14 +18,14 @@ export default function AuthProvider({ children }) {
 
   useEffect(() => {
     if (auth.token) {
-      const decoded = jwt_decode(auth.token);
+      const decoded = jwtDecode(auth.token);
       setAuth(prevAuth => ({ ...prevAuth, user: decoded.email, userId: decoded._id, role: decoded.role }));
     }
   }, [auth.token]);
 
   const setUserAuthInfo = ({ token }) => {
     localStorage.setItem('token', token);
-    const decoded = jwt_decode(token);
+    const decoded = jwtDecode(token);
     setAuth({ token, user: decoded.email, role: decoded.role, userId: decoded._id});
   };
 
