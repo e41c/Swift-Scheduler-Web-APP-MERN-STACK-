@@ -1,26 +1,9 @@
+// backend/middleware/authMiddleware.js
 // middleware/authMiddleware.js
 
-function isAdmin(req, res, next) {
-    // Check if user is authenticated and has admin role
-    if (req.user && req.user.role === 'admin') {
-      next(); // Allow access to the next middleware
-    } else {
-      res.status(403).json({ message: 'Admin access required' });
-    }
-  }
-  
-  function isTeacher(req, res, next) {
-    // Check if user is authenticated and has teacher role
-    if (req.user && req.user.role === 'teacher') {
-      next(); // Allow access to the next middleware
-    } else {
-      res.status(403).json({ message: 'Teacher access required' });
-    }
-  }
-  
-  const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
-function authMiddleware(req, res, next) {
+function authenticate(req, res, next) {
   // Get token from request headers
   const token = req.headers.authorization;
 
@@ -30,7 +13,7 @@ function authMiddleware(req, res, next) {
 
   try {
     // Verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token.replace('Bearer ', ''), process.env.JWT_SECRET);
     req.user = decoded;
     next();
   } catch (error) {
@@ -38,5 +21,4 @@ function authMiddleware(req, res, next) {
   }
 }
 
-  module.exports = { isAdmin, isTeacher, authenticate: authMiddleware};
-  
+module.exports = { authenticate };
