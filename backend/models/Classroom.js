@@ -1,5 +1,3 @@
-// models/Classroom.js
-
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -7,7 +5,7 @@ const classroomSchema = new Schema({
   classroomNumber: { type: String, required: true },
   capacity: { type: Number, default: 30 },
   currentClasses: [{ type: Schema.Types.ObjectId, ref: 'Class' }],
-  teacher: [{ type: Schema.Types.ObjectId, ref: 'Teacher' }],
+  teacher: { type: Schema.Types.ObjectId, ref: 'Teacher', required: true }, // Modify this line
   students: [{ type: Schema.Types.ObjectId, ref: 'Student' }],
   // Add more fields as needed
 });
