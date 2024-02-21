@@ -7,18 +7,29 @@ const Student = require('../models/Student');
 exports.teacherLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log('Received email:', email); // Add this line for debugging
 
     const teacher = await Teacher.findOne({ email });
+    console.log('Retrieved teacher:', teacher); // Add this line for debugging
+
     if (!teacher) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 
+    console.log('Stored hashed password:', teacher.password); // Add this line for debugging
+
+    // Validate password
     const validPassword = await bcrypt.compare(password, teacher.password);
+    console.log('Password validation result:', validPassword); // Add this line for debugging
+
     if (!validPassword) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 
-    const token = jwt.sign({ userId: teacher._id, role: 'teacher' }, process.env.JWT_SECRET);
+    // Generate JWT token
+    // had to add email to token needed for frontend -Ven
+    
+    const token = jwt.sign({ userId: teacher._id, role: 'teacher', email: teacher.email}, process.env.JWT_SECRET);
 
     res.json({ token });
   } catch (error) {
@@ -40,7 +51,10 @@ exports.studentLogin = async (req, res) => {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 
-    const token = jwt.sign({ userId: student._id, role: 'student' }, process.env.JWT_SECRET);
+    // Generate JWT token
+    // had to add email to token needed for frontend -Ven
+    
+    const token = jwt.sign({ userId: student._id, role: 'student', email: student.email }, process.env.JWT_SECRET);
 
     res.json({ token });
   } catch (error) {
@@ -91,7 +105,10 @@ exports.studentRegister = async (req, res) => {
     const newStudent = new Student(newStudentData);
     await newStudent.save();
 
-    const token = jwt.sign({ userId: newStudent._id, role: 'student' }, process.env.JWT_SECRET);
+    // Generate JWT token
+    // had to add email to token needed for frontend -Ven
+    
+    const token = jwt.sign({ userId: newStudent._id, role: 'student', email: newStudent.email }, process.env.JWT_SECRET);
 
     res.status(201).json({ token });
   } catch (error) {
@@ -120,7 +137,10 @@ exports.teacherRegister = async (req, res) => {
     const newTeacher = new Teacher(newTeacherData);
     await newTeacher.save();
 
-    const token = jwt.sign({ userId: newTeacher._id, role: 'teacher' }, process.env.JWT_SECRET);
+    // Generate JWT token
+    // had to add email to token needed for frontend -Ven
+    
+    const token = jwt.sign({ userId: newTeacher._id, role: 'teacher', email: newTeacher.email }, process.env.JWT_SECRET);
 
     res.status(201).json({ token });
   } catch (error) {
