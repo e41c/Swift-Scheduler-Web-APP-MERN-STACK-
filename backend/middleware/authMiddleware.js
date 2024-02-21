@@ -1,7 +1,9 @@
+// backend/middleware/authMiddleware.js
 // middleware/authMiddleware.js
+
 const jwt = require('jsonwebtoken');
 
-function authMiddleware(req, res, next) {
+function authenticate(req, res, next) {
   // Get token from request headers
   const token = req.headers.authorization;
 
@@ -11,7 +13,7 @@ function authMiddleware(req, res, next) {
 
   try {
     // Verify token
-    const decoded = jwt.verify(token.split(' ')[1], process.env.JWT_SECRET); // Extract token from 'Bearer <token>'
+    const decoded = jwt.verify(token.replace('Bearer ', ''), process.env.JWT_SECRET);
     req.user = decoded;
     next();
   } catch (error) {
@@ -19,4 +21,4 @@ function authMiddleware(req, res, next) {
   }
 }
 
-module.exports = { authMiddleware };
+module.exports = { authenticate };

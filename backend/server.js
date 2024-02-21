@@ -1,11 +1,9 @@
 // backend/server.js
-
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const authRouter = require('./routers/authRoutes');
-const classroomRouter = require('./routers/classroomRoutes');
-const { authenticate } = require('./middleware/authMiddleware'); // Import auth middleware
+const classroomRouter = require('./routers/classroomRoutes'); // Import classroom routes
 const app = express();
 require('dotenv').config();
 
@@ -13,11 +11,11 @@ require('dotenv').config();
 app.use(bodyParser.json());
 
 // Routes
-app.use('/auth', authRouter);
-app.use('/classrooms', authenticate, classroomRouter); // Apply auth middleware to classroom routes
+app.use('/auth', authRouter); // Authentication routes should come before other routes
+app.use('/classrooms', classroomRouter); // Mount classroom routes
 
 // MongoDB connection
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000; // Use environment variable for port, if available
 mongoose.connect('mongodb://admin:password@localhost:27017')
     .then(() => console.log('MongoDB connected...'))
     .catch(err => console.log(err));

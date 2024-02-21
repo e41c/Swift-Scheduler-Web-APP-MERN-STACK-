@@ -1,13 +1,17 @@
 // backend/routers/classroomRoutes.js
+
 const express = require('express');
 const router = express.Router();
-const { authMiddleware } = require('../middleware/authMiddleware');
 const Classroom = require('../models/Classroom');
+const { authenticate } = require('../middleware/authMiddleware'); // Updated import statement
 
 // Create a new classroom
-router.post('/', authMiddleware, async (req, res) => {
+router.post('/', authenticate, async (req, res) => {
   try {
-    const newClassroom = await Classroom.create(req.body);
+    const newClassroom = await Classroom.create({
+      ...req.body,
+      teacher: req.user.userId // Associate the classroom with the authenticated teacher
+    });
     res.status(201).json(newClassroom);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -38,7 +42,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Update a classroom
-router.put('/:id', authMiddleware, async (req, res) => {
+router.put('/:id', authenticate, async (req, res) => {
   try {
     const updatedClassroom = await Classroom.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!updatedClassroom) {
@@ -51,7 +55,7 @@ router.put('/:id', authMiddleware, async (req, res) => {
 });
 
 // Delete a classroom
-router.delete('/:id', authMiddleware, async (req, res) => {
+router.delete('/:id', authenticate, async (req, res) => {
   try {
     const deletedClassroom = await Classroom.findByIdAndDelete(req.params.id);
     if (!deletedClassroom) {
