@@ -31,6 +31,11 @@ function LandingPage() {
                     </div>
                 </div>
             </section>
+            <section class="about section" id="about">
+                <div class="about__data">
+                    <h1>About Us</h1>
+                </div>
+            </section>
         </main>         
     )
 }

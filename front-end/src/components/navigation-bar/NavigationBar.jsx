@@ -28,7 +28,7 @@ function NavigationBar() {
                 <div className={`nav__menu ${menuVisible ? 'show-menu' : ''}`} id="nav-menu">
                     <ul className="nav__list">
                         <li className="nav__item">
-                            <a href="./home" className="nav__link">About Us</a>
+                            <a href="./about" className="nav__link">About Us</a>
                         </li>
                         <li className="nav__item">
                             <a href="./register" className="nav__link">Join our team!</a>
