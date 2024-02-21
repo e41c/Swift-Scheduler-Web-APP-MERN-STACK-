@@ -3,7 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const { isAdmin, isTeacher, isStudent } = require('../middleware/authMiddleware');
-const { createClass, updateClass, getAllClasses, deleteClass } = require('../controllers/classController');
+const { createClass, updateClass, getAllClasses, deleteClass, searchClasses } = require('../controllers/classController'); // Import searchClasses function
 
 // Admin routes
 router.post('/admin/classes', isAdmin, createClass);
@@ -20,5 +20,7 @@ router.delete('/teacher/classes/:date/:time', isTeacher, deleteClass);
 // Student routes
 router.get('/student/classes', isStudent, getAllClasses);
 
-module.exports = router;
+// New route for searching classes
+router.get('/search', searchClasses);
 
+module.exports = router;
