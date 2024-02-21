@@ -326,6 +326,69 @@
 			"response": []
 		},
 		{
+			"name": "Search All  - Students",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Classroom created successfully\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"classroomNumber\", \"101\");\r",
+							"    pm.expect(jsonData).to.have.property(\"capacity\", 30);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": " Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWQ1NWE1ZjIwZDY2YmJhZDU1NzgwOWUiLCJyb2xlIjoidGVhY2hlciIsImlhdCI6MTcwODQ4NzQ4N30.ms10y0tB8oZeoVMk1ywj50IVPwaZHmScBjIK_Qm-f6M",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": " application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/auth/students",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"auth",
+						"students"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Classroom - Update - TEACHER - http://localhost:3000/classrooms Copy",
 			"event": [
 				{
