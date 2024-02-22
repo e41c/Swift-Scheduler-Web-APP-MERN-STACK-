@@ -241,7 +241,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"classroomNumber\": \"101\",\r\n    \"capacity\": 30,\r\n    \"currentClasses\": [],\r\n    \"teacher\": [],\r\n    \"students\": []\r\n}\r\n",
+					"raw": "{\r\n    \"classroomNumber\": \"101\",\r\n    \"capacity\": 30,\r\n    \"teacher\": \"teacher_id\",\r\n    \"availability\": true,\r\n    \"schedule\": {\r\n        \"day\": \"Monday\",\r\n        \"startTime\": \"09:00 AM\",\r\n        \"endTime\": \"10:00 AM\"\r\n    }\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -257,6 +257,66 @@
 					"port": "3000",
 					"path": [
 						"classrooms"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Class Create - TEACHER - http://localhost:3000/classrooms Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Classroom created successfully\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"classroomNumber\", \"101\");\r",
+							"    pm.expect(jsonData).to.have.property(\"capacity\", 30);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": " Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWQ2MjIyNTdiZjhhYjkzNzEzYWU5MzUiLCJyb2xlIjoidGVhY2hlciIsImVtYWlsIjoiY2hyaXN0NDRAZXhhbXBsZS5jb20iLCJpYXQiOjE3MDg1NjM1OTF9.EJkqcAT1nSVZQI8VGFXQHSm9EbjciTpSMtJhmL_FWIM",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": " application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"date\": \"2024-02-16\",\r\n    \"time\": \"10:00 AM\",\r\n    \"classroom\": \"65d69c0ff1901e01ca3834d8\",\r\n    \"studentLevel\": \"Intermediate\",\r\n    \"danceCategory\": \"Hip Hop\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/teacher/classes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"teacher",
+						"classes"
 					]
 				}
 			},
@@ -289,7 +349,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": " Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWQ2MjIyNTdiZjhhYjkzNzEzYWU5MzUiLCJyb2xlIjoidGVhY2hlciIsImlhdCI6MTcwODUzMjg3Mn0.yrnshghsA5007QksYt1GZid3jZT67iR30s5KK3GNZHQ",
+						"value": " Bearer ",
 						"type": "text"
 					},
 					{

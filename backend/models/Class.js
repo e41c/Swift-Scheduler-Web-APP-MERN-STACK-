@@ -8,7 +8,7 @@ const classSchema = new Schema({
   date: { type: Date, required: true },
   time: { type: String, required: true },
   classroom: { type: Schema.Types.ObjectId, ref: 'Classroom', required: true },
-  rating: { type: Number, default: 0 }, 
+  rating: { type: Number, default: 0 },
   capacity: { type: Number, default: 30 },
   studentsEnrolled: [{ type: Schema.Types.ObjectId, ref: 'Student' }],
   studentLevel: { type: String, enum: ['Beginner', 'Intermediate', 'Advanced'], required: true },

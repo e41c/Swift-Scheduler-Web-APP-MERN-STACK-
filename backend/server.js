@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const authRouter = require('./routers/authRoutes');
+const classRouter = require('./routers/classRoutes'); // Correct import for class routes
 const classroomRouter = require('./routers/classroomRoutes'); // Import classroom routes
 const app = express();
 require('dotenv').config();
@@ -12,6 +13,7 @@ app.use(bodyParser.json());
 
 // Routes
 app.use('/auth', authRouter); // Authentication routes should come before other routes
+app.use('/teacher', classRouter); // Using correct route for classes
 app.use('/classrooms', classroomRouter); // Mount classroom routes
 
 // MongoDB connection
