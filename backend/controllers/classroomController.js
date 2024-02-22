@@ -1,8 +1,6 @@
-// controllers/classroomController.js
-
+// backend/controllers/classroomController.js
 const Classroom = require('../models/Classroom');
 
-// Controller for creating a new classroom
 exports.createClassroom = async (req, res) => {
   try {
     const newClassroom = await Classroom.create(req.body);
@@ -12,7 +10,6 @@ exports.createClassroom = async (req, res) => {
   }
 };
 
-// Controller for getting all classrooms
 exports.getAllClassrooms = async (req, res) => {
   try {
     const classrooms = await Classroom.find();
@@ -22,7 +19,6 @@ exports.getAllClassrooms = async (req, res) => {
   }
 };
 
-// Controller for getting a specific classroom by ID
 exports.getClassroomById = async (req, res) => {
   try {
     const classroom = await Classroom.findById(req.params.id);
@@ -35,7 +31,6 @@ exports.getClassroomById = async (req, res) => {
   }
 };
 
-// Controller for updating a classroom
 exports.updateClassroom = async (req, res) => {
   try {
     const updatedClassroom = await Classroom.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -48,7 +43,6 @@ exports.updateClassroom = async (req, res) => {
   }
 };
 
-// Controller for deleting a classroom
 exports.deleteClassroom = async (req, res) => {
   try {
     const deletedClassroom = await Classroom.findByIdAndDelete(req.params.id);
