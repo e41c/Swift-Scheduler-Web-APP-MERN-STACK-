@@ -53,4 +53,16 @@ exports.deleteClassroom = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
+
+  exports.getClassById = async (req, res) => {
+    try {
+      const classItem = await Class.findById(req.params.id);
+      if (!classItem) {
+        return res.status(404).json({ message: 'Class not found' });
+      }
+      res.json(classItem);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };
 };
