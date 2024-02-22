@@ -2,38 +2,36 @@
 const jwt = require('jsonwebtoken');
 
 function authenticate(req, res, next) {
-  // Get token from request headers
-  const token = req.headers.authorization;
-
+  const token = req.headers.authorization?.split(' ')[1]; // Bearer Token
   if (!token) {
-    return res.status(401).json({ message: 'No token provided' });
+    return res.status(401).send({ message: 'Access denied. No token provided.' });
   }
 
   try {
-    // Verify token
-    const decoded = jwt.verify(token.replace('Bearer ', ''), process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
     next();
-  } catch (error) {
-    return res.status(401).json({ message: 'Invalid token' });
+  } catch (ex) {
+    res.status(400).send({ message: 'Invalid token.' });
   }
 }
 
 function isTeacher(req, res, next) {
-  if (req.user.role === 'teacher') {
+  console.log(req.user); // Debug: Log user object to debug
+  if (req.user && req.user.role === 'teacher') {
     next();
   } else {
-    res.status(403).json({ message: 'Unauthorized' });
+    console.log('Failed role check:', req.user); // Additional logging
+    return res.status(403).json({ message: 'Unauthorized access. User is not a teacher.' });
   }
 }
 
 function isStudent(req, res, next) {
-  if (req.user.role === 'student') {
+  if (req.user && req.user.role === 'student') {
     next();
   } else {
-    res.status(403).json({ message: 'Unauthorized' });
+    return res.status(403).json({ message: 'Unauthorized access. User is not a student.' });
   }
 }
 
 module.exports = { authenticate, isTeacher, isStudent };
-
