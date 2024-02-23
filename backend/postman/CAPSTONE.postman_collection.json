@@ -323,11 +323,8 @@
 							}
 						}
 					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
-						"method": "GET",
+						"method": "DELETE",
 						"header": [
 							{
 								"key": "Authorization",
@@ -350,7 +347,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/classrooms/65d624c3d2d7f4229f8cc021",
+							"raw": "http://localhost:3000/classrooms/65d57a3e8c39985d1a569244",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -358,7 +355,7 @@
 							"port": "3000",
 							"path": [
 								"classrooms",
-								"65d624c3d2d7f4229f8cc021"
+								"65d57a3e8c39985d1a569244"
 							]
 						}
 					},
@@ -701,6 +698,310 @@
 							"port": "3000",
 							"path": [
 								"classes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Class Create (FAILED) - TEACHER - http://localhost:3000/classrooms Copy 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Classroom created successfully\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"classroomNumber\", \"101\");\r",
+									"    pm.expect(jsonData).to.have.property(\"capacity\", 30);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": " Bearer ",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": " application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"date\": \"2024-05-20\",\r\n  \"time\": \"10:00\",\r\n  \"classroom\": \"65d79ae7e88805f80f01dcdb\",\r\n  \"rating\": 0,\r\n  \"capacity\": 30,\r\n  \"studentLevel\": \"Beginner\",\r\n  \"danceCategory\": \"Ballet\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/classes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"classes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Class (Teacher)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Classroom created successfully\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"classroomNumber\", \"101\");\r",
+									"    pm.expect(jsonData).to.have.property(\"capacity\", 30);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": " Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWQ2MjIyNTdiZjhhYjkzNzEzYWU5MzUiLCJyb2xlIjoidGVhY2hlciIsImlhdCI6MTcwODUzMjg3Mn0.yrnshghsA5007QksYt1GZid3jZT67iR30s5KK3GNZHQ",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": " application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"date\": \"2024-05-20\",\r\n  \"time\": \"10:00\",\r\n  \"classroom\": \"65d79ae7e88805f80f01dcdb\",\r\n  \"rating\": 0,\r\n  \"capacity\": 30,\r\n  \"studentLevel\": \"Beginner\",\r\n  \"danceCategory\": \"Ballet\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/classes/65d8ad6aab2a7b4393d72043",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"classes",
+								"65d8ad6aab2a7b4393d72043"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Class By ID (Teacher)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Classroom created successfully\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"classroomNumber\", \"101\");\r",
+									"    pm.expect(jsonData).to.have.property(\"capacity\", 30);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": " Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWQ2MjIyNTdiZjhhYjkzNzEzYWU5MzUiLCJyb2xlIjoidGVhY2hlciIsImlhdCI6MTcwODUzMjg3Mn0.yrnshghsA5007QksYt1GZid3jZT67iR30s5KK3GNZHQ",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": " application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"date\": \"2024-05-20\",\r\n  \"time\": \"10:00\",\r\n  \"classroom\": \"65d79ae7e88805f80f01dcdb\",\r\n  \"rating\": 0,\r\n  \"capacity\": 30,\r\n  \"studentLevel\": \"Advance\",\r\n  \"danceCategory\": \"Hip-Hop\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/classes/65d8ad34ab2a7b4393d7203f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"classes",
+								"65d8ad34ab2a7b4393d7203f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Classes (accessable by teacher + student)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Classroom created successfully\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"classroomNumber\", \"101\");\r",
+									"    pm.expect(jsonData).to.have.property(\"capacity\", 30);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": " Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWQ2MjIyNTdiZjhhYjkzNzEzYWU5MzUiLCJyb2xlIjoidGVhY2hlciIsImlhdCI6MTcwODUzMjg3Mn0.yrnshghsA5007QksYt1GZid3jZT67iR30s5KK3GNZHQ",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": " application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/classes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"classes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Class By ID (Teacher + Student)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Classroom created successfully\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"classroomNumber\", \"101\");\r",
+									"    pm.expect(jsonData).to.have.property(\"capacity\", 30);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": " Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWQ2MjIyNTdiZjhhYjkzNzEzYWU5MzUiLCJyb2xlIjoidGVhY2hlciIsImlhdCI6MTcwODUzMjg3Mn0.yrnshghsA5007QksYt1GZid3jZT67iR30s5KK3GNZHQ",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": " application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"date\": \"2024-05-20\",\r\n  \"time\": \"10:00\",\r\n  \"classroom\": \"65d79ae7e88805f80f01dcdb\",\r\n  \"rating\": 0,\r\n  \"capacity\": 30,\r\n  \"studentLevel\": \"Beginner\",\r\n  \"danceCategory\": \"Ballet\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/classes/65d8ad34ab2a7b4393d7203f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"classes",
+								"65d8ad34ab2a7b4393d7203f"
 							]
 						}
 					},
