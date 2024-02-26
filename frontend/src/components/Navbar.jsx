@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Dumbbell, Menu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import GZLogo from '../assets/dance.png';
 
 export default function Navbar() {
   const [navBar, setNavBar] = useState(false); // Corrected variable name
@@ -28,9 +29,10 @@ export default function Navbar() {
           <div>
             <div className="flex items-center justify-between py-1 md:py-1 md:block">
               {/* Logo section */}
-              <Link className="text-3xl text-indigo-600 font-semibold tracking-[0.1rem] flex items-end gap-x-1 relative"
+              <Link className="text-3xl text-indigo-600 font-semibold flex items-end gap-x-1 relative"
                 to="./">
-                GZ
+                  <img src={GZLogo} alt="Groove Zone Logo" className="w-9"/>
+                Groove Zone
               </Link>
               <div className="md:hidden">
                 <button
