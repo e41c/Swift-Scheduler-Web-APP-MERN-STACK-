@@ -4,7 +4,7 @@ import { CalendarDays } from 'lucide-react';
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
+import { Autoplay, Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 // Images
 import DanceDisplay2 from '../assets/DanceDisplay_2.jpg';
 import DanceDisplay5 from '../assets/DanceDisplay_5.jpg';
@@ -23,9 +23,13 @@ function CourseSlides() {
             <div className="w-full h-auto">
             <Swiper
                 // install Swiper modules
-                modules={[Navigation, Pagination, Scrollbar, A11y]}
+                modules={[Autoplay, Navigation, Pagination, Scrollbar, A11y]}
                 spaceBetween={50}
                 slidesPerView={1}
+                autoplay={{
+                    delay: 2600,
+                    disableOnInteraction: false,
+                }}
                 navigation
                 pagination={{ clickable: true }}
                 scrollbar={{ draggable: true }}

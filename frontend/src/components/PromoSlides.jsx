@@ -4,11 +4,12 @@ import { CalendarDays } from 'lucide-react';
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
+import { Autoplay, Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 // Images
 import DanceDisplay4 from '../assets/DanceDisplay_4.jpg';
 import DanceDisplay3 from '../assets/DanceDisplay_3.jpg';
 import DanceDisplay1 from '../assets/DanceDisplay_1.jpg';
+import DisplayOriginal from '../assets/landingp.jpg'
 
 // Swiper styles
 import 'swiper/css';
@@ -23,8 +24,12 @@ function PromoSlides() {
             <div className="w-full h-auto">
             <Swiper
                 // install Swiper modules
-                modules={[Navigation, Pagination, Scrollbar, A11y]}
+                modules={[Autoplay, Navigation, Pagination, Scrollbar, A11y]}
                 spaceBetween={50}
+                autoplay={{
+                    delay:5000,
+                    disableOnInteraction: false,
+                }}
                 slidesPerView={1}
                 navigation
                 pagination={{ clickable: true }}
@@ -88,6 +93,27 @@ function PromoSlides() {
                         lg:px-24 md:px-16 sm:px-6 px-4">
                             <h2 className="lg:text-4xl md:text-3x1 sm:text-2xl text-2xl text-indigo-400 font-semibold mb-2 uppercase">Be Inspired</h2>
                             <h1 className="lg:text-5xl md:text-4xl sm:text-3xl text-2xl text-white font-bold mb-2 uppercase">Believe in yourself</h1>
+                            <Link 
+                                to="./register"
+                                className={`text-base text-gray-200 bg-indigo-600 font-medium px-3 py-1.5 rounded gap-x-1 hover:bg-indigo-600/70 ease-out duration-500`}>
+                                    Register Now
+                            </Link> 
+                        </div>
+                        </div>
+                    </SwiperSlide>
+                    <SwiperSlide
+                    className="w-full h-[65vh] relative"
+                    style={{
+                        backgroundImage: `url(${DisplayOriginal})`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                        backgroundRepeat: "no-repeat",
+                    }}>
+                        <div className="w-full h-full bg-black/40 absoluter top-0 left-0 -z-10">
+                        <div className="w-full h-full flex items-center justify-center flex-col z-10
+                        lg:px-24 md:px-16 sm:px-6 px-4">
+                            <h2 className="lg:text-4xl md:text-3x1 sm:text-2xl text-2xl text-indigo-400 font-semibold mb-2 uppercase">Take Action</h2>
+                            <h1 className="lg:text-5xl md:text-4xl sm:text-3xl text-2xl text-white font-bold mb-2 uppercase">Reach for the spotlight</h1>
                             <Link 
                                 to="./register"
                                 className={`text-base text-gray-200 bg-indigo-600 font-medium px-3 py-1.5 rounded gap-x-1 hover:bg-indigo-600/70 ease-out duration-500`}>

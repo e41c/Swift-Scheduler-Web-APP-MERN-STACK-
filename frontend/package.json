@@ -12,6 +12,7 @@
   "dependencies": {
     "@types/jwt-decode": "^3.1.0",
     "axios": "^1.6.7",
+    "dayjs": "^1.11.10",
     "jwt-decode": "^4.0.0",
     "lucide": "^0.338.0",
     "lucide-react": "^0.335.0",
