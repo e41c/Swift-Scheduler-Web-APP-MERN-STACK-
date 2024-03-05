@@ -13,16 +13,6 @@ const studentSchema = new mongoose.Schema({
   // Add more fields as needed
 });
 
-// password is already hashed in the controller, double hashing caused error in login -chris
-// // Hash password before saving user
-// studentSchema.pre('save', async function (next) {
-//   if (!this.isModified('password')) {
-//     return next();
-//   }
-//   const salt = await bcrypt.genSalt(10);
-//   this.password = await bcrypt.hash(this.password, salt);
-//   next();
-// });
 
 const Student = mongoose.model('Student', studentSchema);
 
