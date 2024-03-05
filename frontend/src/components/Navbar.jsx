@@ -1,79 +1,54 @@
-import React, { useState } from 'react';
-import { Dumbbell, Menu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import GZLogo from '../assets/dance.png';
+import { useAuth } from '../AuthContext';
 
 export default function Navbar() {
-  const [navBar, setNavBar] = useState(false); // Corrected variable name
+  const { isAuthenticated, logout, auth } = useAuth();
 
-  const navItemsGuest = [
-    {
-      name: 'Home',
-      link: '/',
-    },
-    {
-      name: 'About Us',
-      link: '/about',
-    },
-    {
-      name: 'Join our team!',
-      link: '/register',
-    },
+
+  const navItems = [
+    { name: "greet", link: null, auth: true, text: `Hello, ${auth?.user}`, onclick: null },
+    { name: "logout", link: null, auth: true, text: "Logout", onclick: logout },
+    { name: "profile", link: "/profile", auth: true, text: "Profile", onclick: null },
+    { name: "login", link: "/login", auth: false, text: "Login", onclick: null },
+    { name: "register", link: "/register", auth: false, text: "Join Our Team", onclick: null },
   ];
 
+
+
   return (
-    <>
-      <nav className="w-full h-auto bg-[#1d1d1d] shadow-none lg:px-24 md:px-16 sm:px-6 px-4 py-3">
-        <div className="justify-between mx-auto lg:w-full md:items-center md:flex">
-          {/* Navbar logo & toggle button section */}
-          <div>
-            <div className="flex items-center justify-between py-1 md:py-1 md:block">
-              {/* Logo section */}
-              <Link className="text-3xl text-indigo-600 font-semibold flex items-end gap-x-1 relative"
-                to="./">
-                  <img src={GZLogo} alt="Groove Zone Logo" className="w-9"/>
-                Groove Zone
-              </Link>
-              <div className="md:hidden">
-                <button
-                  className="p-2 text-gray-700 rounded-md outline-none border border-transparent focus:border-gray-400 focus:border"
-                  onClick={() => setNavBar(!navBar)}
-                >
-                  {navBar ? (
-                    <X className="text-gray-400 cursor-pointer" size={24} />
-                  ) : (
-                    <Menu className="text-gray-400 cursor-pointer" size={24} />
-                  )}
-                </button>
-              </div>
-            </div>
-          </div>
-          {/* Navbar menu items section */}
-          <div
-            className={`flex justify-between items-center md:block ${
-              navBar ? 'block' : 'hidden'
-            }`}
-          >
-            <ul className="list-none lg:flex md:flex sm:block block items-center gap-x-5 gap-y-16">
-              {navItemsGuest.map((item, index) => (
-                <li key={index}>
-                  <Link
-                    to={item.link}
-                    className="text-gray-500 text-lg font-medium hover:text-indigo-600 ease-out duration-700"
-                  >
-                    {item.name}
-                  </Link>
-                </li>
-              ))}
-              <Link 
-                to="./login"
-                className={`text-base text-gray-200 bg-indigo-600 font-medium px-3 py-1.5 rounded gap-x-1 hover:bg-indigo-600/70 ease-out duration-500`}>
-                  Login
-              </Link> 
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </>
-  );
+    <nav className="fixed w-full left-0 top-0 z-50 bg-secondary bg-opacity-50 shadow border-b-2 border-white">
+      <ul className='flex justify-between items-center p-4 mr-6'>
+        {navItems.map((item, index) => {
+          // Render the item if authentication matches the item's auth property
+          if (isAuthenticated && item.auth) {
+            return (
+              <li key={index} className='nav-link'>
+                {item.link ? 
+                  <Link to={item.link}>{item.text}</Link> :
+                  <button onClick={item.onclick}>{item.text}</button>
+                }
+              </li>
+            )
+          }else if(!item.auth && !isAuthenticated){
+            return(
+              <li key={index} className='nav-link'>
+                {item.link ? 
+                  <Link to={item.link}>{item.text}</Link> :
+                  <button onClick={item.onclick}>{item.text}</button>
+                }
+              </li>
+            )
+          }
+          
+          //return null; // Return null for items that should not be displayed
+        })}
+        <li className='nav-link'>
+          <Link to='/'>Home</Link>
+        </li>
+        <li className='nav-link'>
+          <Link to='/about'>About Us</Link>
+        </li>
+      </ul>
+    </nav>
+  )
 }
