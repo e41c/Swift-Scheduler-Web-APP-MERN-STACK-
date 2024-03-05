@@ -3,6 +3,8 @@ import { useAuth } from '../AuthContext';
 
 export default function Navbar() {
   const { isAuthenticated, logout, auth } = useAuth();
+
+
   const navItems = [
     { name: "greet", link: null, auth: true, text: `Hello, ${auth?.user}`, onclick: null },
     { name: "logout", link: null, auth: true, text: "Logout", onclick: logout },
@@ -10,6 +12,8 @@ export default function Navbar() {
     { name: "login", link: "/login", auth: false, text: "Login", onclick: null },
     { name: "register", link: "/register", auth: false, text: "Join Our Team", onclick: null },
   ];
+
+
 
   return (
     <nav className="fixed w-full left-0 top-0 z-50 bg-secondary bg-opacity-50 shadow border-b-2 border-white">
@@ -35,8 +39,6 @@ export default function Navbar() {
               </li>
             )
           }
-          
-          //return null; // Return null for items that should not be displayed
         })}
         <li className='nav-link'>
           <Link to='/'>Home</Link>
