@@ -61,68 +61,98 @@ export default function Register() {
   }
   return (
     <div className='mt-24 h-[calc(100vh-4rem)] overflow-auto"'>
-      {role === 'student' ? <h3 className='text-4xl text-center'>Student Registration</h3> : <h3 className='text-4xl text-center'>Staff Registration</h3>}
-      <form onSubmit={onRegister}>
-        <div>
-          <label>First Name</label>
+      {role === 'student' ? <h1 className='className="text-12xl text-white font-bold mb-2 uppercase text-center'>Student Registration</h1> : <h1 className='className="text-12xl text-white font-bold mb-2 uppercase text-center'>Staff Registration</h1>}
+      <form
+        onSubmit={onRegister}
+        className="w-full max-w-lg mx-auto mt-8 bg-[#1d1d1d] shadow-md rounded px-8 pt-6 pb-8"
+      >
+        <div className="mb-4">
+          <label className="block text-white text-sm font-bold mb-2">
+            First Name
+          </label>
           <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             type="text"
             name="firstName"
             value={form.firstName}
             onChange={handleInputChange}
+            placeholder="First Name"
           />
         </div>
-        <div>
-          <label>Last Name</label>
+        <div className="mb-4">
+          <label className="block text-white text-sm font-bold mb-2">
+            Last Name
+          </label>
           <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             type="text"
             name="lastName"
             value={form.lastName}
             onChange={handleInputChange}
+            placeholder="Last Name"
           />
         </div>
-        <div>
-          <label>Email</label>
+        <div className="mb-4">
+          <label className="block text-white text-sm font-bold mb-2">
+            Email
+          </label>
           <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             type="email"
             name="email"
             value={form.email}
             onChange={handleInputChange}
+            placeholder="Email"
           />
         </div>
-        <div>
-          <label>Password</label>
+        <div className="mb-4">
+          <label className="block text-white text-sm font-bold mb-2">
+            Password
+          </label>
           <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             type="password"
             name="password"
             value={form.password}
             onChange={handleInputChange}
+            placeholder="Password"
           />
         </div>
-        <div>
-          <label>Phone Number</label>
+        <div className="mb-4">
+          <label className="block text-white text-sm font-bold mb-2">
+            Phone Number
+          </label>
           <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             type="text"
             name="phoneN"
             value={form.phoneN}
             onChange={handleInputChange}
+            placeholder="Phone Number"
           />
         </div>
         {role === 'staff' && (
-          <div>
-            <label>Bio</label>
+          <div className="mb-4">
+            <label className="block text-white text-sm font-bold mb-2">
+              Bio
+            </label>
             <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               type="text"
               name="bio"
               value={form.bio}
               onChange={handleInputChange}
+              placeholder="Bio"
             />
           </div>
-        
         )}
-        <button type="submit">Register</button>
+        <button
+          type="submit"
+          className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+          Register
+        </button>
       </form>
-
     </div>
   )
 }

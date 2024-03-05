@@ -1,5 +1,7 @@
-/** @type {import('tailwindcss').Config} */
-export default {
+// tailwind.config.js
+const defaultTheme = require('tailwindcss/defaultTheme');
+
+module.exports = {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -7,8 +9,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        'sans': ['"Roboto"', 'sans-serif'],
-        'serif': ['"Playfair Display"', 'serif'],
+        sans: ['Red Hat Display', ...defaultTheme.fontFamily.sans],
+        kaushan: ['Kaushan Script', ...defaultTheme.fontFamily.serif],
       },
       colors:{
         primary: '#161616',
@@ -19,5 +21,4 @@ export default {
     }
   },
   plugins: [],
-}
-
+};

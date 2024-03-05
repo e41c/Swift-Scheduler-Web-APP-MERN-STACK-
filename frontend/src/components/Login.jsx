@@ -32,6 +32,7 @@ export default function Login() {
         .then(res => {
           console.log(res);
           setUserAuthInfo({ token: res.data.token });
+          history.push('./home');
         })
     } catch (err) {
       console.log(err);
