@@ -74,9 +74,11 @@ function PromoSlides() {
                             <h1 className="lg:text-5xl md:text-4xl sm:text-3xl text-2xl text-white font-bold mb-2 uppercase">Believe in yourself</h1>
                             <Link 
                                 to="./register"
+                                state={{role: "studnet"}}
                                 className={`text-base text-gray-200 bg-indigo-600 font-medium px-3 py-1.5 rounded gap-x-1 hover:bg-indigo-600/70 ease-out duration-500`}>
                                     Register Now
                             </Link> 
+                            
                         </div>
                         </div>
                     </SwiperSlide>

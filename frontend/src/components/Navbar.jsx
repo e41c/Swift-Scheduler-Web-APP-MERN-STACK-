@@ -10,35 +10,60 @@ export default function Navbar() {
     { name: "logout", link: null, auth: true, text: "Logout", onclick: logout },
     { name: "profile", link: "/profile", auth: true, text: "Profile", onclick: null },
     { name: "login", link: "/login", auth: false, text: "Login", onclick: null },
-    { name: "register", link: "/register", auth: false, text: "Join Our Team", onclick: null },
+    // { name: "register", link: "/register", auth: false, text: "Join Our Team", onclick: null, state: {role: "staff"} },
+    { name: "book", link: "/calendar", auth: true, text: "Book Classes", onclick: null },
   ];
 
 
 
   return (
+    // <nav className="fixed w-full left-0 top-0 z-50 bg-secondary bg-opacity-50 shadow border-b-2 border-white">
+    //   <ul className='flex justify-between items-center p-4 mr-6'>
+    //     {navItems.map((item, index) => {
+    //       // Render the item if authentication matches the item's auth property
+    //       if (isAuthenticated && item.auth) {
+    //         return (
+    //           <li key={index} className='nav-link'>
+    //             {item.link ? 
+    //               <Link to={item.link}>{item.text}</Link> :
+    //               <button onClick={item.onclick}>{item.text}</button>
+    //             }
+    //           </li>
+    //         )
+    //       }else if(!item.auth && !isAuthenticated){
+    //         return(
+    //           <li key={index} className='nav-link'>
+    //             {item.link ? 
+    //               <Link to={item.link}>{item.text}</Link> :
+    //               <button onClick={item.onclick}>{item.text}</button>
+    //             }
+    //           </li>
+    //         )
+    //       }
+    //     })}
+    //     <li className='nav-link'>
+    //       <Link to='/'>Home</Link>
+    //     </li>
+    //     <li className='nav-link'>
+    //       <Link to='/about'>About Us</Link>
+    //     </li>
+    //   </ul>
+    // </nav>
     <nav className="fixed w-full left-0 top-0 z-50 bg-secondary bg-opacity-50 shadow border-b-2 border-white">
       <ul className='flex justify-between items-center p-4 mr-6'>
         {navItems.map((item, index) => {
-          // Render the item if authentication matches the item's auth property
-          if (isAuthenticated && item.auth) {
+          if ((item.auth && isAuthenticated) || (!item.auth && !isAuthenticated)) {
             return (
               <li key={index} className='nav-link'>
-                {item.link ? 
-                  <Link to={item.link}>{item.text}</Link> :
+                {item.link ? (
+                  <Link to={item.link} state={item.state}>{item.text}</Link>
+                ) : (
                   <button onClick={item.onclick}>{item.text}</button>
-                }
+                )}
               </li>
-            )
-          }else if(!item.auth && !isAuthenticated){
-            return(
-              <li key={index} className='nav-link'>
-                {item.link ? 
-                  <Link to={item.link}>{item.text}</Link> :
-                  <button onClick={item.onclick}>{item.text}</button>
-                }
-              </li>
-            )
+            );
           }
+          return null;
         })}
         <li className='nav-link'>
           <Link to='/'>Home</Link>
