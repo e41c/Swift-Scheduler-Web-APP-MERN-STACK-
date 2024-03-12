@@ -642,7 +642,7 @@
 			]
 		},
 		{
-			"name": "Class",
+			"name": "Class CRUD + Join + Rate",
 			"item": [
 				{
 					"name": "Class Create - TEACHER - http://localhost:3000/classrooms Copy",
@@ -962,7 +962,8 @@
 									"});\r",
 									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -993,7 +994,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/classes/65d8ad34ab2a7b4393d7203f",
+							"raw": "http://localhost:3000/classes/65ef8f76e2d9fe2ac5bbf391",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1001,7 +1002,7 @@
 							"port": "3000",
 							"path": [
 								"classes",
-								"65d8ad34ab2a7b4393d7203f"
+								"65ef8f76e2d9fe2ac5bbf391"
 							]
 						}
 					},
@@ -1186,6 +1187,129 @@
 								"classes",
 								"rate",
 								"65d8dc5abd93374b7ff273f4\n"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Search  Classes By Filters",
+			"item": [
+				{
+					"name": "To filter by studentLevel",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWQ4ZDIzYWJkOTMzNzRiN2ZmMjczZTciLCJyb2xlIjoic3R1ZGVudCIsImVtYWlsIjoiYWJjQG1lLmNvbSIsImlhdCI6MTcxMDE5OTc2NX0.KnIgqyUv6jvVC016SsIRQzqNjiV0I2jm2NOsBOvxoE8",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": " application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/classes/filter/byAttributes?studentLevel=Beginner",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"classes",
+								"filter",
+								"byAttributes"
+							],
+							"query": [
+								{
+									"key": "studentLevel",
+									"value": "Beginner"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "To filter by danceCategory",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWQ4ZDIzYWJkOTMzNzRiN2ZmMjczZTciLCJyb2xlIjoic3R1ZGVudCIsImVtYWlsIjoiYWJjQG1lLmNvbSIsImlhdCI6MTcxMDE5OTc2NX0.KnIgqyUv6jvVC016SsIRQzqNjiV0I2jm2NOsBOvxoE8",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": " application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/classes/filter/byAttributes?danceCategory=Ballet",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"classes",
+								"filter",
+								"byAttributes"
+							],
+							"query": [
+								{
+									"key": "danceCategory",
+									"value": "Ballet"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "To filter by both",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWQ4ZDIzYWJkOTMzNzRiN2ZmMjczZTciLCJyb2xlIjoic3R1ZGVudCIsImVtYWlsIjoiYWJjQG1lLmNvbSIsImlhdCI6MTcxMDE5OTc2NX0.KnIgqyUv6jvVC016SsIRQzqNjiV0I2jm2NOsBOvxoE8",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": " application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/classes/filter/byAttributes?studentLevel=Intermediate&danceCategory=Hip%20Hop",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"classes",
+								"filter",
+								"byAttributes"
+							],
+							"query": [
+								{
+									"key": "studentLevel",
+									"value": "Intermediate"
+								},
+								{
+									"key": "danceCategory",
+									"value": "Hip%20Hop"
+								}
 							]
 						}
 					},
