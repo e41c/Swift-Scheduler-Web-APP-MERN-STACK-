@@ -100,4 +100,45 @@ router.post('/join/:id', authenticate, isStudent, async (req, res) => {
     }
 });
 
+// Endpoint for a student to submit a rating for a class
+router.post('/rate/:id', authenticate, isStudent, async (req, res) => {
+    const classId = req.params.id.trim();
+    const studentId = req.user.userId;
+    const { rating } = req.body;
+
+    if (!rating) {
+        return res.status(400).json({ message: 'Rating is required.' });
+    }
+
+    try {
+        const classToUpdate = await Class.findById(classId);
+
+        if (!classToUpdate) {
+            return res.status(404).json({ message: 'Class not found.' });
+        }
+
+        if (!classToUpdate.studentsEnrolled.map(id => id.toString()).includes(studentId)) {
+            return res.status(403).json({ message: 'Student not enrolled in class.' });
+        }
+
+        const existingRatingIndex = classToUpdate.ratings.findIndex(r => r.student.toString() === studentId);
+
+        if (existingRatingIndex !== -1) {
+            classToUpdate.ratings[existingRatingIndex].rating = rating;
+        } else {
+            classToUpdate.ratings.push({ student: studentId, rating });
+        }
+
+        const totalRatings = classToUpdate.ratings.reduce((acc, curr) => acc + curr.rating, 0);
+        classToUpdate.averageRating = totalRatings / classToUpdate.ratings.length;
+
+        await classToUpdate.save();
+
+        res.json({ message: 'Rating submitted successfully.', class: classToUpdate });
+    } catch (error) {
+        res.status(500).json({ message: 'Error submitting rating', error: error.toString() });
+    }
+});
+
+// Export the router
 module.exports = router;
