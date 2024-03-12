@@ -1069,7 +1069,7 @@
 					"response": []
 				},
 				{
-					"name": "JOIN Class By ID (Student) Copy",
+					"name": "Remove from Class By ID (Student)",
 					"event": [
 						{
 							"listen": "test",
@@ -1086,7 +1086,8 @@
 									"});\r",
 									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -1114,7 +1115,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/classes/join/65d8dc5abd93374b7ff273f4\n",
+							"raw": "http://localhost:3000/classes/remove/65d8dc5abd93374b7ff273f4\n",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1122,7 +1123,7 @@
 							"port": "3000",
 							"path": [
 								"classes",
-								"join",
+								"remove",
 								"65d8dc5abd93374b7ff273f4\n"
 							]
 						}

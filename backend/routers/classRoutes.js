@@ -100,6 +100,35 @@ router.post('/join/:id', authenticate, isStudent, async (req, res) => {
     }
 });
 
+// Endpoint for a student to remove themselves from a class
+router.post('/remove/:id', authenticate, isStudent, async (req, res) => {
+    const classId = req.params.id.trim();
+    const studentId = req.user.userId; // Extracted from the authenticated user
+
+    try {
+        const classToUpdate = await Class.findById(classId);
+
+        // Check if the class exists
+        if (!classToUpdate) {
+            return res.status(404).json({ message: 'Class not found.' });
+        }
+
+        // Check if the student is currently enrolled in the class
+        if (!classToUpdate.studentsEnrolled.map(id => id.toString()).includes(studentId)) {
+            return res.status(403).json({ message: 'Student not enrolled in this class.' });
+        }
+
+        // Remove the student from the class
+        classToUpdate.studentsEnrolled = classToUpdate.studentsEnrolled.filter(id => id.toString() !== studentId);
+        await classToUpdate.save();
+
+        res.json({ message: 'Successfully removed from class', class: classToUpdate });
+    } catch (error) {
+        res.status(500).json({ message: 'Error removing student from class', error: error.toString() });
+    }
+});
+
+
 // Endpoint for a student to submit a rating for a class
 router.post('/rate/:id', authenticate, isStudent, async (req, res) => {
     const classId = req.params.id.trim();
