@@ -1,16 +1,17 @@
 // backend/routers/classRoutes.js
+
 const express = require('express');
 const router = express.Router();
-const Class = require('../models/Class'); // Make sure this path matches the location of your Class model
+const Class = require('../models/Class'); // Adjust this path as necessary
 const { authenticate, isStudent } = require('../middleware/authMiddleware');
-const mongoose = require('mongoose'); // Import mongoose for ObjectId validation
+const mongoose = require('mongoose');
 
 // Create a new class
 router.post('/', authenticate, async (req, res) => {
     try {
         const newClass = await Class.create({
             ...req.body,
-            teacher: req.user.userId // Assuming req.user is set by 'authenticate' middleware and contains 'userId'
+            teacher: req.user.userId
         });
         res.status(201).json(newClass);
     } catch (error) {
@@ -67,14 +68,10 @@ router.delete('/:id', authenticate, async (req, res) => {
     }
 });
 
-// Endpoint for a student to join a class with added validation and error handling
+// Endpoint for a student to join a class
 router.post('/join/:id', authenticate, isStudent, async (req, res) => {
-    const classId = req.params.id.trim(); // Trim whitespace and newline characters
-    const studentId = req.user.userId; // Extracted from the authenticated user
-
-    if (!mongoose.Types.ObjectId.isValid(classId)) {
-        return res.status(400).json({ message: 'Invalid class ID format' });
-    }
+    const classId = req.params.id.trim();
+    const studentId = req.user.userId;
 
     try {
         const classToUpdate = await Class.findById(classId);
@@ -97,6 +94,31 @@ router.post('/join/:id', authenticate, isStudent, async (req, res) => {
         res.json({ message: 'Student successfully enrolled', class: classToUpdate });
     } catch (error) {
         res.status(500).json({ message: 'Error enrolling student', error: error.toString() });
+    }
+});
+
+// Endpoint for a student to remove themselves from a class
+router.post('/remove/:id', authenticate, isStudent, async (req, res) => {
+    const classId = req.params.id.trim();
+    const studentId = req.user.userId;
+
+    try {
+        const classToUpdate = await Class.findById(classId);
+
+        if (!classToUpdate) {
+            return res.status(404).json({ message: 'Class not found.' });
+        }
+
+        if (!classToUpdate.studentsEnrolled.map(id => id.toString()).includes(studentId)) {
+            return res.status(403).json({ message: 'Student not enrolled in this class.' });
+        }
+
+        classToUpdate.studentsEnrolled = classToUpdate.studentsEnrolled.filter(id => id.toString() !== studentId);
+        await classToUpdate.save();
+
+        res.json({ message: 'Successfully removed from class', class: classToUpdate });
+    } catch (error) {
+        res.status(500).json({ message: 'Error removing student from class', error: error.toString() });
     }
 });
 
@@ -140,5 +162,26 @@ router.post('/rate/:id', authenticate, isStudent, async (req, res) => {
     }
 });
 
-// Export the router
+// Endpoint for filtering classes with updated path
+router.get('/filter/byAttributes', async (req, res) => {
+    const { studentLevel, danceCategory } = req.query;
+
+    let filterCriteria = {};
+
+    if (studentLevel) {
+        filterCriteria.studentLevel = studentLevel;
+    }
+
+    if (danceCategory) {
+        filterCriteria.danceCategory = danceCategory;
+    }
+
+    try {
+        const filteredClasses = await Class.find(filterCriteria);
+        res.json(filteredClasses);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching filtered classes', error: error.message });
+    }
+});
+
 module.exports = router;
