@@ -52,7 +52,20 @@ export default function ClassDetail() {
         setLoading(false);
       }
     }
-    const cancelClass = () => {}
+    const cancelClass = () => {
+      setLoading(true);
+      setStatus('');
+      axios.post(`/api/classes/remove/${classInfo._id}`, {}, {
+        headers: { Authorization: `Bearer ${auth.token}` }
+      }).then(() => {
+        setStatus('Class cancelled');
+      }).catch((err) => {
+        setStatus('Failed to cancel');
+        console.error(err);
+      }).finally(() => {
+        setLoading(false);
+      });
+    }
     if (loading) {
       return <div>Loading...</div>
     }
@@ -66,7 +79,9 @@ export default function ClassDetail() {
         <h2 className="text-xl text-center text-gray-700 mb-4">
             {formattedDate}, {formattedTime}
         </h2>
-        <p>Rating: {classInfo.rating}</p>
+        { classInfo.rating &&
+          <p>Rating: {classInfo.rating}</p>}
+          
         <p>Teacher: {classInfo.teacher}</p>
         <p>Room: {classInfo.classroom}</p>
 
