@@ -147,3 +147,33 @@ exports.teacherRegister = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// Find a Teacher by ID - with enhanced logging
+exports.findTeacherById = async (req, res) => {
+  console.log("Attempting to find teacher with ID:", req.params.id); // Added log
+  try {
+    const teacher = await Teacher.findById(req.params.id);
+    if (!teacher) {
+      console.log("No teacher found for ID:", req.params.id); // Added log
+      return res.status(404).json({ message: 'Teacher not found' });
+    }
+    res.json(teacher);
+  } catch (error) {
+    console.error("Error finding teacher:", error); // Added log
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Find a Student by ID
+exports.findStudentById = async (req, res) => {
+  try {
+    const student = await Student.findById(req.params.id);
+    if (!student) {
+      return res.status(404).json({ message: 'Student not found' });
+    }
+    res.json(student);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
