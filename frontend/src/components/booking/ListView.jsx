@@ -13,7 +13,7 @@ export default function ListView() {
           <div 
             key={index} 
             className="mb-4 p-4 shadow-lg rounded-lg bg-white"
-            onClick={() => navigate(`/class/${cls.id}`, { state: {classInfo: cls} })}
+            onClick={() => navigate(`/class/${cls._id}`, { state: {classInfo: cls} })}
             >
             <h2 className="text-xl font-bold">{cls.danceCategory}</h2>
             <p>Level: {cls.studentLevel}</p>

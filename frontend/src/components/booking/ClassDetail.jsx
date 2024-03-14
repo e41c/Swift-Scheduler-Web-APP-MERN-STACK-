@@ -58,9 +58,11 @@ export default function ClassDetail() {
       axios.post(`/api/classes/remove/${classInfo._id}`, {}, {
         headers: { Authorization: `Bearer ${auth.token}` }
       }).then(() => {
-        setStatus('Class cancelled');
+        setStatus('Class Cancelled Successfully');
       }).catch((err) => {
-        setStatus('Failed to cancel');
+        if (err.response && err.response.status === 403) {
+          setStatus('Class Already Cancelled');
+        }
         console.error(err);
       }).finally(() => {
         setLoading(false);
@@ -81,7 +83,7 @@ export default function ClassDetail() {
         </h2>
         { classInfo.rating &&
           <p>Rating: {classInfo.rating}</p>}
-          
+
         <p>Teacher: {classInfo.teacher}</p>
         <p>Room: {classInfo.classroom}</p>
 
