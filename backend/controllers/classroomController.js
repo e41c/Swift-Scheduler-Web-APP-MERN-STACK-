@@ -65,4 +65,17 @@ exports.deleteClassroom = async (req, res) => {
       res.status(500).json({ message: error.message });
     }
   };
+
+  exports.getClassroomById = async (req, res) => {
+    try {
+      const classroom = await Classroom.findById(req.params.id);
+      if (!classroom) {
+        return res.status(404).json({ message: 'Classroom not found' });
+      }
+      res.json(classroom);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };
+  
 };
