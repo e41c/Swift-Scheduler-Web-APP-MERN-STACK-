@@ -3,8 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
-const { searchTeachers, searchStudents } = require('../controllers/authController');
-const { isTeacher, isStudent } = require('../middleware/authMiddleware');
+const { authenticate, isTeacher, isStudent } = require('../middleware/authMiddleware');
 
 // Login routes
 router.post('/login/teacher', authController.teacherLogin);
@@ -15,11 +14,18 @@ router.post('/register/student', authController.studentRegister);
 router.post('/register/teacher', authController.teacherRegister);
 
 // Search all teachers
-router.get('/teachers', searchTeachers);
+router.get('/teachers', authController.searchTeachers);
 
 // Search all students
-router.get('/students', searchStudents);
+router.get('/students', authController.searchStudents);
 
+// New route to find a Teacher by ID - considering any necessary authentication and authorization
+// Adjusted to include the /auth prefix
+router.get('/teacher/:id', authenticate, authController.findTeacherById);
 
+// New route to find a Student by ID - considering any necessary authentication and authorization
+// Adjusted to include the /auth prefix
+router.get('/student/:id', authenticate, authController.findStudentById);
 
 module.exports = router;
+
