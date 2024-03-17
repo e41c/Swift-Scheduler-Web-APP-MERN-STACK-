@@ -14,8 +14,8 @@ After a couple of group sprints, I've learned to value communication more as so 
 
 As for the upcomming days, the tasks that needs to be completed for the front end are as followed
 
-**Front-end**
-    * Calendar Feature - Venus
+**Front-end**<br>
+* Calendar Feature - Venus
     * Shift Posting Feature - Ryan/Ven
     * About Page - Venus
     * Home Page - Ryan
