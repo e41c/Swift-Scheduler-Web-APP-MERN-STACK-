@@ -1,7 +1,11 @@
 import React from 'react'
 import BannerArt from '../assets/WelcomeBannerArt.jpg'
+import { useAuth } from '../AuthContext';
 
 function Banner() {
+
+    const { auth } = useAuth();
+    const firstName = auth.user ? auth.user.split('.')[0] : '';
     return (
         <>
         <div className="w-full h-[35vh] flex items-center justify-center flex-col lg:py-16 md:py-14 sm:py12 py10 lg:px24 md:px-16 sm:px 6 px-4 relative z-10"
@@ -12,7 +16,7 @@ function Banner() {
                 backgroundRepeat: "no-repeat",
             }}>
                 <div className="w-full h-full bg-black/40 absolute top-0 left-0 -z-10"></div>
-                <h1 className="lg:text-5xl md:text-4xl sm:text-3xl text-2xl text-center text-white font-bold mb-2 uppercase">Welcome Member</h1>
+                <h1 className="lg:text-5xl md:text-4xl sm:text-3xl text-2xl text-center text-white font-bold mb-2 uppercase">Welcome {firstName}</h1>
                 <p className="text-[#b9d8eb] font-medium text-center">Find the perfect plan & instructor for you!</p>
         </div>
         <div className="w-full h-auto flex items-center lg:justify-between md:justify-between sm:justify-center justify-center lg:gap-7 md:gap-7 sm:gap-5 gap-5 lg:px-24 md:px-16 sm:px-6 px-6 mt-6 flex-wrap">
