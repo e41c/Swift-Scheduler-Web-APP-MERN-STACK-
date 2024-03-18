@@ -14,6 +14,7 @@ import CalendarView from './components/booking/CalendarView'
 import ListView from './components/booking/ListView'
 import ClassDetail from './components/booking/ClassDetail'
 import {ClassProvider} from './ClassContext'
+import Profile from './components/Profile'
 function App() {
 
   return (
@@ -33,6 +34,7 @@ function App() {
             <Route path="/calendar" element={<PrivateRoute><CalendarView /></PrivateRoute>} />
             <Route path="/day-view" element={<PrivateRoute><ListView /></PrivateRoute>} />
             <Route path="/class/:id" element={<PrivateRoute><ClassDetail /></PrivateRoute>} />
+            <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
           </Routes>
         </Router>
       </ClassProvider>

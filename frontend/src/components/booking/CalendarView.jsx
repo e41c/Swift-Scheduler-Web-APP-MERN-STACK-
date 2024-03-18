@@ -16,7 +16,9 @@ export default function CalendarView() {
     classes, 
     loading, 
     error, 
-    fetchClasses
+    fetchClasses,
+    hasClassPassed,
+    formatDate
   } = useClassContext();
   const [selectedDayClasses, setSelectedDayClasses] = useState([]);
   const navigate = useNavigate();
@@ -27,22 +29,27 @@ export default function CalendarView() {
     fetchClasses();
   }, [fetchClasses]);
 
+
   const handleDaySelect = ({ start }) => {
-    const startOfDay = moment(start).startOf('day');
-    const endOfDay = moment(start).endOf('day');
-
+   
+    const formattedStartOfDay = formatDate(start);
+  
     const dayClasses = classes.filter(classItem => {
-      const classDate = moment(classItem.start);
-      return classDate.isSameOrAfter(startOfDay) && classDate.isSameOrBefore(endOfDay);
+      // Compare dates in 'YYYY-MM-DD' format
+      const formattedClassDate = formatDate(classItem.date);
+      // console.log({formattedClassDate, formattedStartOfDay, id:  classItem._id});
+      return formattedClassDate == formattedStartOfDay;
     });
-
+  
     setSelectedDayClasses(dayClasses);
-    navigate('/day-view', { state: {classes: dayClasses} });
-
+    navigate('/day-view', { state: { classes: dayClasses } });
   };
+  
+  
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error loading classes: {error.message}</div>;
+
 
   return (
     <div className="flex flex-col mt-[60px]"> 
