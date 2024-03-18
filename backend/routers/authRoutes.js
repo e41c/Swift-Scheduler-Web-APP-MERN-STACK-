@@ -15,17 +15,17 @@ router.post('/register/teacher', authController.teacherRegister);
 
 // Search all teachers
 router.get('/teachers', authController.searchTeachers);
+// New route to find a Teacher by ID - considering any necessary authentication and authorization
+router.get('/teacher/:id', authenticate, authController.findTeacherById);
 
 // Search all students
 router.get('/students', authController.searchStudents);
-
-// New route to find a Teacher by ID - considering any necessary authentication and authorization
-// Adjusted to include the /auth prefix
-router.get('/teacher/:id', authenticate, authController.findTeacherById);
-
 // New route to find a Student by ID - considering any necessary authentication and authorization
-// Adjusted to include the /auth prefix
 router.get('/student/:id', authenticate, authController.findStudentById);
+
+
+
+
 
 module.exports = router;
 

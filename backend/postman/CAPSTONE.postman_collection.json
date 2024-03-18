@@ -488,6 +488,69 @@
 					"response": []
 				},
 				{
+					"name": "Search By ID - Classroom",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response contains classroom data\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an('array').and.not.be.empty;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": " Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWQ1NWE1ZjIwZDY2YmJhZDU1NzgwOWUiLCJyb2xlIjoidGVhY2hlciIsImlhdCI6MTcwODQ4NzQ4N30.ms10y0tB8oZeoVMk1ywj50IVPwaZHmScBjIK_Qm-f6M",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": " application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/classrooms/65d79061467468580b3401cb",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"classrooms",
+								"65d79061467468580b3401cb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Classroom - Create FAILED - TEACHER - http://localhost:3000/classrooms Copy",
 					"event": [
 						{
