@@ -5,6 +5,7 @@ const router = express.Router();
 const Classroom = require('../models/Classroom');
 const { authenticate } = require('../middleware/authMiddleware'); // Updated import statement
 
+
 // Create a new classroom
 router.post('/', authenticate, async (req, res) => {
   try {
@@ -31,10 +32,21 @@ router.get('/', async (req, res) => {
 // Get all availible classrooms by date/time
 router.get('/available/:date/:time', async (req,res) => {
   try{
-    let date = req.params.date
+    let date = Number(req.params.date)
     let time = Number(req.params.time)
-    const availableRooms = await Classroom.find({availability: 1 , "schedule.day": date, "schedule.startTime": {$lte: time}});
-    //console.log(availableRooms);
+    const dateFilter = new Date();
+    dateFilter.setDate(date)
+
+
+    const availableRooms = await Classroom.find({availability: 1 , "schedule.time": {$lte: time}});
+    console.log("before ",availableRooms);
+    availableRooms.forEach(room => {
+      if((room.schedule.date < dateFilter)){
+        availableRooms.pop()
+      }
+    
+    });
+    console.log("after ",availableRooms)
     res.json(availableRooms);
   }catch(error){
     console.log(error)
