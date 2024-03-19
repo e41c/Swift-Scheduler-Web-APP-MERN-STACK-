@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Teacher = require('../models/Teacher');
 const Student = require('../models/Student');
+const Admin = require('../models/Admin');
 
 exports.teacherLogin = async (req, res) => {
   try {

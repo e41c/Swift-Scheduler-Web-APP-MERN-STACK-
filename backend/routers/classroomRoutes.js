@@ -28,6 +28,19 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Get all availible classrooms by date/time
+router.get('/available/:date/:time', async (req,res) => {
+  try{
+    let date = req.params.date
+    let time = Number(req.params.time)
+    const availableRooms = await Classroom.find({availability: 1 , "schedule.day": date, "schedule.startTime": {$lte: time}});
+    //console.log(availableRooms);
+    res.json(availableRooms);
+  }catch(error){
+    console.log(error)
+  }
+});
+
 
 
 // Get a specific classroom by ID

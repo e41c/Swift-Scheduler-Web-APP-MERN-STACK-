@@ -34,4 +34,11 @@ function isStudent(req, res, next) {
   }
 }
 
-module.exports = { authenticate, isTeacher, isStudent };
+function isAdmin(req, res, next){
+  if(req.user && req.usr.role === 'admin'){
+    next();
+  }
+  return res.status(403).json({message: "Unauthorized access. User is not an Admin"})
+}
+
+module.exports = { authenticate, isTeacher, isStudent , isAdmin};

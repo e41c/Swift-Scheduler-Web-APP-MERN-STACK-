@@ -12,8 +12,8 @@ const classroomSchema = new Schema({
   // Add schedule field to store classroom schedule
   schedule: {
     day: { type: String, required: true },
-    startTime: { type: String, required: true },
-    endTime: { type: String, required: true }
+    startTime: { type: Number, required: true, min: 0, max:23},
+    endTime: { type: Number, required: true,min:0, max:23 }
   }
 });
 

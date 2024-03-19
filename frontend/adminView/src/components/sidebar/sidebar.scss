@@ -1,0 +1,39 @@
+.Sidebar{
+    flex: 1;
+    height: 100vh;
+    color: #272727;
+
+
+    .top{
+        flex:1;
+        margin-top: 2.5em;
+        height: 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .center{
+        padding-left: 10px;
+        flex: 1;
+        padding-top: 2.5em;
+        
+        ul{
+            list-style: none;
+            margin: 0;
+            padding: 0;
+
+            li{
+                display: flex;
+                align-items: center;
+                padding: 20px;
+                cursor: pointer;
+
+                &:hover{
+                    background-color: whitesmoke;
+                }
+            }
+
+        }
+    }
+
+}
