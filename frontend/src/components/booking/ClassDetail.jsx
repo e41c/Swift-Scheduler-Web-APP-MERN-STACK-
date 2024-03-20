@@ -4,6 +4,8 @@ import { useAuth } from "../../AuthContext"
 import { useLocation, useNavigate } from "react-router-dom"
 import { useState } from "react"
 import axios from 'axios'
+import moment from "moment"
+import { useClassContext } from "../../ClassContext"
 
 export default function ClassDetail() {
     const { auth } = useAuth()
@@ -12,29 +14,32 @@ export default function ClassDetail() {
     const classInfo = location.state?.classInfo
     const [loading, setLoading] = useState(false)
     const [status, setStatus] = useState('')
-    
 
+    const {formatDate, formatDateTime } = useClassContext()
+    const momentDateTime = moment(formatDateTime(classInfo.date, classInfo.time))
+    const formattedDateTime = momentDateTime.format('dddd, MMMM D, YYYY') + ' at ' + `${classInfo.time}`;
+    
     const calculateAvailableSpots = (cls) => {return classInfo.capacity - classInfo.studentsEnrolled.length};
 
-    const dateFromISO = new Date(classInfo.date);
-    const timeParts = classInfo.time.match(/(\d+):(\d+)/);
+    // const dateFromISO = new Date(classInfo.date);
+    // const timeParts = classInfo.time.match(/(\d+):(\d+)/);
   
-    if (timeParts) {
+    // if (timeParts) {
     
-      dateFromISO.setHours(parseInt(timeParts[1]), parseInt(timeParts[2]));
-    }
+    //   dateFromISO.setHours(parseInt(timeParts[1]), parseInt(timeParts[2]));
+    // }
 
-    const formattedDate = dateFromISO.toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-    const formattedTime = dateFromISO.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
-    });
+    // const formattedDate = dateFromISO.toLocaleDateString('en-US', {
+    //   weekday: 'long',
+    //   year: 'numeric',
+    //   month: 'long',
+    //   day: 'numeric'
+    // });
+    // const formattedTime = dateFromISO.toLocaleTimeString('en-US', {
+    //   hour: 'numeric',
+    //   minute: '2-digit',
+    //   hour12: true
+    // });
 
     const handleJoinClass = async() => {
       setLoading(true);
@@ -84,13 +89,13 @@ export default function ClassDetail() {
             {classInfo.studentLevel}, {classInfo.danceCategory}
         </h1>
         <h2 className="text-xl text-center text-gray-700 mb-4">
-            {formattedDate}, {formattedTime}
+            {formattedDateTime}
         </h2>
         { classInfo.rating &&
           <p>Rating: {classInfo.rating}</p>}
 
         <p>Teacher: {classInfo.teacher.firstName} {classInfo.teacher.lastName}</p>
-        <p>Room: {classInfo.classroom}</p>
+        <p>Room: {classInfo.classroom.classroomNumber}</p>
         
 
         {status && <p>{status}</p>} 

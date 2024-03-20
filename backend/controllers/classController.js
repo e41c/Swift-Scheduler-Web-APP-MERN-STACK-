@@ -59,3 +59,35 @@ exports.deleteClass = async (req, res) => {
     res.status(500).json({ message: 'Error deleting class', error: error.message });
   }
 };
+
+exports.getClassHistoryByUserId = async (req, res) => {
+  try {
+    const { userId } = req.params; // Get the user ID from the URL
+    const authUserId = req.user.userId; // Authenticated user's ID from the token
+
+    // Check if the authenticated user is trying to access someone else's data
+    if (userId !== authUserId) {
+      return res.status(403).json({ message: 'Unauthorized' });
+    }
+
+    let classHistory = [];
+
+    if (req.user.role === 'teacher') {
+      classHistory = await Class.find({ teacher: userId })
+        .populate('classroom studentsEnrolled');
+    } else if (req.user.role === 'student') {
+      classHistory = await Class.find({ studentsEnrolled: userId })
+        .populate('teacher classroom studentsEnrolled');
+    } else {
+      return res.status(403).json({ message: 'Unauthorized' });
+    }
+
+    classHistory.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    res.json(classHistory);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching class history', error: error.message });
+  }
+};
+
+
