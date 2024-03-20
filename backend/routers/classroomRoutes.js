@@ -29,26 +29,47 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Get all availible classrooms by date/time
-router.get('/available/:date/:time', async (req,res) => {
+
+// Get all availible classrooms
+router.get('/available/', async (req,res) => {
   try{
-    let date = Number(req.params.date)
-    let time = Number(req.params.time)
-    const dateFilter = new Date();
-    dateFilter.setDate(date)
-
-
-    const availableRooms = await Classroom.find({availability: 1 , "schedule.time": {$lte: time}});
-    console.log("before ",availableRooms);
-    availableRooms.forEach(room => {
-      if((room.schedule.date < dateFilter)){
-        availableRooms.pop()
-      }
-    
-    });
-    console.log("after ",availableRooms)
-    res.json(availableRooms);
+    const availableClassrooms = await Classroom.find({availability: 1});
+    res.json(availableClassrooms)
   }catch(error){
+    res.status(500).json({message: error.message})
+    console.log(error)
+  }
+});
+
+//available classrooms by month
+router.get('/available/:month', async(req, res) => {
+  const year = new Date().getFullYear()
+  const startDate = new Date(`${req.params.month} 1, ${year}`)
+  const endDate = new Date(startDate.getFullYear(),startDate.getMonth()+1,1);
+  try{
+    const monthlyClassrooms = await Classroom.find({availability:1, "schedule.date":{$gte: startDate, $lte: endDate}})
+    console.log("size of monthlyClassrooms", monthlyClassrooms.length)
+    res.json(monthlyClassrooms)
+  }
+  catch(error){
+    res.status(500).json({message: error.message})
+    console.log(error)
+  }
+});
+
+// available classrooms by date
+router.get('/available/:month/:date', async(req, res) => {
+  const year =new Date().getFullYear()
+  const startDate = new Date(`${req.params.month} ${req.params.date}, ${year}`)
+  const dateString = `${startDate.getFullYear()}-${startDate.getMonth() <= 8 ? "0": ""}${startDate.getMonth()+1}-${startDate.getDate()}`
+  console.log(dateString)
+  try{
+    const monthlyClassrooms = await Classroom.find({availability:1, "schedule.date": new Date(dateString)})
+    console.log("size of monthlyClassrooms", monthlyClassrooms.length)
+    res.json(monthlyClassrooms)
+  }
+  catch(error){
+    res.status(500).json({message: error.message})
     console.log(error)
   }
 });
