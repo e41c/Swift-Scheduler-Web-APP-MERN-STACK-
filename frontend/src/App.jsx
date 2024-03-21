@@ -14,7 +14,8 @@ import CalendarView from './components/booking/CalendarView'
 import ListView from './components/booking/ListView'
 import ClassDetail from './components/booking/ClassDetail'
 import {ClassProvider} from './ClassContext'
-import Profile from './components/Profile'
+import Profile from './components/profile/Profile'
+
 function App() {
 
   return (

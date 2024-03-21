@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "c77577d2-8094-4e3a-bebe-9ca62ebf9d57",
+		"_postman_id": "277e19e7-b471-4e27-b9af-091ce79778c2",
 		"name": "CAPSTONE",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "29566153"
+		"_exporter_id": "29696177"
 	},
 	"item": [
 		{
@@ -621,7 +621,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"email\": \"abc@me.com\",\r\n  \"password\": \"password123\"\r\n}\r\n",
+							"raw": "{\r\n  \"email\": \"kian@gmail.com\",\r\n  \"password\": \"password4\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1380,6 +1380,33 @@
 								"classes",
 								"rate",
 								"65d8dc5abd93374b7ff273f4\n"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Class History By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWZiM2Y3YWIxYzUxM2ZjMjViNGRkMWUiLCJyb2xlIjoic3R1ZGVudCIsImVtYWlsIjoia2lhbkBnbWFpbC5jb20iLCJpYXQiOjE3MTEwMzYzNTJ9.qqyv04Kf2UB2c30IsFFAieqSYK55DkmweiM0jvu7zok",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/classes/user-history/65fb3f7ab1c513fc25b4dd1e",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"classes",
+								"user-history",
+								"65fb3f7ab1c513fc25b4dd1e"
 							]
 						}
 					},

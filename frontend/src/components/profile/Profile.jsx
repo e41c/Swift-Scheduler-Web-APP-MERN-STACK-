@@ -1,8 +1,8 @@
-//import React, { useEffect } from 'react'
-import { useAuth } from '../AuthContext'
+
+import { useAuth } from '../../AuthContext'
 export default function Profile() {
     const {userData} = useAuth()
-    // console.log(userData)
+   
     const getInitials = (userData) => {
         if (userData && userData.firstName && userData.lastName) {
           const initials = `${userData.firstName[0]}${userData.lastName[0]}`;
@@ -26,9 +26,7 @@ export default function Profile() {
         <button className="py-2 px-4 border-2 border-gray-300 text-gray-700 rounded-full transition-colors hover:border-gray-400 hover:text-gray-900">
           Previous
         </button>
-        <button className="py-2 px-4 border-2 border-gray-300 text-gray-700 rounded-full transition-colors hover:border-gray-400 hover:text-gray-900">
-          Edit Profile
-        </button>
+        
       </div>
     </div>
   )

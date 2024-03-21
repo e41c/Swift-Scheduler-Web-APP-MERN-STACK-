@@ -3,7 +3,8 @@
 const express = require('express');
 const router = express.Router();
 const Class = require('../models/Class'); // Adjust this path as necessary
-const { authenticate, isStudent } = require('../middleware/authMiddleware');
+const { authenticate, isStudent, isTeacher } = require('../middleware/authMiddleware');
+const classController = require('../controllers/classController');
 const mongoose = require('mongoose');
 
 // Create a new class
@@ -183,5 +184,9 @@ router.get('/filter/byAttributes', async (req, res) => {
         res.status(500).json({ message: 'Error fetching filtered classes', error: error.message });
     }
 });
+// Endpoint for getting class history for authenticated user 
+router.get('/user-history/:userId', authenticate, classController.getClassHistoryByUserId);
+
+
 
 module.exports = router;
