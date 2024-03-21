@@ -62,7 +62,6 @@ router.get('/available/:month/:date', async(req, res) => {
   const year =new Date().getFullYear()
   const startDate = new Date(`${req.params.month} ${req.params.date}, ${year}`)
   const dateString = `${startDate.getFullYear()}-${startDate.getMonth() <= 8 ? "0": ""}${startDate.getMonth()+1}-${startDate.getDate()}`
-  console.log(dateString)
   try{
     const monthlyClassrooms = await Classroom.find({availability:1, "schedule.date": new Date(dateString)})
     console.log("size of monthlyClassrooms", monthlyClassrooms.length)
