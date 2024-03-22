@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 app.use('/auth', authRouter);
 app.use('/classrooms', classroomRouter);
 app.use('/classes', classRouter); // This line is updated
-//app.use('/admin', adminRouter)
+
 
 const PORT = process.env.PORT || 3000;
 mongoose.connect('mongodb://admin:pass@localhost:27017')

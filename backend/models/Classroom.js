@@ -11,8 +11,8 @@ const classroomSchema = new Schema({
   availability: { type: Boolean, default: true }, // Add availability field
   // Add schedule field to store classroom schedule
   schedule: {
-    date: {type: Date, required: true, min: '2024-01-01', max: '9999-12-12'},
-    time: {type: Number, required: true, min: 0, max:23}
+    date: {type: Date, min: '2024-01-01', max: '9999-12-12'},
+    time: {type: Number, min: 0, max:23}
   }
 });
 

@@ -2,8 +2,9 @@ import React from 'react'
 import './home.scss'
 import Sidebar from '../../components/sidebar/Sidebar'
 import Widget from '../../components/widgets/Widget'
-import DataTable from '../../components/widgets/DataTable'
 import StudentTable from '../../components/widgets/StudentTable'
+import TeacherTable from '../../components/widgets/TeacherTable'
+import ClassesTable from '../../components/widgets/ClassesTable'
 
 
 const Home = () => {
@@ -20,6 +21,8 @@ const Home = () => {
         </div>
         <div className="tables">
           <StudentTable/>
+          <TeacherTable/>
+          <ClassesTable/>
         </div>
       </div>
     </div>
