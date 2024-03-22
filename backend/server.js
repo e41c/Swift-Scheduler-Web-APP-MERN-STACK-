@@ -18,7 +18,7 @@ app.use('/classes', classRouter); // This line is updated
 //app.use('/admin', adminRouter)
 
 const PORT = process.env.PORT || 3000;
-mongoose.connect('mongodb://admin:pass@localhost:27017')
+mongoose.connect('mongodb://admin:password@localhost:27017')
     .then(() => console.log('MongoDB connected...'))
     .catch(err => console.log(err));
 
