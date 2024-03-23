@@ -1,5 +1,9 @@
 // backend/controllers/classroomController.js
 const Classroom = require('../models/Classroom');
+async function isClassroomAvailable(classroomId, requestedDate, requestedStartTime, requestedEndTime) {
+  const classroom = await classroom.findById(classroomId);
+  
+}
 
 exports.createClassroom = async (req, res) => {
   try {

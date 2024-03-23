@@ -10,10 +10,16 @@ const classroomSchema = new Schema({
   students: [{ type: Schema.Types.ObjectId, ref: 'Student' }],
   availability: { type: Boolean, default: true }, // Add availability field
   // Add schedule field to store classroom schedule
+  // Update schedule field to store time as a string -ven
   schedule: {
-    date: {type: Date, min: '2024-01-01', max: '9999-12-12'},
-    time: {type: Number, min: 0, max:23}
+    startTime: { type: String, match: /^([01]\d|2[0-3]):([0-5]\d)$/ }, 
+    endTime: { type: String, match: /^([01]\d|2[0-3]):([0-5]\d)$/ } // Matches "HH:MM" format
   }
+  
+  
+     
+  
+  
 });
 
 const Classroom = mongoose.model('Classroom', classroomSchema);
