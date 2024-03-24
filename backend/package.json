@@ -13,14 +13,9 @@
   "author": "Group 26 - Eric Grigor,",
   "license": "ISC",
   "dependencies": {
-    "@adminjs/express": "^6.1.0",
-    "@adminjs/mongoose": "^4.1.0",
-    "adminjs": "^7.7.3",
     "bcryptjs": "^2.4.3",
-    "dayjs": "^1.11.10",
     "dotenv": "^16.4.5",
     "express": "^4.18.3",
-    "express-formidable": "^1.2.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.1.1",
     "react-router-dom": "^6.22.0"
