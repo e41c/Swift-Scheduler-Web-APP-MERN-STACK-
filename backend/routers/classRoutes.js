@@ -8,17 +8,18 @@ const classController = require('../controllers/classController');
 const mongoose = require('mongoose');
 
 // Create a new class
-router.post('/', authenticate, async (req, res) => {
-    try {
-        const newClass = await Class.create({
-            ...req.body,
-            teacher: req.user.userId
-        });
-        res.status(201).json(newClass);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-});
+router.post('/', authenticate, classController.createClass);
+// router.post('/', authenticate, async (req, res) => {
+//     try {
+//         const newClass = await Class.create({
+//             ...req.body,
+//             teacher: req.user.userId
+//         });
+//         res.status(201).json(newClass);
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// });
 
 // Get all classes
 router.get('/', authenticate, async (req, res) => {
