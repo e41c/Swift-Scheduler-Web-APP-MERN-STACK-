@@ -3,6 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const Classroom = require('../models/Classroom');
+const classroomController = require('../controllers/classroomController');
 const { authenticate } = require('../middleware/authMiddleware'); // Updated import statement
 
 // Create a new classroom
@@ -28,6 +29,9 @@ router.get('/', async (req, res) => {
   }
 });
 
+//Get all unoccupied classrooms by day
+
+router.get('/available-rooms', authenticate, classroomController.getAvailableClassroomsByDay)
 
 
 // Get a specific classroom by ID

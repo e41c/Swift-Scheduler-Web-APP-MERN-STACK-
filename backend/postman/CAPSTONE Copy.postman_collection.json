@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "277e19e7-b471-4e27-b9af-091ce79778c2",
-		"name": "CAPSTONE",
+		"_postman_id": "bd9ccfa7-453d-454c-947d-00da58442f21",
+		"name": "CAPSTONE Copy",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "29696177"
 	},
@@ -267,7 +267,8 @@
 									"});\r",
 									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -276,7 +277,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": " Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWQ2MjIyNTdiZjhhYjkzNzEzYWU5MzUiLCJyb2xlIjoidGVhY2hlciIsImlhdCI6MTcwODUzMjg3Mn0.yrnshghsA5007QksYt1GZid3jZT67iR30s5KK3GNZHQ",
+								"value": " Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjAwNGU4NjkzZGU1MDEzY2JjMjA0OTUiLCJyb2xlIjoidGVhY2hlciIsImVtYWlsIjoiY2hyaXN0QGV4YW1wbGUuY29tIiwiaWF0IjoxNzExMjk2MTUwfQ.q9tVFh5SxDHMpvGXyXUEopkv2hbKB9jyurp2IiHomwg",
 								"type": "text"
 							},
 							{
@@ -287,7 +288,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"classroomNumber\": \"101\",\r\n    \"capacity\": 30,\r\n    \"teacher\": \"teacher_id\",\r\n    \"availability\": true,\r\n    \"schedule\": {\r\n        \"day\": \"Monday\",\r\n        \"startTime\": \"09:00 AM\",\r\n        \"endTime\": \"10:00 AM\"\r\n    }\r\n}\r\n",
+							"raw": "{\r\n    \"classroomNumber\": \"101\",\r\n    \"capacity\": 30\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -608,6 +609,38 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get Available Classrooms By Day",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjAwNGU4NjkzZGU1MDEzY2JjMjA0OTUiLCJyb2xlIjoidGVhY2hlciIsImVtYWlsIjoiY2hyaXN0QGV4YW1wbGUuY29tIiwiaWF0IjoxNzExMjk2MTUwfQ.q9tVFh5SxDHMpvGXyXUEopkv2hbKB9jyurp2IiHomwg",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/classrooms/available-rooms?date=2024-03-26",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"classrooms",
+								"available-rooms"
+							],
+							"query": [
+								{
+									"key": "date",
+									"value": "2024-03-26"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -855,7 +888,8 @@
 									"});\r",
 									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -864,7 +898,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": " Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWQ2MjIyNTdiZjhhYjkzNzEzYWU5MzUiLCJyb2xlIjoidGVhY2hlciIsImlhdCI6MTcwODUzMjg3Mn0.yrnshghsA5007QksYt1GZid3jZT67iR30s5KK3GNZHQ",
+								"value": " Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjAwNGU4NjkzZGU1MDEzY2JjMjA0OTUiLCJyb2xlIjoidGVhY2hlciIsImVtYWlsIjoiY2hyaXN0QGV4YW1wbGUuY29tIiwiaWF0IjoxNzExMjk2MTUwfQ.q9tVFh5SxDHMpvGXyXUEopkv2hbKB9jyurp2IiHomwg",
 								"type": "text"
 							},
 							{
@@ -875,7 +909,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"date\": \"2024-05-20\",\r\n  \"time\": \"10:00\",\r\n  \"classroom\": \"65d79ae7e88805f80f01dcdb\",\r\n  \"rating\": 0,\r\n  \"capacity\": 30,\r\n  \"studentLevel\": \"Beginner\",\r\n  \"danceCategory\": \"Ballet\"\r\n}\r\n",
+							"raw": "{\r\n  \"startDate\": \"2024-03-25T14:00:00Z\",\r\n  \"classroom\": \"66004f9993de5013cbc204a1\",\r\n  \"rating\": 0,\r\n  \"capacity\": 30,\r\n  \"studentLevel\": \"Beginner\",\r\n  \"danceCategory\": \"Jazz\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1033,7 +1067,8 @@
 									"});\r",
 									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -1042,7 +1077,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": " Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWQ2MjIyNTdiZjhhYjkzNzEzYWU5MzUiLCJyb2xlIjoidGVhY2hlciIsImlhdCI6MTcwODUzMjg3Mn0.yrnshghsA5007QksYt1GZid3jZT67iR30s5KK3GNZHQ",
+								"value": " Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjAwNGU4NjkzZGU1MDEzY2JjMjA0OTUiLCJyb2xlIjoidGVhY2hlciIsImVtYWlsIjoiY2hyaXN0QGV4YW1wbGUuY29tIiwiaWF0IjoxNzExMjk2MTUwfQ.q9tVFh5SxDHMpvGXyXUEopkv2hbKB9jyurp2IiHomwg",
 								"type": "text"
 							},
 							{
@@ -1053,7 +1088,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"date\": \"2024-05-20\",\r\n  \"time\": \"10:00\",\r\n  \"classroom\": \"65d79ae7e88805f80f01dcdb\",\r\n  \"rating\": 0,\r\n  \"capacity\": 30,\r\n  \"studentLevel\": \"Advance\",\r\n  \"danceCategory\": \"Hip-Hop\"\r\n}\r\n",
+							"raw": "{\r\n  \"startDate\": \"2024-03-25T14:00:00Z\",\r\n  \"classroom\": \"66004f9993de5013cbc204a1\",\r\n  \"rating\": 0,\r\n  \"capacity\": 10,\r\n  \"studentLevel\": \"Advanced\",\r\n  \"danceCategory\": \"Jazz\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1061,7 +1096,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/classes/65d8ad34ab2a7b4393d7203f",
+							"raw": "http://localhost:3000/classes/660050e793de5013cbc204b4",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1069,7 +1104,7 @@
 							"port": "3000",
 							"path": [
 								"classes",
-								"65d8ad34ab2a7b4393d7203f"
+								"660050e793de5013cbc204b4"
 							]
 						}
 					},
