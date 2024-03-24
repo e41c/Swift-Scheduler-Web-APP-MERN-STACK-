@@ -1,12 +1,54 @@
 // backend/controllers/classController.js
 const Class = require('../models/Class');
+const Classroom = require('../models/Classroom');
+
+
+async function checkClassroomAvailability(classroomId, startDate) {
+  console.log(`Checking availability in DB for classroom ${classroomId} at ${startDate}`);
+  
+  // Convert startDate to the beginning of the day in UTC for comparison
+  let dayStart = new Date(startDate);
+  dayStart.setUTCHours(0, 0, 0, 0);
+
+  // Convert startDate to the end of the day in UTC for comparison
+  let dayEnd = new Date(startDate);
+  dayEnd.setUTCHours(23, 59, 59, 999);
+
+  const overlappingClass = await Class.findOne({
+    classroom: classroomId,
+    startDate: {
+      $gte: dayStart,
+      $lte: dayEnd,
+    },
+    // This checks if any class starts at the same time
+    $expr: { $eq: ["$startDate", new Date(startDate)] },
+  });
+
+  console.log("Overlapping class found:", overlappingClass);
+
+  return !overlappingClass; // True if no overlapping class, indicating availability
+}
+
 
 exports.createClass = async (req, res) => {
+  console.log("received createClass request payload: ", req.body)
+
+  const{ classroom, startDate } = req.body;
+  console.log(`Checking availability for classroom ${classroom} at ${startDate}`);
   try {
+
+    const isAvailable = await checkClassroomAvailability(classroom, new Date(startDate));
+    console.log(`Availability check result for ${classroom} at ${startDate}:`, isAvailable);
+
+
+    if (!isAvailable) {
+      return res.status(400).json({ message: 'Classroom is not available at the requested time' });
+    }
     // Directly using req.user.userId to associate class with the teacher
     const newClass = await Class.create({
       ...req.body,
-      teacher: req.user.userId
+      teacher: req.user.userId,
+      startDate: new Date(startDate)
     });
     res.status(201).json(newClass);
   } catch (error) {

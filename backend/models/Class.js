@@ -5,8 +5,9 @@ const Schema = mongoose.Schema;
 
 const classSchema = new Schema({
   teacher: { type: Schema.Types.ObjectId, ref: 'Teacher', required: true },
-  date: { type: Date, required: true },
-  time: { type: String, required: true },
+  startDate: { type: Date, required: true },
+  // startTime: { type: String, required: true, match: /^([01]\d|2[0-3]):([0-5]\d)$/ },
+  // endTime: { type: String, required: false, match: /^([01]\d|2[0-3]):([0-5]\d)$/ },
   classroom: { type: Schema.Types.ObjectId, ref: 'Classroom', required: true },
   capacity: { type: Number, default: 30 },
   studentsEnrolled: [{ type: Schema.Types.ObjectId, ref: 'Student' }],
