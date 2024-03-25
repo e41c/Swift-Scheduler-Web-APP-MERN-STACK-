@@ -48,6 +48,7 @@ exports.getAvailableClassroomsWithSlotsByDay = async (req, res) => {
 
       // Add the classroom and its available slots to the map
       availableSlotsByClassroom[classroom._id] = {
+        _id: classroom._id,
         classroomNumber: classroom.classroomNumber,
         capacity: classroom.capacity,
         availableSlots: classroomSlots

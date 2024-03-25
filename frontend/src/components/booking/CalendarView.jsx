@@ -3,11 +3,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../AuthContext";
 import { Calendar, momentLocalizer } from 'react-big-calendar';
-import moment from 'moment';
+// import moment from 'moment';
+import moment from 'moment-timezone';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useNavigate } from "react-router-dom";
 import ToolBar from "../ToolBar";
 import { useClassContext } from "../../ClassContext";
+moment.tz.setDefault('America/Toronto');
 const localizer = momentLocalizer(moment);
 
 export default function CalendarView() {
@@ -30,13 +32,23 @@ export default function CalendarView() {
   }, [fetchClasses]);
 
 
+  // const handleDaySelect = ({ start }) => {
+  //   const selectedDay = moment.utc(start).format('YYYY-MM-DD');
+  //   const dayClasses = classes.filter(cls => 
+  //     moment.utc(cls.start).format('YYYY-MM-DD') === selectedDay
+  //   );
+  
+  //   navigate('/day-view', { state: { classes: dayClasses } });
+  // };
   const handleDaySelect = ({ start }) => {
-    // Filter classes to find those that occur on the selected day
-    const selectedDay = moment(start).format('YYYY-MM-DD');
+    // Format the selected day as a string in Eastern Time
+    const selectedDay = moment(start).tz('America/Toronto').format('YYYY-MM-DD');
+    
+    // Filter classes that occur on the selected day
     const dayClasses = classes.filter(cls => 
-      moment(cls.start).format('YYYY-MM-DD') === selectedDay
+      moment.tz(cls.start, 'America/Toronto').format('YYYY-MM-DD') === selectedDay
     );
-
+  
     navigate('/day-view', { state: { classes: dayClasses } });
   };
 

@@ -2,7 +2,8 @@
  import React, {createContext, useCallback, useContext, useState, useEffect} from 'react'
  import axios from 'axios'
  import { useAuth } from "./AuthContext"
- import moment from 'moment';
+//  import moment from 'moment';
+ import moment from 'moment-timezone';
  
  
  const ClassContext = createContext({});
@@ -22,14 +23,41 @@
 
 
      const hasClassPassed = (startDate) => {
-      // Convert startDate to a moment object for easy comparison
-      const classStartMoment = moment(startDate);
-      // Adding 30 minutes to the start time of the class to define its "passed" status
-      // If you know the exact duration of classes, you might want to adjust this accordingly
+      // If the server's startDate is intended to be in Eastern Time and not UTC,
+      // we should not treat it as a UTC time.
+      // First, remove the 'Z' from the end of the startDate string.
+      const adjustedStartDate = startDate.replace('Z', '');
+    
+      // Then parse it as a time in 'America/Toronto' timezone.
+      const classStartMoment = moment.tz(adjustedStartDate, 'America/Toronto');
+    
+      // Add 30 minutes to get the class end time.
       const classEndMoment = classStartMoment.clone().add(30, 'minutes');
-      // Check if the current moment is after the class end time
-      return moment().isAfter(classEndMoment);
+    
+      // Get the current time in EDT.
+      const nowInEdt = moment().tz('America/Toronto');
+    
+      console.log("nowInEdt", nowInEdt.toString());
+      console.log("classEndMoment", classEndMoment.toString());
+    
+      // Check if the current moment in EDT is after the class end time.
+      return nowInEdt.isAfter(classEndMoment);
     };
+    
+
+    //  const hasClassPassed = (startDate) => {
+    //   // Parse the startDate as a moment in UTC
+    //   const classStartMoment = moment.utc(startDate);
+      
+    //   // Adding 30 minutes to the start time of the class to define its "passed" status
+    //   const classEndMoment = classStartMoment.clone().add(30, 'minutes');
+      
+    //   // Get the current time in UTC to compare
+    //   const nowUtc = moment.utc();
+      
+    //   // Check if the current moment in UTC is after the class end time in UTC
+    //   return nowUtc.isAfter(classEndMoment);
+    // };
 
     // Function to convert the date to "Weekday DD, Month YYYY" format
     function convertDateFormat(startDate) {
