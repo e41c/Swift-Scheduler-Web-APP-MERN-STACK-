@@ -16,7 +16,7 @@ app.use('/classrooms', classroomRouter);
 app.use('/classes', classRouter); // This line is updated
 
 const PORT = process.env.PORT || 3000;
-mongoose.connect('mongodb://admin:password@localhost:27017')
+mongoose.connect('mongodb+srv://rootadmin:m5NvavxMIOPodOKz@clusterrl.wd5fhyo.mongodb.net/Capstone-ii');
     .then(() => console.log('MongoDB connected...'))
     .catch(err => console.log(err));
 
