@@ -31,19 +31,29 @@ export default function CalendarView() {
 
 
   const handleDaySelect = ({ start }) => {
-   
-    const formattedStartOfDay = formatDate(start);
-  
-    const dayClasses = classes.filter(classItem => {
-      // Compare dates in 'YYYY-MM-DD' format
-      const formattedClassDate = formatDate(classItem.date);
-      // console.log({formattedClassDate, formattedStartOfDay, id:  classItem._id});
-      return formattedClassDate == formattedStartOfDay;
-    });
-  
-    setSelectedDayClasses(dayClasses);
+    // Filter classes to find those that occur on the selected day
+    const selectedDay = moment(start).format('YYYY-MM-DD');
+    const dayClasses = classes.filter(cls => 
+      moment(cls.start).format('YYYY-MM-DD') === selectedDay
+    );
+
     navigate('/day-view', { state: { classes: dayClasses } });
   };
+
+  // const handleDaySelect = ({ start }) => {
+   
+  //   const formattedStartOfDay = formatDate(start);
+  
+  //   const dayClasses = classes.filter(classItem => {
+  //     // Compare dates in 'YYYY-MM-DD' format
+  //     const formattedClassDate = formatDate(classItem.date);
+  //     // console.log({formattedClassDate, formattedStartOfDay, id:  classItem._id});
+  //     return formattedClassDate == formattedStartOfDay;
+  //   });
+  
+  //   setSelectedDayClasses(dayClasses);
+  //   navigate('/day-view', { state: { classes: dayClasses } });
+  // };
   
   
 

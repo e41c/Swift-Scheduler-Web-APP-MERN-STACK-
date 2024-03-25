@@ -4,7 +4,7 @@ export default function ListView() {
   const location = useLocation();
   const navigate = useNavigate();
   const classes = location.state?.classes ?? [];
-  const { hasClassPassed, formatDate } = useClassContext();
+  const { hasClassPassed, extractTime, convertDateFormat} = useClassContext();
 
 
   const calculateAvailableSpots = (cls) => cls.capacity - cls.studentsEnrolled.length;
@@ -18,7 +18,7 @@ export default function ListView() {
       {classes.length > 0 ? (
         classes.map((cls, index) => {
           const availableSpots = calculateAvailableSpots(cls);
-          const classPassed = hasClassPassed(cls.date, cls.time);
+          const classPassed = hasClassPassed(cls.startDate);
 
           
           console.log(`Class ID: ${cls._id}, Passed: ${classPassed}, Available Spots: ${availableSpots}`);
@@ -35,9 +35,9 @@ export default function ListView() {
               }}
             >
               <h2 className="text-xl font-bold">{cls.studentLevel}, {cls.danceCategory}</h2>
-              <p>Teacher: {cls.teacher.firstName} {cls.teacher.lastName}</p>
-              <p>Date: {formatDate(cls.date)}</p>
-              <p>Time: {cls.time}</p>
+              <p>Teacher: {cls.teacher} </p>
+              <p>Date: {convertDateFormat(cls.startDate)}</p>
+              <p>Time: {extractTime(cls.startDate)}</p>
 
               {classPassed ? (
                 <p className="text-gray-500">Class has passed</p>
