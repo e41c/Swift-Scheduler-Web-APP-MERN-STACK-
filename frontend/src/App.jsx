@@ -2,9 +2,9 @@ import Navbar from './components/Navbar'
 import About from './components/About'
 import Register from './components/Register'
 import Login from './components/Login'
-import Home from './components/Home'
+import Home from './components/home/Home'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import LandingPage from './components/LandingPage'
+import LandingPage from './components/landing/LandingPage'
 
 import AuthProvider from './AuthContext'
 

@@ -6,10 +6,10 @@ import axios from 'axios'
 
 import { Autoplay, Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 // Images
-import DanceDisplay4 from '../assets/DanceDisplay_4.jpg';
-import DanceDisplay3 from '../assets/DanceDisplay_3.jpg';
-import DanceDisplay1 from '../assets/DanceDisplay_1.jpg';
-import DisplayOriginal from '../assets/landingp.jpg'
+import DanceDisplay4 from '../../assets/DanceDisplay_4.jpg';
+import DanceDisplay3 from '../../assets/DanceDisplay_3.jpg';
+import DanceDisplay1 from '../../assets/DanceDisplay_1.jpg';
+import DisplayOriginal from '../../assets/landingp.jpg'
 
 // Swiper styles
 import 'swiper/css';

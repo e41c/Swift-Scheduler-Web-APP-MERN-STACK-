@@ -1,4 +1,4 @@
-import background from '../assets/landingp.jpg'
+import background from '../../assets/landingp.jpg'
 import { Link } from 'react-router-dom'
 import PromoSlides from './PromoSlides'
 

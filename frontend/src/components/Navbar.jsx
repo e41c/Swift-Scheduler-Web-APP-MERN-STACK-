@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
-import GZLogo from '../assets/dance.png';
+import GZLogo from "/favicon.ico";
 
 export default function Navbar() {
   const { isAuthenticated, logout, auth } = useAuth();

@@ -1,6 +1,6 @@
 import React from 'react'
-import BannerArt from '../assets/WelcomeBannerArt.jpg'
-import { useAuth } from '../AuthContext';
+import BannerArt from '../../assets/WelcomeBannerArt.jpg'
+import { useAuth } from '../../AuthContext';
 
 function Banner() {
 

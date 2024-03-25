@@ -6,9 +6,9 @@ import axios from 'axios'
 
 import { Autoplay, Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 // Images
-import DanceDisplay2 from '../assets/DanceDisplay_2.jpg';
-import DanceDisplay5 from '../assets/DanceDisplay_5.jpg';
-import DanceDisplay6 from '../assets/DanceDisplay_6.jpg';
+import DanceDisplay2 from '../../assets/DanceDisplay_2.jpg';
+import DanceDisplay5 from '../../assets/DanceDisplay_5.jpg';
+import DanceDisplay6 from '../../assets/DanceDisplay_6.jpg';
 
 // Swiper styles
 import 'swiper/css';
