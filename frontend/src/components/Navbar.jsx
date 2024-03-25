@@ -13,6 +13,8 @@ export default function Navbar() {
     { name: "login", link: "/login", auth: false, text: "Login", onclick: null },
     // { name: "register", link: "/register", auth: false, text: "Join Our Team", onclick: null, state: {role: "staff"} },
     { name: "book", link: "/calendar", auth: true, text: "Book Classes", onclick: null },
+    { name: "manage", link: "/class-management", auth: true, text: "Manage Classes", onclick: null },
+    
   ];
 
   return (

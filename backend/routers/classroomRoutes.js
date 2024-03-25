@@ -31,7 +31,7 @@ router.get('/', async (req, res) => {
 
 //Get all unoccupied classrooms by day
 
-router.get('/available-rooms', authenticate, classroomController.getAvailableClassroomsByDay)
+router.get('/available-rooms', authenticate, classroomController.getAvailableClassroomsWithSlotsByDay)
 
 
 // Get a specific classroom by ID
