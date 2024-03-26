@@ -12,7 +12,7 @@ export default function BookForm() {
     const [danceCategory, setDanceCategory] = useState('Hip Hop');
     const {auth} = useAuth()
     const location = useLocation()
-    const {formatDateTime} = useContext(ClassManagementContext)
+    const {formatDateTime, refreshSlots} = useContext(ClassManagementContext)
 
     const {classroomId, capacity, time, date, classroomNumber} = location.state
     console.log(classroomId, capacity, time, date, classroomNumber)
@@ -61,6 +61,7 @@ export default function BookForm() {
                 },
             });
             setBookingStatus('Class Booked Successfully')
+            refreshSlots()
 
         }catch(error){
             setBookingStatus('Error Booking Class')

@@ -52,8 +52,7 @@ export default function DashboardCalendar() {
                         {availableSlots.map((slot, index) => (
                             <div key={index} className="mb-2">
                                 <p className="flex items-center cursor-pointer" onClick={() => toggleRoom(slot.classroomNumber)}>
-                                    <FontAwesomeIcon icon={faAngleDown} className="mr-2" />
-                                    {slot.classroomNumber}
+                                    <FontAwesomeIcon icon={faAngleDown} className="mr-2" />Room {slot.classroomNumber}
                                 </p>
                                 {expandedRoom === slot.classroomNumber && ( // Render slots if expanded room matches
                                     <>
@@ -72,38 +71,7 @@ export default function DashboardCalendar() {
                 </>
             )}
         </div>
-        // <div className="bg-black text-white p-4">
-        //     {isLoading ? (
-        //         <p>Loading...</p>
-        //     ) : error ? (
-        //         <p>Error: {error.message}</p>
-        //     ) : (
-        //         <>
-        //             <ReactDatePicker 
-        //                 selected={new Date()} 
-        //                 onChange={handleDateChange} 
-        //                 className="bg-yellow-300 text-black p-2 rounded-md mb-4"
-        //             />
-        //             <div>
-        //                 {availableSlots.map((slot, index) => (
-        //                     <div key={index} className="mb-2">
-        //                         <p className="flex items-center cursor-pointer">
-        //                             <FontAwesomeIcon icon={faAngleDown} className="mr-2" />
-        //                             {slot.classroomNumber}
-        //                         </p>
-        //                         <p className="ml-4">Room capacity: {slot.capacity}</p>
-        //                         <p className="ml-4">Available slots:</p>
-        //                         <ul className="list-disc ml-4">
-        //                             {slot.availableSlots.map((time, idx) => (
-        //                                 <li key={idx} onClick={() => redirectToBookForm(slot._id, slot.capacity, time)}>{formatTimeRange(time)}</li>
-        //                             ))}
-        //                         </ul>
-        //                     </div>
-        //                 ))}
-        //             </div>
-        //         </>
-        //     )}
-        // </div>
+        
     );
 }
 

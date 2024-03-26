@@ -39,6 +39,12 @@ export const ClassManagementProvider = ({ children }) => {
         return isoDateTimeString;
     }
 
+    const refreshSlots =()=>{
+        if(selectedDate){
+            fetchAvailableSlotsByDay(selectedDate);
+        }
+    }
+
     const fetchAvailableSlotsByDay = async (date) => {
         if (!auth?.token) {
             console.error("Authorization token is not available.");
@@ -74,7 +80,7 @@ export const ClassManagementProvider = ({ children }) => {
         }
     };
     return (
-        <ClassManagementContext.Provider value={{ availableSlots, selectedDate, setSelectedDate, isLoading, error, fetchAvailableSlotsByDay, formatDateTime }}>
+        <ClassManagementContext.Provider value={{ availableSlots, selectedDate, setSelectedDate, isLoading, error, fetchAvailableSlotsByDay, formatDateTime, refreshSlots }}>
             {children}
         </ClassManagementContext.Provider>
     );

@@ -2,13 +2,9 @@
  import React, {createContext, useCallback, useContext, useState, useEffect} from 'react'
  import axios from 'axios'
  import { useAuth } from "./AuthContext"
-//  import moment from 'moment';
+ import { jwtDecode } from 'jwt-decode'
  import moment from 'moment-timezone';
- 
- 
  const ClassContext = createContext({});
- 
- 
  export const useClassContext = () => useContext(ClassContext);
  
  // eslint-disable-next-line react/prop-types
@@ -20,44 +16,30 @@
      const [loading, setLoading] = useState(false);
      const [error, setError] = useState(null);
      const { auth } = useAuth();
+     const [userClassHistory, setUserClassHistory] = useState({
+      pastClasses: [],
+      upcomingClasses: []
+     });
 
 
      const hasClassPassed = (startDate) => {
-      // If the server's startDate is intended to be in Eastern Time and not UTC,
-      // we should not treat it as a UTC time.
-      // First, remove the 'Z' from the end of the startDate string.
+      
       const adjustedStartDate = startDate.replace('Z', '');
-    
-      // Then parse it as a time in 'America/Toronto' timezone.
       const classStartMoment = moment.tz(adjustedStartDate, 'America/Toronto');
-    
-      // Add 30 minutes to get the class end time.
       const classEndMoment = classStartMoment.clone().add(30, 'minutes');
-    
       // Get the current time in EDT.
       const nowInEdt = moment().tz('America/Toronto');
     
       console.log("nowInEdt", nowInEdt.toString());
       console.log("classEndMoment", classEndMoment.toString());
-    
-      // Check if the current moment in EDT is after the class end time.
+
       return nowInEdt.isAfter(classEndMoment);
     };
     
-
-    //  const hasClassPassed = (startDate) => {
-    //   // Parse the startDate as a moment in UTC
-    //   const classStartMoment = moment.utc(startDate);
-      
-    //   // Adding 30 minutes to the start time of the class to define its "passed" status
-    //   const classEndMoment = classStartMoment.clone().add(30, 'minutes');
-      
-    //   // Get the current time in UTC to compare
-    //   const nowUtc = moment.utc();
-      
-    //   // Check if the current moment in UTC is after the class end time in UTC
-    //   return nowUtc.isAfter(classEndMoment);
-    // };
+    function capitalizeName(firstName, lastName) {
+      const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+      return `${capitalize(firstName)} ${capitalize(lastName)}`;
+    }
 
     // Function to convert the date to "Weekday DD, Month YYYY" format
     function convertDateFormat(startDate) {
@@ -82,27 +64,46 @@
       return `${hours}:${minutes}`;
     }
 
-
-    //  const hasClassPassed = (classDate, classTime) => {
-    //      const classStart = moment.utc(classDate).set({
-    //        hour: parseInt(classTime.split(':')[0], 10),
-    //        minute: parseInt(classTime.split(':')[1], 10)
-    //      });
-    //      return moment().isAfter(classStart.add(30, 'minutes'));
-    //  };
- 
-    //  const formatDate = (utcDate) => {
-    //      return moment.utc(utcDate).format('YYYY-MM-DD'); 
-    //  };
- 
-    //  const formatDateTime = (utcDate, utcTime) => {
-         
-    //      const dateTimeString = `${utcDate.split('T')[0]}T${utcTime}:00.000Z`; // Ensure the date and time are properly combined into an ISO 8601 format
-    //      const dateTime = moment(dateTimeString).toDate(); // Parse as a Date object
-    //      return dateTime;
-    //  };
     
- 
+    const fetchUserClassHistory = useCallback(async () => {
+      if (!auth.token) return; 
+      setLoading(true);
+
+      try {
+          const decoded = jwtDecode(auth.token); 
+          console.log("token in class context", decoded)
+          const userId = decoded.userId; 
+
+          const response = await axios.get(`/api/classes/user-history/${userId}`, {
+              headers: { Authorization: `Bearer ${auth.token}` },
+          });
+
+          const pastClasses = [];
+          const upcomingClasses = [];
+          response.data.forEach(cls => {
+              if (hasClassPassed(cls.startDate)) {
+                  pastClasses.push(cls);
+              } else {
+                  upcomingClasses.push(cls);
+              }
+          });
+
+          setUserClassHistory({ pastClasses, upcomingClasses });
+          console.log("user past classes", userClassHistory.pastClasses);
+          console.log("user upcoming classes", userClassHistory.upcomingClasses);
+      } catch (error) {
+          setError(error);
+          console.error("Fetch user class history error:", error);
+      } finally {
+          setLoading(false);
+      }
+    }, [auth.token]); 
+
+  useEffect(() => {
+      fetchUserClassHistory();
+  }, [fetchUserClassHistory]);
+
+
      const fetchClassrooms = useCallback(async () => {
          if (!auth.token) return;
          setLoading(true);
@@ -124,24 +125,25 @@
      }, [auth.token]);
  
      const fetchTeachers = useCallback(async () => {
-         if (!auth.token) return;
-         setLoading(true);
-         try {
-           const response = await axios.get('/auth/teachers', {
-             headers: { Authorization: `Bearer ${auth.token}` }
-           });
-           const teachersById = response.data.reduce((acc, teacher) => {
-             acc[teacher._id] = teacher; // Assume each teacher has a unique _id field
-             return acc;
-           }, {});
-           setTeachers(teachersById);
+        if (!auth.token) return;
+       setLoading(true);
+       try {
+         const response = await axios.get('/auth/teachers', {
+           headers: { Authorization: `Bearer ${auth.token}` }
+          });
+         const teachersById = response.data.reduce((acc, teacher) => {
+           acc[teacher._id] = teacher; // Assume each teacher has a unique _id field
+           return acc;
+         }, {});
+         setTeachers(teachersById);
          } catch (error) {
            setError(error);
          } finally {
            setLoading(false);
          }
-       }, [auth.token]);
- 
+      }, [auth.token]);
+       
+
  
  
        const fetchClasses = useCallback(async () => {
@@ -161,7 +163,7 @@
              const end = moment(start).add(1, 'hour').toDate(); // Add 1 hour for example
              return {
                ...cls,
-               teacher: teacher ? teacher.firstName + " " + teacher.lastName : 'Unknown',
+               teacher: teacher ? capitalizeName(teacher.firstName, teacher.lastName) : 'Unknown',
                classroom: classroom? classroom.classroomNumber : 'Unknown',
                start: start,
                end: end,
@@ -203,7 +205,9 @@
          fetchClassrooms,
          fetchTeachers,
           convertDateFormat,
-          extractTime
+          extractTime,
+          fetchUserClassHistory,
+          userClassHistory
         
        
  
@@ -212,6 +216,9 @@
      </ClassContext.Provider>
    )
  }
+
+
+
 // /* eslint-disable no-unused-vars */
 // import React, {createContext, useCallback, useContext, useState, useEffect} from 'react'
 // import axios from 'axios'
