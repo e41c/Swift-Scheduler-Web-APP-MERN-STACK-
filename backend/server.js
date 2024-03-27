@@ -16,10 +16,14 @@ app.use('/classrooms', classroomRouter);
 app.use('/classes', classRouter); // This line is updated
 
 const PORT = process.env.PORT || 3000;
-mongoose.connect('mongodb+srv://rootadmin:m5NvavxMIOPodOKz@clusterrl.wd5fhyo.mongodb.net/Swift-Scheduler')
+// mongoose.connect('mongodb+srv://rootadmin:m5NvavxMIOPodOKz@clusterrl.wd5fhyo.mongodb.net/Swift-Scheduler')
+//     .then(() => console.log('MongoDB connected...'))
+//     .catch(err => console.log(err));
+
+//Local Docker mongodb 
+mongoose.connect('mongodb://admin:password@localhost:27017')
     .then(() => console.log('MongoDB connected...'))
     .catch(err => console.log(err));
-
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
