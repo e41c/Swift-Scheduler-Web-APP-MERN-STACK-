@@ -45,6 +45,7 @@ export default function DashboardCalendar() {
                 <>
                     <ReactDatePicker 
                         selected={new Date()} 
+                        // selected={selectedDate ? new Date(selectedDate) : null} 
                         onChange={handleDateChange} 
                         className="bg-yellow-300 text-black p-2 rounded-md mb-4"
                     />

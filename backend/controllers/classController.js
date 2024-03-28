@@ -1,7 +1,8 @@
 // backend/controllers/classController.js
 const Class = require('../models/Class');
 const Classroom = require('../models/Classroom');
-
+const Teacher = require('../models/Teacher');
+const Student = require('../models/Student');
 async function checkClassroomAvailability(classroomId, startDate) {
   console.log(`Checking availability in DB for classroom ${classroomId} at ${startDate}`);
   
@@ -100,6 +101,8 @@ exports.deleteClass = async (req, res) => {
   }
 };
 
+
+
 exports.getClassHistoryByUserId = async (req, res) => {
   try {
     const { userId } = req.params; // Get the user ID from the URL
@@ -114,10 +117,30 @@ exports.getClassHistoryByUserId = async (req, res) => {
 
     if (req.user.role === 'teacher') {
       classHistory = await Class.find({ teacher: userId })
-        .populate('classroom studentsEnrolled');
+        .populate({
+          path: 'teacher',
+          model: 'Teacher',
+          select: 'firstName lastName' // Select the fields you want to populate for the teacher
+        })
+        .populate({
+          path: 'studentsEnrolled',
+          model: 'Student',
+          select: 'firstName lastName' // Select the fields you want to populate for the students
+        })
+        .populate('classroom');
     } else if (req.user.role === 'student') {
       classHistory = await Class.find({ studentsEnrolled: userId })
-        .populate('teacher classroom studentsEnrolled');
+        .populate({
+          path: 'teacher',
+          model: 'Teacher',
+          select: 'firstName lastName' // Select the fields you want to populate for the teacher
+        })
+        .populate({
+          path: 'studentsEnrolled',
+          model: 'Student',
+          select: 'firstName lastName' // Select the fields you want to populate for the students
+        })
+        .populate('classroom');
     } else {
       return res.status(403).json({ message: 'Unauthorized' });
     }
@@ -129,5 +152,34 @@ exports.getClassHistoryByUserId = async (req, res) => {
     res.status(500).json({ message: 'Error fetching class history', error: error.message });
   }
 };
+// exports.getClassHistoryByUserId = async (req, res) => {
+//   try {
+//     const { userId } = req.params; // Get the user ID from the URL
+//     const authUserId = req.user.userId; // Authenticated user's ID from the token
+
+//     // Check if the authenticated user is trying to access someone else's data
+//     if (userId !== authUserId) {
+//       return res.status(403).json({ message: 'Unauthorized' });
+//     }
+
+//     let classHistory = [];
+
+//     if (req.user.role === 'teacher') {
+//       classHistory = await Class.find({ teacher: userId })
+//         .populate('classroom studentsEnrolled');
+//     } else if (req.user.role === 'student') {
+//       classHistory = await Class.find({ studentsEnrolled: userId })
+//         .populate('teacher classroom studentsEnrolled');
+//     } else {
+//       return res.status(403).json({ message: 'Unauthorized' });
+//     }
+
+//     classHistory.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+//     res.json(classHistory);
+//   } catch (error) {
+//     res.status(500).json({ message: 'Error fetching class history', error: error.message });
+//   }
+// };
 
 

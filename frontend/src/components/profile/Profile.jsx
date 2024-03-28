@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../AuthContext';
 import { useClassContext } from '../../ClassContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowUp, faArrowDown, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 export default function Profile() {
-    const { userData } = useAuth();
+    const { userData, auth } = useAuth();
     const { userClassHistory, loading, error, fetchUserClassHistory, convertDateFormat, extractTime} = useClassContext();
-    const [displayClasses, setDisplayClasses] = useState(null); // State to track which classes to display
+    const [displayClasses, setDisplayClasses] = useState(null);
+    const [expandedClassId, setExpandedClassId] = useState(null); 
 
     useEffect(() => {
         fetchUserClassHistory();
@@ -19,20 +22,30 @@ export default function Profile() {
         return '...';
     };
 
-    const fullName = userData ? `${userData.firstName} ${userData.lastName}` : 'Loading...';
+    function capitalizeFullName(firstName, lastName) {
+        const capitalizedFirstName = firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase();
+        const capitalizedLastName = lastName.charAt(0).toUpperCase() + lastName.slice(1).toLowerCase();
+        const fullName = capitalizedFirstName + ' ' + capitalizedLastName;
+        return fullName;
+    }
+
+    const toggleClassDetails = (classId) => {
+        if (expandedClassId === classId) {
+          setExpandedClassId(null);
+        } else {
+          setExpandedClassId(classId);
+        }
+      };
 
     const handleDisplayClasses = (type) => {
-        setDisplayClasses(type); // Set the displayClasses state to the selected type (upcoming or past)
+        setDisplayClasses(type);
     };
 
-    // Determine which classes to display based on the displayClasses state
     let classList;
     if (displayClasses === 'upcoming') {
         classList = userClassHistory?.upcomingClasses || [];
-        console.log("upcoming in profile comp: ", classList);
     } else if (displayClasses === 'past') {
         classList = userClassHistory?.pastClasses || [];
-        console.log("past in profile comp: ", classList);
     }
 
     if (loading) {
@@ -43,13 +56,35 @@ export default function Profile() {
         return <div>Error: {error.message}</div>;
     }
 
+    const handleDeleteClass = async (classId) => {
+        try {
+            const response = await fetch(`/api/classes/${classId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${auth.token}`,
+                    // 'Content-Type': 'application/json'
+                }
+            });
+            if (response.ok) {
+                // Class deleted successfully, update UI or refetch data
+                console.log('Class deleted successfully');
+                // Example: refetch data
+                fetchUserClassHistory();
+            } else {
+                console.error('Failed to delete class');
+            }
+        } catch (error) {
+            console.error('Error deleting class:', error);
+        }
+    };
+
     return (
-      <div className="pt-16 bg-gradient-to-br from-purple-500 to-pink-500 text-white p-4 rounded-lg shadow">
+        <div className="pt-16 bg-gradient-to-br from-purple-500 to-pink-500 text-white p-4 rounded-lg shadow">
             <div className="flex flex-col items-center">
                 <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center text-2xl text-gray-700 font-semibold">
                     {getInitials(userData)}
                 </div>
-                <h1 className="text-3xl font-semibold mt-4">{fullName}</h1>
+                <h1 className="text-3xl font-semibold mt-4">{userData ? capitalizeFullName(userData.firstName, userData.lastName) : 'Loading...'}</h1>
             </div>
             <div className="mt-6 flex justify-around text-sm font-semibold">
                 <button onClick={() => handleDisplayClasses('upcoming')} className="py-2 px-4 bg-black text-white rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-black">
@@ -68,9 +103,37 @@ export default function Profile() {
                                 <div className="text-gray-500">{extractTime(cls.startDate)}, {convertDateFormat(cls.startDate)}</div>
                             </div>
                             <div className="mt-2">
-                                <div className="text-xs text-gray-600">Classroom: {cls.classroom.classroomNumber}</div>
-                                
+                                <div className="text-xs text-gray-600">{capitalizeFullName(cls.teacher.firstName, cls.teacher.lastName)}</div>
                             </div>
+                            <div className="mt-2">
+                                <div className="text-xs text-gray-600">Classroom: {cls.classroom.classroomNumber}</div>
+                            </div>
+                            <div className="mt-2">
+                                {auth.role === 'teacher' && displayClasses === 'upcoming' && (
+                                    <button onClick={() => handleDeleteClass(cls._id)} className="flex items-center text-xs text-red-600">
+                                        <FontAwesomeIcon icon={faTrash} className="mr-2 text-xl text-red-600" />
+                                        {/* {'Delete Class'} */}
+                                    </button>
+                                )}
+                                <button onClick={() => toggleClassDetails(cls._id)} className="flex items-center text-xs text-red-600">
+                                    <FontAwesomeIcon icon={expandedClassId === cls._id ? faArrowUp : faArrowDown} className="text-xl text-red-600" />
+                                    {expandedClassId === cls._id ? 'Hide Details ' : 'View Details '}
+                                </button>
+                            </div>
+                            {expandedClassId === cls._id && (
+                                <div className="mt-2 bg-gray-100 p-2 rounded-md">
+                                    <p className="text-sm text-gray-800 font-semibold">Enrolled Students:</p>
+                                    <ul className="text-sm text-gray-800">
+                                        {cls.studentsEnrolled.length > 0 ? (
+                                            cls.studentsEnrolled.map(student => (
+                                                <li key={student._id}>{capitalizeFullName(student.firstName, student.lastName)}</li>
+                                            ))
+                                        ) : (
+                                            <li>No students enrolled</li>
+                                        )}
+                                    </ul>
+                                </div>
+                            )}
                         </li>
                     ))
                 ) : (
@@ -78,67 +141,121 @@ export default function Profile() {
                 )}
             </ul>
         </div>
-      // <div className="pt-16 bg-white text-gray-800 p-4 rounded-lg shadow">
-      //   <div className="flex flex-col items-center">
-      //       <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center text-2xl text-gray-700 font-semibold">
-      //           {getInitials(userData)}
-      //       </div>
-      //       <h1 className="text-3xl font-semibold mt-4">{fullName}</h1>
-      //   </div>
-      //   <div className="mt-6 flex justify-around text-sm font-semibold">
-      //       <button onClick={() => handleDisplayClasses('upcoming')} className="py-2 px-4 border-2 border-gray-300 text-gray-700 rounded-full transition-colors hover:border-gray-400 hover:text-gray-900 focus:outline-none focus:border-gray-400">
-      //           Upcoming
-      //       </button>
-      //       <button onClick={() => handleDisplayClasses('past')} className="py-2 px-4 border-2 border-gray-300 text-gray-700 rounded-full transition-colors hover:border-gray-400 hover:text-gray-900 focus:outline-none focus:border-gray-400">
-      //           Previous
-      //       </button>
-      //   </div>
-      //   <ul className="mt-4">
-      //       {classList && classList.length > 0 ? (
-      //           classList.map((cls) => (
-      //               <li key={cls._id} className="p-4 border border-gray-200 rounded-md shadow-sm hover:shadow-md transition duration-300">
-      //                   <div className="flex justify-between">
-      //                       <div className="font-semibold">{cls.danceCategory} - {cls.studentLevel}</div>
-      //                       <div className="text-gray-500">{extractTime(cls.startDate)}, {convertDateFormat(cls.startDate)}</div>
-      //                   </div>
-      //                   <div className="mt-2">
-      //                       <div className="text-xs text-gray-600">Classroom: {cls.classroom.classroomNumber}</div>
-      //                   </div>
-      //               </li>
-      //           ))
-      //       ) : (
-      //           <div className="text-center py-4 text-gray-500">No {displayClasses ? displayClasses : 'selected'} classes found.</div>
-      //       )}
-      //   </ul>
-      // </div>
+        // <div className="pt-16 bg-gradient-to-br from-purple-500 to-pink-500 text-white p-4 rounded-lg shadow">
+        //     <div className="flex flex-col items-center">
+        //         <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center text-2xl text-gray-700 font-semibold">
+        //             {getInitials(userData)}
+        //         </div>
+        //         <h1 className="text-3xl font-semibold mt-4">{userData ? capitalizeFullName(userData.firstName, userData.lastName) : 'Loading...'}</h1>
+        //     </div>
+        //     <div className="mt-6 flex justify-around text-sm font-semibold">
+        //         <button onClick={() => handleDisplayClasses('upcoming')} className="py-2 px-4 bg-black text-white rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-black">
+        //             Upcoming
+        //         </button>
+        //         <button onClick={() => handleDisplayClasses('past')} className="py-2 px-4 bg-black text-white rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-black">
+        //             Previous
+        //         </button>
+        //     </div>
+        //     <ul className="mt-4">
+        //         {classList && classList.length > 0 ? (
+        //             classList.map((cls) => (
+        //                 <li key={cls._id} className="p-4 border border-gray-200 rounded-md shadow-sm hover:shadow-lg transition duration-300 bg-white bg-opacity-75 backdrop-blur-lg">
+        //                     <div className="flex justify-between">
+        //                         <div className="font-semibold">{cls.danceCategory} - {cls.studentLevel}</div>
+        //                         <div className="text-gray-500">{extractTime(cls.startDate)}, {convertDateFormat(cls.startDate)}</div>
+        //                     </div>
+        //                     <div className="mt-2">
+        //                         <div className="text-xs text-gray-600">{capitalizeFullName(cls.teacher.firstName, cls.teacher.lastName)}</div>
+        //                     </div>
+        //                     <div className="mt-2">
+        //                         <div className="text-xs text-gray-600">Classroom: {cls.classroom.classroomNumber}</div>
+        //                     </div>
+        //                     <div className="mt-2">
+        //                         {auth.role === 'teacher' && displayClasses === 'upcoming' && (
+        //                             <button onClick={() => toggleClassDetails(cls._id)} className="flex items-center text-xs text-red-600">
+        //                                 <FontAwesomeIcon icon={faTrash} className="mr-2 text-xl text-red-600" />
+        //                                 <FontAwesomeIcon icon={expandedClassId === cls._id ? faArrowUp : faArrowDown} className="text-xl text-red-600" />
+        //                                 {expandedClassId === cls._id ? 'Hide Details ' : 'View Details '}
+        //                             </button>
+        //                         )}
+        //                     </div>
+        //                     {expandedClassId === cls._id && (
+        //                         <div className="mt-2 bg-gray-100 p-2 rounded-md">
+        //                             <p className="text-sm text-gray-800 font-semibold">Enrolled Students:</p>
+        //                             <ul className="text-sm text-gray-800">
+        //                                 {cls.studentsEnrolled.length > 0 ? (
+        //                                     cls.studentsEnrolled.map(student => (
+        //                                         <li key={student._id}>{capitalizeFullName(student.firstName, student.lastName)}</li>
+        //                                     ))
+        //                                 ) : (
+        //                                     <li>No students enrolled</li>
+        //                                 )}
+        //                             </ul>
+        //                         </div>
+        //                     )}
+        //                 </li>
+        //             ))
+        //         ) : (
+        //             <div className="text-center py-4 text-gray-500">No {displayClasses ? displayClasses : 'selected'} classes found.</div>
+        //         )}
+        //     </ul>
+        // </div>
     );
 }
 
 
-// import { useState } from 'react';
-// import { useAuth } from '../../AuthContext'
+
+
+// import { useState, useEffect } from 'react';
+// import { useAuth } from '../../AuthContext';
 // import { useClassContext } from '../../ClassContext';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faArrowUp, faArrowDown, faTrash } from '@fortawesome/free-solid-svg-icons'; // Import the trash icon
+
 // export default function Profile() {
-//     const {userData} = useAuth()
-//     const {userClassHistory} = useClassContext()
-//     const [displayClasses, setDisplayClasses] = useState('upcoming')
-   
+//     const { userData, auth } = useAuth();
+//     const { userClassHistory, loading, error, fetchUserClassHistory, convertDateFormat, extractTime} = useClassContext();
+//     const [displayClasses, setDisplayClasses] = useState(null); // State to track which classes to display
+//     const [expandedClassId, setExpandedClassId] = useState(null); 
+
+//     useEffect(() => {
+//         fetchUserClassHistory();
+//     }, [fetchUserClassHistory]);
+
 //     const getInitials = (userData) => {
 //         if (userData && userData.firstName && userData.lastName) {
-//           const initials = `${userData.firstName[0]}${userData.lastName[0]}`;
-//           return initials.toUpperCase();
+//             const initials = `${userData.firstName[0]}${userData.lastName[0]}`;
+//             return initials.toUpperCase();
 //         }
-//         return '...'; 
-//       };
-//     const fullName = userData ? `${userData.firstName} ${userData.lastName}` : 'Loading...';
+//         return '...';
+//     };
+
+//     function capitalizeFullName(firstName, lastName) {
+//         const capitalizedFirstName = firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase();
+//         const capitalizedLastName = lastName.charAt(0).toUpperCase() + lastName.slice(1).toLowerCase();
+//         const fullName = capitalizedFirstName + ' ' + capitalizedLastName;
+      
+//         return fullName;
+//     }
+
+//     const toggleClassDetails = (classId) => {
+//         if (expandedClassId === classId) {
+//           setExpandedClassId(null); // Collapse if the same class is clicked again
+//         } else {
+//           setExpandedClassId(classId); // Expand the clicked class
+//         }
+//     };
+
+//     const handleDeleteClass = (classId) => {
+//         // Logic to delete the class
+//         console.log(`Class with ID ${classId} deleted.`);
+//     };
 
 //     const handleDisplayClasses = (type) => {
-//       setDisplayClasses(type);
-//     }
-//     // const [userClassHistory, setUserClassHistory] = useState({
-//     //   pastClasses: [],
-//     //   upcomingClasses: []
-//     //  });
+//         setDisplayClasses(type); // Set the displayClasses state to the selected type (upcoming or past)
+//     };
+
+//     // Determine which classes to display based on the displayClasses state
 //     let classList;
 //     if (displayClasses === 'upcoming') {
 //         classList = userClassHistory?.upcomingClasses || [];
@@ -146,151 +263,326 @@ export default function Profile() {
 //         classList = userClassHistory?.pastClasses || [];
 //     }
 
-//   return (
-//     <div className="pt-16 bg-white text-gray-800 p-4 rounded-lg shadow">
+//     if (loading) {
+//         return <div>Loading...</div>;
+//     }
+
+//     if (error) {
+//         return <div>Error: {error.message}</div>;
+//     }
+
+//     return (
+//         <div className="pt-16 bg-gradient-to-br from-purple-500 to-pink-500 text-white p-4 rounded-lg shadow">
 //             <div className="flex flex-col items-center">
 //                 <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center text-2xl text-gray-700 font-semibold">
 //                     {getInitials(userData)}
 //                 </div>
-//                 <h1 className="text-3xl font-semibold mt-4">{fullName}</h1>
+//                 <h1 className="text-3xl font-semibold mt-4">{userData ? capitalizeFullName(userData.firstName, userData.lastName) : 'Loading...'}</h1>
 //             </div>
 //             <div className="mt-6 flex justify-around text-sm font-semibold">
-//                 <button onClick={() => handleDisplayClasses('upcoming')} className="py-2 px-4 border-2 border-gray-300 text-gray-700 rounded-full transition-colors hover:border-gray-400 hover:text-gray-900">
+//                 <button onClick={() => handleDisplayClasses('upcoming')} className="py-2 px-4 bg-black text-white rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-black">
 //                     Upcoming
 //                 </button>
-//                 <button onClick={() => handleDisplayClasses('past')} className="py-2 px-4 border-2 border-gray-300 text-gray-700 rounded-full transition-colors hover:border-gray-400 hover:text-gray-900">
+//                 <button onClick={() => handleDisplayClasses('past')} className="py-2 px-4 bg-black text-white rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-black">
 //                     Previous
 //                 </button>
 //             </div>
-//             {classList && classList.length > 0 ? (
-//                 <div>
-//                     {classList.map((cls) => (
-//                         <div key={cls._id}>
-//                             <p>{cls.startDate} - {cls.studentLevel}</p>
-//                         </div>
-//                     ))}
-//                 </div>
-//             ) : (
-//                 <div>No {displayClasses ? displayClasses : 'selected'} classes found.</div>
-//             )}
+//             <ul className="mt-4">
+//                 {classList && classList.length > 0 ? (
+//                     classList.map((cls) => (
+//                         <li key={cls._id} className="p-4 border border-gray-200 rounded-md shadow-sm hover:shadow-lg transition duration-300 bg-white bg-opacity-75 backdrop-blur-lg">
+//                             <div className="flex justify-between">
+//                                 <div className="font-semibold">{cls.danceCategory} - {cls.studentLevel}</div>
+//                                 <div className="text-gray-500">{extractTime(cls.startDate)}, {convertDateFormat(cls.startDate)}</div>
+//                             </div>
+//                             <div className="mt-2">
+//                                 <div className="text-xs text-gray-600">{capitalizeFullName(cls.teacher.firstName, cls.teacher.lastName)}</div>
+//                             </div>
+//                             <div className="mt-2">
+//                                 <div className="text-xs text-gray-600">Classroom: {cls.classroom.classroomNumber}</div>
+//                             </div>
+//                             <div className="mt-2">
+//                                 {auth.role === 'teacher' && (
+//                                     <>
+//                                         <button onClick={() => toggleClassDetails(cls._id)} className="text-red-600 flex items-center text-xs"> {/* Change color to red */}
+//                                             {expandedClassId === cls._id ? 'Hide Details ' : 'View Details '}
+//                                             <FontAwesomeIcon icon={expandedClassId === cls._id ? faArrowUp : faArrowDown} className="ml-2 text-xs" />
+//                                         </button>
+//                                         {displayClasses === 'upcoming' && ( // Only show the trash can icon for upcoming classes
+//                                             <button onClick={() => handleDeleteClass(cls._id)} className="text-red-600 flex items-center text-xs"> {/* Change color to red and size to small */}
+//                                                 <FontAwesomeIcon icon={faTrash} className="ml-2 text-xl text-red-600" /> {/* Change color to red and size to extra large */}
+//                                             </button>
+//                                         )}
+//                                     </>
+//                                 )}
+//                             </div>
+//                             {expandedClassId === cls._id && (
+//                                 <div className="mt-2 bg-gray-100 p-2 rounded-md">
+//                                     <p className="text-sm text-gray-800 font-semibold">Enrolled Students:</p>
+//                                     <ul className="text-sm text-gray-800">
+//                                         {cls.studentsEnrolled.length > 0 ? (
+//                                             cls.studentsEnrolled.map(student => (
+//                                                 <li key={student._id}>{capitalizeFullName(student.firstName, student.lastName)}</li>
+//                                             ))
+//                                         ) : (
+//                                             <li>No students enrolled</li>
+//                                         )}
+//                                     </ul>
+//                                 </div>
+//                             )}
+//                         </li>
+//                     ))
+//                 ) : (
+//                     <div className="text-center py-4 text-gray-500">No {displayClasses ? displayClasses : 'selected'} classes found.</div>
+//                 )}
+//             </ul>
 //         </div>
-//   )
+//     );
 // }
 
 
-// import { useState } from 'react';
+
+// import { useState, useEffect } from 'react';
 // import { useAuth } from '../../AuthContext';
 // import { useClassContext } from '../../ClassContext';
-
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
+// import { faTrash } from '@fortawesome/free-solid-svg-icons';
 // export default function Profile() {
-//   const { userData } = useAuth();
-//   const { userClassHistory } = useClassContext();
-//   const [displayClasses, setDisplayClasses] = useState('upcoming');
+//     const { userData, auth } = useAuth();
+//     // console.log("profile page auth: ", auth)
+//     const { userClassHistory, loading, error, fetchUserClassHistory, convertDateFormat, extractTime} = useClassContext();
+//     const [displayClasses, setDisplayClasses] = useState(null); // State to track which classes to display
+//     const [expandedClassId, setExpandedClassId] = useState(null); 
 
-//   // Error handling for userClassHistory
-//   if (!userClassHistory) {
-//     return <div>Loading class history...</div>; // Or any other loading state
-//   }
-
-//   // Continue with the rest of your code if userClassHistory is present
-//   const getInitials = (userData) => {
-//     if (userData && userData.firstName && userData.lastName) {
-//       const initials = `${userData.firstName[0]}${userData.lastName[0]}`;
-//       return initials.toUpperCase();
-//     }
-//     return '...';
-//   };
-  
-//   const fullName = userData ? `${userData.firstName} ${userData.lastName}` : 'Loading...';
-  
-//   const handleDisplayClasses = (type) => {
-//     setDisplayClasses(type);
-//   };
-
-//   // Ensure classList is always an array to prevent runtime errors
-//   const classList = displayClasses === 'upcoming'
-//     ? userClassHistory.upcomingClasses || [] 
-//     : userClassHistory.pastClasses || [];
-
-//   return (
-//     <div className="pt-16 bg-white text-gray-800 p-4 rounded-lg shadow">
-//       <div className="flex flex-col items-center">
-//         <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center text-2xl text-gray-700 font-semibold">
-//           {getInitials(userData)}
-//         </div>
-//         <h1 className="text-3xl font-semibold mt-4">{fullName}</h1>
-//       </div>
-//       <div className="mt-6 flex justify-around text-sm font-semibold">
-//         <button onClick={() => handleDisplayClasses('upcoming')} className="py-2 px-4 border-2 border-gray-300 text-gray-700 rounded-full transition-colors hover:border-gray-400 hover:text-gray-900">
-//           Upcoming
-//         </button>
-//         <button onClick={() => handleDisplayClasses('past')} className="py-2 px-4 border-2 border-gray-300 text-gray-700 rounded-full transition-colors hover:border-gray-400 hover:text-gray-900">
-//           Previous
-//         </button>
-//       </div>
-//       <div>
-//         {classList.length > 0 ? classList.map((cls) => (
-//           <div key={cls._id}>
-//             <p>{cls.name} - {cls.date}</p>
-//           </div>
-//         )) : (
-//           <div>No {displayClasses} classes found.</div>
-//         )}
-//       </div>
-//     </div>
-//   );
-// }
-
-// import { useAuth } from '../../AuthContext'
-// import { useClassContext } from '../../ClassContext';
-// import { useState } from 'react';
-// export default function Profile() {
-
-//     const {userData} = useAuth()
-//     const {userClassHistory} = useClassContext()
-//     const [displayClasses, setDisplayClasses] = useState('upcoming')
+//     useEffect(() => {
+//         fetchUserClassHistory();
+//     }, [fetchUserClassHistory]);
 
 //     const getInitials = (userData) => {
 //         if (userData && userData.firstName && userData.lastName) {
-//           const initials = `${userData.firstName[0]}${userData.lastName[0]}`;
-//           return initials.toUpperCase();
+//             const initials = `${userData.firstName[0]}${userData.lastName[0]}`;
+//             return initials.toUpperCase();
 //         }
-//         return '...'; 
-//       };
-//     const fullName = userData ? `${userData.firstName} ${userData.lastName}` : 'Loading...';
-
-//     const handleDisplayClasses = (type) => {
-//       // This function will be called with either 'upcoming' or 'past'
-//       setDisplayClasses(type);
+//         return '...';
 //     };
 
-//     const classList = displayClasses === 'upcoming' ? userClassHistory.upcomingClasses : userClassHistory.pastClasses;
+//     function capitalizeFullName(firstName, lastName) {
+//         // Capitalize the first letter of the first name
+//         const capitalizedFirstName = firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase();
+//         const capitalizedLastName = lastName.charAt(0).toUpperCase() + lastName.slice(1).toLowerCase();
+//         const fullName = capitalizedFirstName + ' ' + capitalizedLastName;
+      
+//         return fullName;
+//     }
 
-//   return (
-//     <div className="pt-16 bg-white text-gray-800 p-4 rounded-lg shadow">
-//       <div className="flex flex-col items-center">
-//         <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center text-2xl text-gray-700 font-semibold">
-//           {getInitials(userData)}
-//         </div>
-//         <h1 className="text-3xl font-semibold mt-4">{fullName}</h1>
-//       </div>
-//       <div className="mt-6 flex justify-around text-sm font-semibold">
-//         <button onClick={()=> handleDisplayClasses('upcoming')} className="py-2 px-4 border-2 border-gray-300 text-gray-700 rounded-full transition-colors hover:border-gray-400 hover:text-gray-900">
-//           Upcoming
-//         </button>
-//         <button onClick={()=> handleDisplayClasses('past')} className="py-2 px-4 border-2 border-gray-300 text-gray-700 rounded-full transition-colors hover:border-gray-400 hover:text-gray-900">
-//           Previous
-//         </button>
-        
-//       </div>
-//       <div>
-//         {classList.map((cls) => (
-//           <div key={cls._id}> 
-            
-//             <p>{cls.name} - {cls.date}</p> 
-//           </div>
-//         ))}
-//       </div>
+//     const toggleClassDetails = (classId) => {
+//         if (expandedClassId === classId) {
+//           setExpandedClassId(null); // Collapse if the same class is clicked again
+//         } else {
+//           setExpandedClassId(classId); // Expand the clicked class
+//         }
+//       };
+
+    
+
+//     const handleDisplayClasses = (type) => {
+//         setDisplayClasses(type); // Set the displayClasses state to the selected type (upcoming or past)
+//     };
+
+//     // Determine which classes to display based on the displayClasses state
+//     let classList;
+//     if (displayClasses === 'upcoming') {
+//         classList = userClassHistory?.upcomingClasses || [];
+//         console.log("upcoming in profile comp: ", classList);
+//     } else if (displayClasses === 'past') {
+//         classList = userClassHistory?.pastClasses || [];
+//         console.log("past in profile comp: ", classList);
+//     }
+
+//     if (loading) {
+//         return <div>Loading...</div>;
+//     }
+
+//     if (error) {
+//         return <div>Error: {error.message}</div>;
+//     }
+
+//     return (
+//         <div className="pt-16 bg-gradient-to-br from-purple-500 to-pink-500 text-white p-4 rounded-lg shadow">
+//   <div className="flex flex-col items-center">
+//     <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center text-2xl text-gray-700 font-semibold">
+//       {getInitials(userData)}
 //     </div>
-//   )
+//     <h1 className="text-3xl font-semibold mt-4">{userData ? capitalizeFullName(userData.firstName, userData.lastName) : 'Loading...'}</h1>
+//   </div>
+//   <div className="mt-6 flex justify-around text-sm font-semibold">
+//     <button onClick={() => handleDisplayClasses('upcoming')} className="py-2 px-4 bg-black text-white rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-black">
+//       Upcoming
+//     </button>
+//     <button onClick={() => handleDisplayClasses('past')} className="py-2 px-4 bg-black text-white rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-black">
+//       Previous
+//     </button>
+//   </div>
+//   <ul className="mt-4">
+//     {classList && classList.length > 0 ? (
+//       classList.map((cls) => (
+//         <li key={cls._id} className="p-4 border border-gray-200 rounded-md shadow-sm hover:shadow-lg transition duration-300 bg-white bg-opacity-75 backdrop-blur-lg">
+//           <div className="flex justify-between">
+//             <div className="font-semibold">{cls.danceCategory} - {cls.studentLevel}</div>
+//             <div className="text-gray-500">{extractTime(cls.startDate)}, {convertDateFormat(cls.startDate)}</div>
+//           </div>
+//           <div className="mt-2">
+//             <div className="text-xs text-gray-600">{capitalizeFullName(cls.teacher.firstName, cls.teacher.lastName)}</div>
+//           </div>
+//           <div className="mt-2">
+//             <div className="text-xs text-gray-600">Classroom: {cls.classroom.classroomNumber}</div>
+//           </div>
+//           <div className="mt-2">
+//             {auth.role === 'teacher' && (
+//               <button onClick={() => toggleClassDetails(cls._id)} className="text-blue-600 flex items-center text-xs">
+//                 {expandedClassId === cls._id ? 'Hide Details ' : 'View Details '}
+//                 <FontAwesomeIcon icon={expandedClassId === cls._id ? faArrowUp : faArrowDown} className="ml-2 text-xs" />
+//               </button>
+//             )}
+//           </div>
+//           {expandedClassId === cls._id && (
+//             <div className="mt-2 bg-gray-100 p-2 rounded-md">
+//               <p className="text-sm text-gray-800 font-semibold">Enrolled Students:</p>
+//               <ul className="text-sm text-gray-800">
+//                 {cls.studentsEnrolled.length > 0 ? (
+//                   cls.studentsEnrolled.map(student => (
+//                     <li key={student._id}>{capitalizeFullName(student.firstName, student.lastName)}</li>
+//                   ))
+//                 ) : (
+//                   <li>No students enrolled</li>
+//                 )}
+//               </ul>
+//             </div>
+//           )}
+//         </li>
+//       ))
+//     ) : (
+//       <div className="text-center py-4 text-gray-500">No {displayClasses ? displayClasses : 'selected'} classes found.</div>
+//     )}
+//   </ul>
+// </div>
+
+// )
 // }
+
+///------------------------------------------------
+
+//         <div className="pt-16 bg-gradient-to-br from-purple-500 to-pink-500 text-white p-4 rounded-lg shadow">
+//     <div className="flex flex-col items-center">
+//       <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center text-2xl text-gray-700 font-semibold">
+//         {getInitials(userData)}
+//       </div>
+//       <h1 className="text-3xl font-semibold mt-4">{userData ? capitalizeFullName(userData.firstName, userData.lastName) : 'Loading...'}</h1>
+//     </div>
+//     <div className="mt-6 flex justify-around text-sm font-semibold">
+//       <button onClick={() => handleDisplayClasses('upcoming')} className="py-2 px-4 bg-black text-white rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-black">
+//         Upcoming
+//       </button>
+//       <button onClick={() => handleDisplayClasses('past')} className="py-2 px-4 bg-black text-white rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-black">
+//         Previous
+//       </button>
+//     </div>
+//     <ul className="mt-4">
+//       {classList && classList.length > 0 ? (
+//         classList.map((cls) => (
+//           <li key={cls._id} className="p-4 border border-gray-200 rounded-md shadow-sm hover:shadow-lg transition duration-300 bg-white bg-opacity-75 backdrop-blur-lg">
+//             <div className="flex justify-between">
+//               <div className="font-semibold">{cls.danceCategory} - {cls.studentLevel}</div>
+//               <div className="text-gray-500">{extractTime(cls.startDate)}, {convertDateFormat(cls.startDate)}</div>
+//             </div>
+//             <div className="mt-2">
+//               <div className="text-xs text-gray-600">{capitalizeFullName(cls.teacher.firstName, cls.teacher.lastName)}</div>
+//             </div>
+//             <div className="mt-2">
+//               <div className="text-xs text-gray-600">Classroom: {cls.classroom.classroomNumber}</div>
+//             </div>
+//             <div className="mt-2">
+//             <button onClick={() => toggleClassDetails(cls._id)} className="text-blue-600 flex items-center text-xs">
+//                 {expandedClassId === cls._id ? 'Hide Details ' : 'View Details '}
+//                 <FontAwesomeIcon icon={expandedClassId === cls._id ? faArrowUp : faArrowDown} className="ml-2 text-xs" />
+//             </button>
+//             </div>
+//             {expandedClassId === cls._id && (
+//               <ul>
+//                 <li>Enrolled Students:</li>
+//                 {cls.studentsEnrolled.length > 0 ? (
+//                   cls.studentsEnrolled.map(student => (
+//                     <li key={student._id}>{capitalizeFullName(student.firstName, student.lastName)}</li>
+//                   ))
+//                 ) : (
+//                   <li>No students enrolled</li>
+//                 )}
+//               </ul>
+//             )}
+//           </li>
+//         ))
+//       ) : (
+//         <div className="text-center py-4 text-gray-500">No {displayClasses ? displayClasses : 'selected'} classes found.</div>
+//       )}
+//     </ul>
+//   </div>
+    //   <div className="pt-16 bg-gradient-to-br from-purple-500 to-pink-500 text-white p-4 rounded-lg shadow">
+    //         <div className="flex flex-col items-center">
+    //             <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center text-2xl text-gray-700 font-semibold">
+    //                 {getInitials(userData)}
+    //             </div>
+    //             <h1 className="text-3xl font-semibold mt-4">{userData ? capitalizeFullName(userData.firstName, userData.lastName) : 'Loading...'}</h1>
+    //         </div>
+    //         <div className="mt-6 flex justify-around text-sm font-semibold">
+    //             <button onClick={() => handleDisplayClasses('upcoming')} className="py-2 px-4 bg-black text-white rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-black">
+    //                 Upcoming
+    //             </button>
+    //             <button onClick={() => handleDisplayClasses('past')} className="py-2 px-4 bg-black text-white rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-black">
+    //                 Previous
+    //             </button>
+    //         </div>
+    //         <ul className="mt-4">
+    //             {classList && classList.length > 0 ? (
+    //                 classList.map((cls) => (
+    //                     <li key={cls._id} className="p-4 border border-gray-200 rounded-md shadow-sm hover:shadow-lg transition duration-300 bg-white bg-opacity-75 backdrop-blur-lg">
+    //                         <div className="flex justify-between">
+    //                             <div className="font-semibold">{cls.danceCategory} - {cls.studentLevel}</div>
+    //                             <div className="text-gray-500">{extractTime(cls.startDate)}, {convertDateFormat(cls.startDate)}</div>
+    //                         </div>
+    //                         <div className="flex justify-between items-center mt-2">
+    //                             <div className="text-xs text-gray-600">{capitalizeFullName(cls.teacher.firstName, cls.teacher.lastName)}</div>
+    //                             <div className="flex items-center justify-between w-full">
+    //                             <div className="text-xs text-gray-600">Classroom: {cls.classroom.classroomNumber}</div>
+    //                             {auth.role === 'teacher' && (
+    //                                 <>
+    //                                 <button onClick={() => toggleClassDetails(cls._id)} className="text-blue-600 flex items-center">
+    //                                         {expandedClassId === cls._id ? 'Hide Details ' : 'View Details '}
+    //                                         <FontAwesomeIcon icon={expandedClassId === cls._id ? faArrowUp : faArrowDown} className="ml-2" />
+    //                                 </button>
+    //                                 {expandedClassId === cls._id ? (
+    //                                     <ul>
+    //                                         <li>Enrolled Students:</li>
+    //                                         {cls.studentsEnrolled.length > 0 ? cls.studentsEnrolled.map(studnet => (
+    //                                             <li key={studnet._id}>{capitalizeFullName(studnet.firstName, studnet.lastName)}</li>
+    //                                         )) : (
+    //                                             <li>No students enrolled</li>
+    //                                         )}
+    //                                     </ul>
+    //                                 ) : null}
+                                    
+    //                                 </>
+    //                             )}
+                                
+                                
+    //                         </div>
+    //                         </div>
+    //                     </li>
+    //                 ))
+    //             ) : (
+    //                 <div className="text-center py-4 text-gray-500">No {displayClasses ? displayClasses : 'selected'} classes found.</div>
+    //             )}
+    //         </ul>
+    //     </div>
+
+    
