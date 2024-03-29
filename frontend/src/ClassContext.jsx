@@ -2,12 +2,9 @@
  import React, {createContext, useCallback, useContext, useState, useEffect} from 'react'
  import axios from 'axios'
  import { useAuth } from "./AuthContext"
- import moment from 'moment';
- 
- 
+ import { jwtDecode } from 'jwt-decode'
+ import moment from 'moment-timezone';
  const ClassContext = createContext({});
- 
- 
  export const useClassContext = () => useContext(ClassContext);
  
  // eslint-disable-next-line react/prop-types
@@ -19,40 +16,94 @@
      const [loading, setLoading] = useState(false);
      const [error, setError] = useState(null);
      const { auth } = useAuth();
- 
-     // const hasClassPassed = (classDate, classTime) => {
-     //     // Get the current date and time in UTC
-     //     const nowUTC = new Date(new Date().toUTCString());
-       
-     //     // Construct the class date and time in UTC
-     //     // The 'Z' at the end of 'classDate' indicates that it is in UTC
-     //     const classDateTimeString = `${classDate.split('T')[0]}T${classTime}:00Z`; // Splitting to remove the milliseconds
-     //     const classDateTime = new Date(classDateTimeString);
-       
-     //     // Compare the two dates in UTC
-     //     return classDateTime < nowUTC;
-     //   };
-     
-     const hasClassPassed = (classDate, classTime) => {
-         const classStart = moment.utc(classDate).set({
-           hour: parseInt(classTime.split(':')[0], 10),
-           minute: parseInt(classTime.split(':')[1], 10)
-         });
-         return moment().isAfter(classStart.add(30, 'minutes'));
-     };
- 
-     const formatDate = (utcDate) => {
-         return moment.utc(utcDate).format('YYYY-MM-DD'); 
-     };
- 
-     const formatDateTime = (utcDate, utcTime) => {
-         
-         const dateTimeString = `${utcDate.split('T')[0]}T${utcTime}:00.000Z`; // Ensure the date and time are properly combined into an ISO 8601 format
-         const dateTime = moment(dateTimeString).toDate(); // Parse as a Date object
-         return dateTime;
-     };
+     const [userClassHistory, setUserClassHistory] = useState({
+      pastClasses: [],
+      upcomingClasses: []
+     });
+
+
+     const hasClassPassed = (startDate) => {
+      
+      const adjustedStartDate = startDate.replace('Z', '');
+      const classStartMoment = moment.tz(adjustedStartDate, 'America/Toronto');
+      const classEndMoment = classStartMoment.clone().add(30, 'minutes');
+      // Get the current time in EDT.
+      const nowInEdt = moment().tz('America/Toronto');
     
- 
+      console.log("nowInEdt", nowInEdt.toString());
+      console.log("classEndMoment", classEndMoment.toString());
+
+      return nowInEdt.isAfter(classEndMoment);
+    };
+    
+    function capitalizeName(firstName, lastName) {
+      const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+      return `${capitalize(firstName)} ${capitalize(lastName)}`;
+    }
+
+    // Function to convert the date to "Weekday DD, Month YYYY" format
+    function convertDateFormat(startDate) {
+      const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+      const date = new Date(startDate);
+      const dayName = days[date.getUTCDay()];
+      const monthName = months[date.getUTCMonth()];
+      const day = date.getUTCDate();
+      const year = date.getUTCFullYear();
+
+      return `${dayName} ${day}, ${monthName} ${year}`;
+    }
+
+    // Function to extract the time in "HH:MM" format
+    function extractTime(startDate) {
+      const date = new Date(startDate);
+      const hours = date.getUTCHours().toString().padStart(2, '0');
+      const minutes = date.getUTCMinutes().toString().padStart(2, '0');
+
+      return `${hours}:${minutes}`;
+    }
+
+    
+    const fetchUserClassHistory = useCallback(async () => {
+      if (!auth.token) return; 
+      setLoading(true);
+
+      try {
+          const decoded = jwtDecode(auth.token); 
+          console.log("token in class context", decoded)
+          const userId = decoded.userId; 
+
+          const response = await axios.get(`/api/classes/user-history/${userId}`, {
+              headers: { Authorization: `Bearer ${auth.token}` },
+          });
+
+          const pastClasses = [];
+          const upcomingClasses = [];
+          response.data.forEach(cls => {
+              if (hasClassPassed(cls.startDate)) {
+                  pastClasses.push(cls);
+              } else {
+                  upcomingClasses.push(cls);
+              }
+          });
+
+          setUserClassHistory({ pastClasses, upcomingClasses });
+          console.log("user past classes", userClassHistory.pastClasses);
+          console.log("user upcoming classes", userClassHistory.upcomingClasses);
+      } catch (error) {
+          setError(error);
+          console.error("Fetch user class history error:", error);
+      } finally {
+          setLoading(false);
+      }
+    }, [auth.token]); 
+
+  useEffect(() => {
+      fetchUserClassHistory();
+  }, [fetchUserClassHistory]);
+
+
      const fetchClassrooms = useCallback(async () => {
          if (!auth.token) return;
          setLoading(true);
@@ -74,24 +125,25 @@
      }, [auth.token]);
  
      const fetchTeachers = useCallback(async () => {
-         if (!auth.token) return;
-         setLoading(true);
-         try {
-           const response = await axios.get('/auth/teachers', {
-             headers: { Authorization: `Bearer ${auth.token}` }
-           });
-           const teachersById = response.data.reduce((acc, teacher) => {
-             acc[teacher._id] = teacher; // Assume each teacher has a unique _id field
-             return acc;
-           }, {});
-           setTeachers(teachersById);
+        if (!auth.token) return;
+       setLoading(true);
+       try {
+         const response = await axios.get('/auth/teachers', {
+           headers: { Authorization: `Bearer ${auth.token}` }
+          });
+         const teachersById = response.data.reduce((acc, teacher) => {
+           acc[teacher._id] = teacher; // Assume each teacher has a unique _id field
+           return acc;
+         }, {});
+         setTeachers(teachersById);
          } catch (error) {
            setError(error);
          } finally {
            setLoading(false);
          }
-       }, [auth.token]);
- 
+      }, [auth.token]);
+       
+
  
  
        const fetchClasses = useCallback(async () => {
@@ -107,12 +159,12 @@
            const classesWithDetails = response.data.map(cls => {
              const teacher = teachers[cls.teacher];
              const classroom = classrooms[cls.classroom];
-             const start = formatDateTime(cls.date, cls.time);
+             const start = new Date(cls.startDate)
              const end = moment(start).add(1, 'hour').toDate(); // Add 1 hour for example
              return {
                ...cls,
-               teacher: teacher,
-               classroom: classroom,
+               teacher: teacher ? capitalizeName(teacher.firstName, teacher.lastName) : 'Unknown',
+               classroom: classroom? classroom.classroomNumber : 'Unknown',
                start: start,
                end: end,
                allDay: false //true
@@ -150,10 +202,12 @@
          error,
          fetchClasses,
          hasClassPassed,
-         formatDate,
-         formatDateTime,
          fetchClassrooms,
          fetchTeachers,
+          convertDateFormat,
+          extractTime,
+          fetchUserClassHistory,
+          userClassHistory
         
        
  
@@ -162,6 +216,9 @@
      </ClassContext.Provider>
    )
  }
+
+
+
 // /* eslint-disable no-unused-vars */
 // import React, {createContext, useCallback, useContext, useState, useEffect} from 'react'
 // import axios from 'axios'
