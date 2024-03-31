@@ -13,12 +13,12 @@ export default defineConfig({
     proxy: {
       // Proxy requests to '/auth' and '/api' to the backend server
       '/auth': {
-        target: 'https://capstone-ii-group26.onrender.com', // Local backend URL
+        target: 'http://localhost:3000', // Local backend URL
         changeOrigin: true,
         secure: false,
       },
       '/api': {
-        target: 'https://capstone-ii-group26.onrender.com', // Local backend URL
+        target: 'http://localhost:3000', // Local backend URL
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, ''), // Remove the '/api' prefix before forwarding
