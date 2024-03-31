@@ -6,7 +6,7 @@ export default defineConfig({
 
   // Define environment variables
   define: {
-    'process.env': {},
+    'process.env': {VITE_PROD_BASE_URL: JSON.stringify('https://capstone-ii-group26.onrender.com')},
   },
 
   server: {
