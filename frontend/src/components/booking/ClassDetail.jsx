@@ -95,7 +95,8 @@ export default function ClassDetail() {
           <p>Rating: {classInfo.rating}</p>}
 
         <p>Teacher: {classInfo.teacher.firstName} {classInfo.teacher.lastName}</p>
-        <p>Room: {classInfo.classroom.classroomNumber}</p>
+        {classInfo.classroom && <p>Room: {classInfo.classroom.classroomNumber}</p>}
+
         
 
         {status && <p>{status}</p>} 

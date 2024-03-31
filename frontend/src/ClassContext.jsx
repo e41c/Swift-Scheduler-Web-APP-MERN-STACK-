@@ -192,10 +192,22 @@
            fetchClasses();
          }
        }, [teachers, auth.token, fetchClasses]);
+    
+       const submitRating = async (classId, rating) => {
+        try {
+            await axios.post(`/api/classes/rate/${classId}`, { rating }, {
+                headers: { Authorization: `Bearer ${auth.token}` }
+            });
+            console.log(`Rating ${rating} submitted for class ${classId}`);
+        } catch (error) {
+            console.error('Error submitting rating:', error);
+        }
+    };
        
  
    return (
-     <ClassContext.Provider value={{classes,
+     <ClassContext.Provider value={{
+         classes,
          teachers,
          classrooms,
          loading,
@@ -204,13 +216,11 @@
          hasClassPassed,
          fetchClassrooms,
          fetchTeachers,
-          convertDateFormat,
-          extractTime,
-          fetchUserClassHistory,
-          userClassHistory
-        
-       
- 
+         convertDateFormat,
+         extractTime,
+         fetchUserClassHistory,
+         userClassHistory,
+         submitRating
      }}>
          {children}
      </ClassContext.Provider>

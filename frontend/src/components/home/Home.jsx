@@ -13,8 +13,9 @@ function Home() {
     const {auth} = useAuth();
 
     const [search, setSearch] = useState("");
+    const [rating, setRating] = useState({});
     const [searchResults, setSearchResults] = useState([]);
-    const {userClassHistory} = useClassContext();
+    const {userClassHistory, submitRating} = useClassContext();
 
     const handleSearch = async () => {
         try {
@@ -25,6 +26,26 @@ function Home() {
             console.log("Opps! an error has occured while searching classes", error);
         }
     };
+
+    const handleRatingChange = (classId, rating) => {
+        setRating(prevRatings => ({
+            ...prevRatings,
+            [classId]: rating
+        }));
+    };
+    
+    const handleSubmitRating = async (classId) => {
+        const studentRating = rating[classId]; // Use rating instead of ratings
+        try {
+            await axios.post(`/api/classes/rate/${classId}`, { rating: studentRating }, {
+                headers: { Authorization: `Bearer ${auth.token}` }
+            });
+            console.log(`Rating ${studentRating} submitted for class ${classId}`);
+        } catch (error) {
+            console.error('Error submitting rating:', error);
+        }
+    };
+    
 
     return (
         <>
@@ -68,10 +89,15 @@ function Home() {
                             <li key={result._id} className="lg:w-[75%] md:w-full sm:w-full w-full h-auto px-10 lg:py-12
                             md:py-12 sm:py-10 py-10 bg-black/10 rounded-lg border-[6px] border-gray-600
                             hover:border-indigo-600/40 hover:bg-gray-600/10 ease-out duration-600 cursor-pointer">
+                                <Link 
+                                    to="/calendar">
                                 <h3>{result.name}</h3>
                                 <p className="text-gray-400 lg:text-base md:text-base sm:text-base text-sm">Date: {moment(result.date).format("MMMM Do YYYY")}</p>
                                 <p className="text-gray-400 lg:text-base md:text-base sm:text-base text-sm">Category: {result.danceCategory}</p>
                                 <p className="text-gray-400 lg:text-base md:text-base sm:text-base text-sm">Difficulty: {result.studentLevel}</p>
+                                <p className="text-gray-400 lg:text-base md:text-base sm:text-base text-sm">Capacity: {result.capacity}</p>
+                                <p className="text-gray-400 lg:text-base md:text-base sm:text-base text-sm">Room: {JSON.stringify(result.classroom)}</p>
+                                </Link>
                             </li>
                      ))}
                  </ul>
@@ -92,18 +118,18 @@ function Home() {
                             Upcoming Classes
                     </h3>
                     <ul className="w-full h-auto flex flex-col items-center justify-center gap-y-8">
-                        {userClassHistory.upcomingClasses.map(cls => (
+                    {userClassHistory.upcomingClasses.map(cls => (
                         <li key={cls._id} className="lg:w-[75%] md:w-full sm:w-full w-full h-auto px-10 lg:py-12
-                            md:py-12 sm:py-10 py-10 bg-black/10 rounded-lg border-[6px] border-gray-600
-                            hover:border-indigo-600/40 hover:bg-gray-600/10 ease-out duration-600 cursor-pointer"
+                        md:py-12 sm:py-10 py-10 bg-black/10 rounded-lg border-[6px] border-gray-600
+                        hover:border-indigo-600/40 hover:bg-gray-600/10 ease-out duration-600 cursor-pointer"
                         >
-                            <h2 className="lg:text-4xl text-3xl text-white font-semibold mb-5">{cls.difficulty}</h2>
-                            <h1 className="text-5xl text-indigo-600 font-bold mb-3 tracking-wide">{cls.name}</h1>
+                            <h2 className="lg:text-4xl text-3xl text-white font-semibold mb-5">{cls.studentLevel}</h2>
+                            <h1 className="text-5xl text-indigo-600 font-bold mb-3 tracking-wide">{cls.danceCategory}</h1>
                             <p className="text-gray-400 lg:text-base md:text-base sm:text-base text-sm">Date: {moment(cls.startDate).format("MMMM Do YYYY")}</p>
                             <p className="text-gray-400 lg:text-base md:text-base sm:text-base text-sm">Time: {moment(cls.startDate).format("h:mm A")}</p>
-                            <p className="text-gray-400 lg:text-base md:text-base sm:text-base text-sm">Room: {cls.classroom}</p>
+                            <p className="text-gray-400 lg:text-base md:text-base sm:text-base text-sm">Room: {JSON.stringify(cls.classroom)}</p>
                         </li>
-                        ))} 
+                    ))}
                     </ul>
                 </div>    
             </div>
@@ -125,11 +151,27 @@ function Home() {
                             md:py-12 sm:py-10 py-10 bg-black/10 rounded-lg border-[6px] border-gray-600
                             hover:border-indigo-600/40 hover:bg-gray-600/10 ease-out duration-600 cursor-pointer"
                         >
-                            <h2 className="lg:text-4xl text-3xl text-white font-semibold mb-5">{cls.difficulty}</h2>
-                            <h1 className="text-5xl text-indigo-600 font-bold mb-3 tracking-wide">{cls.name}</h1>
+                            <h2 className="lg:text-4xl text-3xl text-white font-semibold mb-5">{cls.studentLevel}</h2>
+                            <h1 className="text-5xl text-indigo-600 font-bold mb-3 tracking-wide">{cls.danceCategory}</h1>
                             <p className="text-gray-400 lg:text-base md:text-base sm:text-base text-sm">Date: {moment(cls.startDate).format("MMMM Do YYYY")}</p>
                             <p className="text-gray-400 lg:text-base md:text-base sm:text-base text-sm">Time: {moment(cls.startDate).format("h:mm A")}</p>
-                            <p className="text-gray-400 lg:text-base md:text-base sm:text-base text-sm">Room: {cls.classroom}</p>
+                            <p className="text-gray-400 lg:text-base md:text-base sm:text-base text-sm">Room: {JSON.stringify(cls.classroom)}</p>
+                            {/* Rating Feature */}
+                            <div className="flex items-center mt-4">
+                                {[1, 2, 3, 4, 5].map(rating => (
+                                    <label key={rating} className="flex items-center mr-4 text-white lg:text-base md:text-base sm:text-base text-sm">
+                                        <input
+                                            type="radio"
+                                            name={`rating-${cls._id}`}
+                                            value={rating}
+                                            checked={rating[cls._id] === rating}
+                                            onChange={() => handleRatingChange(cls._id, rating)}
+                                        />
+                                        <span className="ml-2">{rating}</span>
+                                    </label>
+                                ))}
+                            </div>
+                            <button className="bg-indigo-600 text-white px-4 py-2 mt-4" onClick={() => handleSubmitRating(cls._id)}>Submit Rating</button>
                         </li>
                         ))}
                     </ul>
