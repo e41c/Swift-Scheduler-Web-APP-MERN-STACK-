@@ -5,21 +5,10 @@ const bodyParser = require('body-parser');
 const authRouter = require('./routers/authRoutes');
 const classRouter = require('./routers/classRoutes'); // Ensure this path is correct
 const classroomRouter = require('./routers/classroomRoutes');
-const cors = require('cors'); // Import the cors package
 const app = express();
 require('dotenv').config();
 
 app.use(bodyParser.json());
-
-// CORS configuration
-const corsOptions = {
-  origin: 'https://capstone-ii-group26.vercel.app',
-  methods: 'GET, POST, PUT, DELETE', // Adjust as needed
-  allowedHeaders: 'Content-Type, Authorization', // Adjust as needed
-  credentials: true, // Allow credentials (cookies, authorization headers, etc.)
-};
-
-app.use(cors(corsOptions));
 
 // Update the route prefix for classRouter to '/classes' from '/teacher'
 app.use('/auth', authRouter);
