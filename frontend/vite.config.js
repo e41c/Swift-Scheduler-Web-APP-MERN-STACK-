@@ -1,29 +1,33 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
-// https://vitejs.dev/config/
-import postcss from './postcss.config.js'
 export default defineConfig({
   plugins: [react()],
 
-  css:{
-    postcss
-
+  // Define environment variables
+  define: {
+    'process.env': {},
   },
-  server:{
-    proxy:{
+
+  server: {
+    proxy: {
+      // Proxy requests to '/auth' and '/api' to the backend server
       '/auth': {
-        target: 'http://localhost:3000',
+        target: 'http://localhost:3000', // Local backend URL
         changeOrigin: true,
         secure: false,
+      },
+      '/api': {
+        target: 'http://localhost:3000', // Local backend URL
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, ''), // Remove the '/api' prefix before forwarding
+      },
     },
-    '/api': {
-      target: 'http://localhost:3000',
-      changeOrigin: true,
-      secure: false,
-      rewrite: (path) => path.replace(/^\/api/, '') // remove the /api prefix before forwarding
-    },
+  },
 
-    }
-  }
-})
+  // Define build-time environment variables
+  define: {
+    'process.env.REACT_APP_BACKEND_URL': JSON.stringify(process.env.REACT_APP_BACKEND_URL || 'https://capstone-ii-group26.onrender.com'),
+  },
+});
