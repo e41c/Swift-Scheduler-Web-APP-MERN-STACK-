@@ -1,4 +1,3 @@
-// vite.config.js
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
@@ -7,10 +6,7 @@ export default defineConfig({
 
   // Define environment variables
   define: {
-    'process.env': {
-      VITE_PROD_BASE_URL: JSON.stringify('https://capstone-ii-group26.onrender.com'),
-      REACT_APP_BACKEND_URL: JSON.stringify(process.env.REACT_APP_BACKEND_URL || 'https://capstone-ii-group26.onrender.com')
-    },
+    'process.env': {VITE_PROD_BASE_URL: JSON.stringify('https://capstone-ii-group26.onrender.com')},
   },
 
   server: {
@@ -28,5 +24,10 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/api/, ''), // Remove the '/api' prefix before forwarding
       },
     },
+  },
+
+  // Define build-time environment variables
+  define: {
+    'process.env.REACT_APP_BACKEND_URL': JSON.stringify(process.env.REACT_APP_BACKEND_URL || 'https://capstone-ii-group26.onrender.com'),
   },
 });
