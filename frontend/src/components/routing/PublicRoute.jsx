@@ -1,3 +1,4 @@
+// frontend\src\components\routing\PublicRoute.jsx
 import { Route, Navigate } from 'react-router-dom'
 import { useAuth } from '../../AuthContext'
 export default function PublicRoute({ children }) {

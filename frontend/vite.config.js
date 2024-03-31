@@ -17,12 +17,12 @@ export default defineConfig({
     proxy: {
       // Proxy requests to '/auth' and '/api' to the backend server
       '/auth': {
-        target: 'http://localhost:3000', // Local backend URL
+        target: process.env.REACT_APP_BACKEND_URL, // Use the backend URL defined in environment variables
         changeOrigin: true,
         secure: false,
       },
       '/api': {
-        target: 'http://localhost:3000', // Local backend URL
+        target: process.env.REACT_APP_BACKEND_URL, // Use the backend URL defined in environment variables
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, ''), // Remove the '/api' prefix before forwarding
