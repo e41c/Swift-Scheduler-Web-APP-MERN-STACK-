@@ -1,22 +1,19 @@
-// api.js
 import axios from 'axios';
-
-const BASE_URL = import.meta.env.DEV ? import.meta.env.VITE_LOCAL_API_URL : import.meta.env.VITE_RENDER_API_URL;
-
+// import { useAuth } from './AuthContext';
 export const FetchClasses = async (token) => {
+    
     if (!token) {
-        return Promise.reject(new Error('No token provided'));
+        return;
     }
-
-    try {
-        const response = await axios.get(`${BASE_URL}/classes`, {
+    else {
+        return axios.get('/classes', {
             headers: {
                 Authorization: `Bearer ${token}`
             }
-        });
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching classes:', error);
-        throw error;
+        })
+            .then(response => response.data)
+            .catch(error => error);
     }
-};
+    
+
+}
