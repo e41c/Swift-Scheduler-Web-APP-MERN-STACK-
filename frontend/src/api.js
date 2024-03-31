@@ -1,20 +1,22 @@
+// api.js
 import axios from 'axios';
+
+const BASE_URL = import.meta.env.DEV ? import.meta.env.VITE_LOCAL_API_URL : import.meta.env.VITE_RENDER_API_URL;
 
 export const FetchClasses = async (token) => {
     if (!token) {
-        return Promise.reject('Token is missing');
+        return Promise.reject(new Error('No token provided'));
     }
 
-    const backendUrl = 'https://capstone-ii-group26.onrender.com'; 
-
     try {
-        const response = await axios.get(`${backendUrl}/classes`, {
+        const response = await axios.get(`${BASE_URL}/classes`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         });
         return response.data;
     } catch (error) {
-        return Promise.reject(error);
+        console.error('Error fetching classes:', error);
+        throw error;
     }
 };
