@@ -1,8 +1,15 @@
 {
-    "rewrites": [
+    "routes": [
       {
-        "source": "/api/(.*)",
-        "destination": "https://capstone-ii-group26.onrender.com/api/$1"
+        "handle": "filesystem"
+      },
+      {
+        "src": "/api/(.*)",
+        "dest": "https://capstone-ii-group26.onrender.com/api/$1"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "/"
       }
     ]
   }
