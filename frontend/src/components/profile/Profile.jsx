@@ -1,4 +1,3 @@
-
 import { useAuth } from '../../AuthContext'
 export default function Profile() {
     const {userData} = useAuth()
