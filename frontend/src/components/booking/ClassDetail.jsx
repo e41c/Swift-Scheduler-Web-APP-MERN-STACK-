@@ -15,9 +15,10 @@ export default function ClassDetail() {
     const [loading, setLoading] = useState(false)
     const [status, setStatus] = useState('')
 
-    const {formatDate, formatDateTime } = useClassContext()
-    const momentDateTime = moment(formatDateTime(classInfo.date, classInfo.time))
-    const formattedDateTime = momentDateTime.format('dddd, MMMM D, YYYY') + ' at ' + `${classInfo.time}`;
+    const {convertDateFormat, extractTime } = useClassContext()
+    
+    // const momentDateTime = moment(formatDateTime(classInfo.date, classInfo.time))
+    // const formattedDateTime = momentDateTime.format('dddd, MMMM D, YYYY') + ' at ' + `${classInfo.time}`;
     
     const calculateAvailableSpots = (cls) => {return classInfo.capacity - classInfo.studentsEnrolled.length};
 
@@ -89,14 +90,17 @@ export default function ClassDetail() {
             {classInfo.studentLevel}, {classInfo.danceCategory}
         </h1>
         <h2 className="text-xl text-center text-gray-700 mb-4">
-            {formattedDateTime}
+            {convertDateFormat(classInfo.startDate)}, {extractTime(classInfo.startDate)}
         </h2>
-        { classInfo.rating &&
-          <p>Rating: {classInfo.rating}</p>}
+        {
+          classInfo.rating ? 
+            <p>Rating: {classInfo.rating}</p> : 
+            <p>No Ratings For This Class</p>
+        }
 
-        <p>Teacher: {classInfo.teacher.firstName} {classInfo.teacher.lastName}</p>
-        {classInfo.classroom && <p>Room: {classInfo.classroom.classroomNumber}</p>}
 
+        <p>Teacher: {classInfo.teacher}</p>
+        <p>Room: {classInfo.classroom}</p>
         
 
         {status && <p>{status}</p>} 

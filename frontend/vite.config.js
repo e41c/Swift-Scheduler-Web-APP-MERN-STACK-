@@ -5,6 +5,7 @@ import react from '@vitejs/plugin-react'
 import postcss from './postcss.config.js'
 export default defineConfig({
   plugins: [react()],
+
   css:{
     postcss
 
@@ -13,13 +14,13 @@ export default defineConfig({
     proxy:{
       '/auth': {
         // target: 'http://localhost:3000',
-        target: "https://capstone-ii-group26.onrender.com/",
+        target: 'https://capstone-ii-group26.onrender.com',
         changeOrigin: true,
         secure: false,
     },
     '/api': {
       // target: 'http://localhost:3000',
-      target: "https://capstone-ii-group26.onrender.com/",
+      target: 'https://capstone-ii-group26.onrender.com',
       changeOrigin: true,
       secure: false,
       rewrite: (path) => path.replace(/^\/api/, '') // remove the /api prefix before forwarding

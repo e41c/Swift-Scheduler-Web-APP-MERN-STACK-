@@ -216,11 +216,13 @@
          hasClassPassed,
          fetchClassrooms,
          fetchTeachers,
-         convertDateFormat,
-         extractTime,
-         fetchUserClassHistory,
-         userClassHistory,
-         submitRating
+          convertDateFormat,
+          extractTime,
+          fetchUserClassHistory,
+          userClassHistory
+        
+       
+ 
      }}>
          {children}
      </ClassContext.Provider>
