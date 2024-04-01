@@ -1,8 +1,9 @@
 {
     "rewrites": [
       {
-        "source": "/(.*)",
-        "destination": "/"
+        "source": "/api/(.*)",
+        "destination": "https://capstone-ii-group26.onrender.com/api/$1"
       }
     ]
   }
+  
