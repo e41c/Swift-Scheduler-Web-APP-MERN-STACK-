@@ -1,3 +1,4 @@
+// Capstone-II---Group26/frontend/src/App.jsx
 import Navbar from './components/Navbar'
 import About from './components/About'
 import Register from './components/Register'

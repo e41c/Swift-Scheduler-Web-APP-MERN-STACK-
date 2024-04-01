@@ -13,11 +13,13 @@ export default defineConfig({
   server:{
     proxy:{
       '/auth': {
+        // target: 'http://localhost:3000',
         target: 'https://capstone-ii-group26.onrender.com',
         changeOrigin: true,
         secure: false,
     },
     '/api': {
+      // target: 'http://localhost:3000',
       target: 'https://capstone-ii-group26.onrender.com',
       changeOrigin: true,
       secure: false,

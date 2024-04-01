@@ -1,0 +1,16 @@
+{
+    "routes": [
+      {
+        "handle": "filesystem"
+      },
+      {
+        "src": "/api/(.*)",
+        "dest": "https://capstone-ii-group26.onrender.com/api/$1"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "/index.html"
+      }
+    ]
+  }
+  
