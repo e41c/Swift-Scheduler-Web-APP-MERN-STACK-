@@ -1,8 +1,6 @@
 // backend/middleware/authMiddleware.js
 const jwt = require('jsonwebtoken');
 
-const cors = require('cors'); // Import the cors middleware
-
 function authenticate(req, res, next) {
   const token = req.headers.authorization?.split(' ')[1]; // Bearer Token
   if (!token) {
