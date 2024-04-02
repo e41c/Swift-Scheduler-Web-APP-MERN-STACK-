@@ -8,6 +8,7 @@ import LandingPage from './components/LandingPage'
 
 import AuthProvider from './AuthContext'
 
+import AdminRoute from './components/routing/AdminRoute';
 import PublicRoute from './components/routing/PublicRoute'
 import PrivateRoute from './components/routing/PrivateRoute'
 import CalendarView from './components/booking/CalendarView'
@@ -18,6 +19,12 @@ import Profile from './components/profile/Profile'
 import DashboardCalendar from './components/teacherDashboard/DashboardCalendar'
 import { ClassManagementProvider } from './ClassManagementContext'
 import BookForm from './components/teacherDashboard/BookForm'
+import AdminView from './components/adminView/AdminView'
+import StudentAdmin from './components/adminView/StudentAdmin'
+import ClassesAdmin from './components/adminView/ClassesAdmin'
+import TeacherAdmin from './components/adminView/TeacherAdmin'
+import NoMatch from './components/NoMatch'
+import {AdminProvider} from './AdminContext'
 
 function App() {
 
@@ -28,10 +35,16 @@ function App() {
     <AuthProvider>
       <ClassProvider>
         <ClassManagementProvider>
+          <AdminProvider>
           <Router className='navbar-container'>
             <Navbar />
             <Routes>
             <Route path="/" element={<PublicRoute><LandingPage /></PublicRoute>} />
+            <Route path='/admin' element={<AdminRoute><AdminView/></AdminRoute>}/>
+              <Route path='/studentAdmin' element={<AdminRoute><StudentAdmin/></AdminRoute>}/>
+              <Route path='/teacherAdmin' element={<AdminRoute><TeacherAdmin/></AdminRoute>}/>
+              <Route path='/classesAdmin' element={<AdminRoute><ClassesAdmin/></AdminRoute>}/>
+              <Route path='/classroomAdmin' element={<AdminRoute><ClassesAdmin/></AdminRoute>}/>
               <Route path="/about" element={<PublicRoute><About /></PublicRoute>} />
               <Route path="/register" element={<PublicRoute><Register/></PublicRoute>} />
               <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
@@ -42,8 +55,11 @@ function App() {
               <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
               <Route path="/class-management" element={<PrivateRoute><DashboardCalendar /></PrivateRoute>} />
               <Route path="/classroom/:id" element={<PrivateRoute><BookForm /></PrivateRoute>} />
+              <Route path="*" element={<NoMatch/>}/>
             </Routes>
           </Router>
+          </AdminProvider>
+
         </ClassManagementProvider>
       </ClassProvider>
     </AuthProvider>
