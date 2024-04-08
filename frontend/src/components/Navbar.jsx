@@ -8,11 +8,11 @@ export default function Navbar() {
 
   const navItems = [
     { name: "greet", link: null, auth: true, text: `Hello, ${firstName}`, onclick: null },
-    { name: "logout", link: null, auth: true, text: "Logout", onclick: logout },
     { name: "profile", link: "/profile", auth: true, text: "Profile", onclick: null },
     { name: "login", link: "/login", auth: false, text: "Login", onclick: null },
     // { name: "register", link: "/register", auth: false, text: "Join Our Team", onclick: null, state: {role: "staff"} },
     { name: "book", link: "/calendar", auth: true, text: "Book Classes", onclick: null },
+    { name: "logout", link: null, auth: true, text: "Logout", onclick: logout },
     
     
   ];

@@ -6,10 +6,15 @@ const authRouter = require('./routers/authRoutes');
 const classRouter = require('./routers/classRoutes'); // Ensure this path is correct
 const classroomRouter = require('./routers/classroomRoutes');
 const app = express();
+const cors = require('cors');
 require('dotenv').config();
 
 app.use(bodyParser.json());
+app.use(cors({
+    origin: 'https://swift-scheduler-frontend.vercel.app',
+    credentials: true
 
+}));
 // Update the route prefix for classRouter to '/classes' from '/teacher'
 app.use('/auth', authRouter);
 app.use('/classrooms', classroomRouter);
