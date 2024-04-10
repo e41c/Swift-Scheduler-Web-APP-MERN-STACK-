@@ -12,7 +12,6 @@ export default function AuthProvider({ children }) {
     user: null,
     userId: null,
     role: null,
-    isAdmin: null
   });
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userData, setUserData] = useState(null);
@@ -42,7 +41,7 @@ export default function AuthProvider({ children }) {
 
       setUserData(response.data);
       setIsAuthenticated(true);
-      setAuth({ token, user: decoded.email, role: decoded.role, userId: decoded.userId, isAdmin: decoded.isAdmin});
+      setAuth({ token, user: decoded.email, role: decoded.role, userId: decoded.userId });
     } catch (error) {
       console.error('Error fetching user data:', error);
       setIsAuthenticated(false);
@@ -57,7 +56,7 @@ export default function AuthProvider({ children }) {
 
   const logout = () => {
     localStorage.removeItem('token');
-    setAuth({ token: null, user: null, userId: null, role: null, isAdmin: false });
+    setAuth({ token: null, user: null, userId: null, role: null });
     setUserData(null);
     setIsAuthenticated(false);
   };

@@ -29,7 +29,7 @@ exports.teacherLogin = async (req, res) => {
     // Generate JWT token
     // had to add email to token needed for frontend -Ven
     
-    const token = jwt.sign({ userId: teacher._id, role: 'teacher', email: teacher.email, isAdmin: teacher.isAdmin}, process.env.JWT_SECRET);
+    const token = jwt.sign({ userId: teacher._id, role: 'teacher', email: teacher.email}, process.env.JWT_SECRET);
 
     res.json({ token });
     console.log("token "+token)
@@ -119,7 +119,7 @@ exports.studentRegister = async (req, res) => {
 
 exports.teacherRegister = async (req, res) => {
   try {
-    const { email, password, firstName, lastName, isAdmin } = req.body;
+    const { email, password, firstName, lastName } = req.body;
 
     const existingTeacher = await Teacher.findOne({ email });
     if (existingTeacher) {
@@ -133,7 +133,6 @@ exports.teacherRegister = async (req, res) => {
       password: hashedPassword,
       firstName,
       lastName,
-      isAdmin
     };
 
     const newTeacher = new Teacher(newTeacherData);
@@ -142,7 +141,7 @@ exports.teacherRegister = async (req, res) => {
     // Generate JWT token
     // had to add email to token needed for frontend -Ven
     
-    const token = jwt.sign({ userId: newTeacher._id, role: 'teacher', email: newTeacher.email, isAdmin: newTeacher.isAdmin }, process.env.JWT_SECRET);
+    const token = jwt.sign({ userId: newTeacher._id, role: 'teacher', email: newTeacher.email }, process.env.JWT_SECRET);
 
     res.status(201).json({ token });
   } catch (error) {

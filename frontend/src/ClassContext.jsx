@@ -9,7 +9,7 @@
  
  // eslint-disable-next-line react/prop-types
  export function ClassProvider({children}) {
-
+ 
      const [classes, setClasses] = useState([]);
      const [teachers, setTeachers] = useState({});
      const [classrooms, setClassrooms] = useState({});
