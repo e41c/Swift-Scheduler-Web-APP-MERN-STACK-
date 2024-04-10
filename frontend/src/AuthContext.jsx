@@ -12,7 +12,7 @@ export default function AuthProvider({ children }) {
     user: null,
     userId: null,
     role: null,
-    isAdmin: false
+    isAdmin: null
   });
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userData, setUserData] = useState(null);
@@ -47,6 +47,7 @@ export default function AuthProvider({ children }) {
       console.error('Error fetching user data:', error);
       setIsAuthenticated(false);
     }
+    console.log("auth ", auth)
   };
 
   const setUserAuthInfo = ({ token }) => {

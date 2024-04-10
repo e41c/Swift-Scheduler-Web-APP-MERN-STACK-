@@ -32,6 +32,7 @@ exports.teacherLogin = async (req, res) => {
     const token = jwt.sign({ userId: teacher._id, role: 'teacher', email: teacher.email, isAdmin: teacher.isAdmin}, process.env.JWT_SECRET);
 
     res.json({ token });
+    console.log("token "+token)
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
