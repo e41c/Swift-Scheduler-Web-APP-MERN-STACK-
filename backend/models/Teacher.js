@@ -9,6 +9,7 @@ const teacherSchema = new mongoose.Schema({
   phone: { type: String },
   bio: { type: String },
   rating: { type: Number, default: 0 },
+  isAdmin: { type: Boolean, default: false },
   // Add more fields as needed
 });
 

@@ -29,10 +29,9 @@ exports.teacherLogin = async (req, res) => {
     // Generate JWT token
     // had to add email to token needed for frontend -Ven
     
-    const token = jwt.sign({ userId: teacher._id, role: 'teacher', email: teacher.email}, process.env.JWT_SECRET);
+    const token = jwt.sign({ userId: teacher._id, role: 'teacher', email: teacher.email, isAdmin: teacher.isAdmin}, process.env.JWT_SECRET);
 
     res.json({ token });
-    console.log("token "+token)
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -58,9 +58,17 @@ export default function Navbar() {
         <li className='nav-link'>
           <Link to='/' className="text-gray-500 text-lg font-medium hover:text-indigo-600 ease-out duration-700">Home</Link>
         </li>
-        <li className='nav-link'>
-          <Link to='/about' className="text-gray-500 text-lg font-medium hover:text-indigo-600 ease-out duration-700">About Us</Link>
+        {
+          auth.isAdmin ? 
+          <li className='nav-link'>
+          <Link to='/admin' className="text-gray-500 text-lg font-medium hover:text-indigo-600 ease-out duration-700">Admin Dashboard</Link>
         </li>
+        : 
+        <li className='nav-link'>
+        <Link to='/about' className="text-gray-500 text-lg font-medium hover:text-indigo-600 ease-out duration-700">About Us</Link>
+      </li>
+        }
+
       </ul>
       </div>
     </nav>
