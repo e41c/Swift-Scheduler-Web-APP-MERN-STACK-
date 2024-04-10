@@ -12,7 +12,6 @@ export default function AuthProvider({ children }) {
     user: null,
     userId: null,
     role: null,
-    isAdmin: false
   });
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userData, setUserData] = useState(null);
