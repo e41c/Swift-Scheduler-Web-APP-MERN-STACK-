@@ -11,7 +11,7 @@ import TeacherTable from './tables/TeacherTable'
 const AdminView = () => {
 
   return (
-    <div className='size-full flex flex-col '> 
+    <div className='size-full flex flex-col'> 
       <div className='w-full flex flex-row justify-center
        sm:flex-col sm:space-x-0 sm:space-y-5
        md:flex-row md:space-x-5 md:space-y-0
@@ -22,12 +22,9 @@ const AdminView = () => {
         <ClassroomWidget/>
 
       </div>
-      <div className='text-white flex m-2
-       sm:flex-col sm:space-x-0 sm:space-y-5
-       md:flex-row md:space-x-5 md:space-y-0
-       flex-wrap md:place-content-center'>
-        <StudentTable ></StudentTable>
-        <TeacherTable ></TeacherTable>
+      <div className='text-white flex flex-col'>
+        <StudentTable className=''></StudentTable>
+        <TeacherTable className=''></TeacherTable>
 
       </div>
 

@@ -5,11 +5,11 @@ function StudentTable() {
   const { students } = useAdmin();
 
   return (
-    <div className='flex  flex-col justify-center m-2'>
-      <table className='table-auto bg-black size-0'>
+    <div className='flex  flex-col justify-center'>
+      <h3 className='flex justify-center'>Students</h3>
+      <table className='table-auto bg-black'>
         <thead>
           <tr>
-          <th className='px-8 py-4 bg-indigo-600' >Student Id</th>
             <th className='px-8 py-4 bg-indigo-600' >First Name</th>
             <th className='px-8 py-4 bg-indigo-600' >Last Name</th>
             <th className='px-8 py-4 bg-indigo-600' >Email</th>
@@ -18,7 +18,6 @@ function StudentTable() {
         <tbody>
           {students.map((student) => (
             <tr key={student._id}>
-              <td className='border px-8 py-4'>{student._id}</td>
               <td className='border px-8 py-4'>{student.firstName}</td>
               <td className='border px-8 py-4'>{student.lastName}</td>
               <td className='border px-8 py-4'>{student.email}</td>
