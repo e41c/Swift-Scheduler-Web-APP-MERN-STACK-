@@ -82,22 +82,22 @@ const fetchClasses = useCallback(async () => {
 
 useEffect(() => {
   fetchClassrooms();
-  console.log('fetched classrooms: ', classrooms)
+
 }, [fetchClassrooms]);
 
 useEffect(() => {
   fetchClasses();
-  console.log('fetched Classes: ', classes)
+
 }, [fetchClasses]);
 
 useEffect(() => {
   fetchTeachers();
-console.log('fetched Teachers: ', teachers)
+
 }, [fetchTeachers]);
 
 useEffect(() => {
   fetchStudents();
-console.log('fetched Students: ', students)
+
 }, [fetchStudents]);
 
  return(

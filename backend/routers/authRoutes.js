@@ -23,6 +23,8 @@ router.get('/students', authController.searchStudents);
 // New route to find a Student by ID - considering any necessary authentication and authorization
 router.get('/student/:id', authenticate, authController.findStudentById);
 
+router.delete('/teachers/students/:id',authenticate, authController.deleteStudentById)
+router.delete('/teachers/:id',authenticate, authController.deleteTeacherById)
 
 
 
