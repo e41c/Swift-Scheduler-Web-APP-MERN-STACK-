@@ -20,6 +20,7 @@ app.use('/auth', authRouter);
 app.use('/classrooms', classroomRouter);
 app.use('/classes', classRouter); // This line is updated
 
+
 const PORT = process.env.PORT || 3000;
 mongoose.connect('mongodb+srv://rootadmin:m5NvavxMIOPodOKz@clusterrl.wd5fhyo.mongodb.net/Swift-Scheduler')
     .then(() => console.log('MongoDB connected...'))

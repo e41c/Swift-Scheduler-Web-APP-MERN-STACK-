@@ -12,6 +12,7 @@ export default function AuthProvider({ children }) {
     user: null,
     userId: null,
     role: null,
+    isAdmin: false,
   });
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userData, setUserData] = useState(null);
@@ -41,7 +42,7 @@ export default function AuthProvider({ children }) {
 
       setUserData(response.data);
       setIsAuthenticated(true);
-      setAuth({ token, user: decoded.email, role: decoded.role, userId: decoded.userId });
+      setAuth({ token, user: decoded.email, role: decoded.role, userId: decoded.userId ,isAdmin: decoded.isAdmin});
     } catch (error) {
       console.error('Error fetching user data:', error);
       setIsAuthenticated(false);
