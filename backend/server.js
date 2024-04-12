@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.use(cors({
     origin: [
         'https://swift-scheduler-frontend.vercel.app/',
-        'https://another-client-url.com/'
+        'https://capstone-ii-group26.vercel.app/'
     ],
     credentials: true
 }));
