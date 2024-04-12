@@ -1,4 +1,3 @@
-// Capstone-II---Group26/frontend/src/api.js
 import axios from 'axios';
 // import { useAuth } from './AuthContext';
 export const FetchClasses = async (token) => {
@@ -7,7 +6,7 @@ export const FetchClasses = async (token) => {
         return;
     }
     else {
-        return axios.get('/api/classes', {
+        return axios.get('/classes', {
             headers: {
                 Authorization: `Bearer ${token}`
             }

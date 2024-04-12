@@ -13,7 +13,7 @@ export default function BookForm() {
     const {auth} = useAuth()
     const location = useLocation()
     const {formatDateTime, refreshSlots} = useContext(ClassManagementContext)
-
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
     const {classroomId, capacity, time, date, classroomNumber} = location.state
     console.log(classroomId, capacity, time, date, classroomNumber)
     console.log(formatDateTime(time, date))
@@ -55,7 +55,7 @@ export default function BookForm() {
                 studentLevel,
                 danceCategory
             }
-            const response = await axios.post('/api/classes', payload, {
+            const response = await axios.post(`${apiBaseUrl}/classes`, payload, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

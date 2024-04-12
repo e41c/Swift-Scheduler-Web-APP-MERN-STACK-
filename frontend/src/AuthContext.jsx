@@ -5,6 +5,7 @@ import axios from 'axios';
 
 const AuthContext = createContext({});
 export const useAuth = () => useContext(AuthContext);
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 export default function AuthProvider({ children }) {
   const [auth, setAuth] = useState({
@@ -12,7 +13,6 @@ export default function AuthProvider({ children }) {
     user: null,
     userId: null,
     role: null,
-    isAdmin: false,
   });
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userData, setUserData] = useState(null);
@@ -34,7 +34,7 @@ export default function AuthProvider({ children }) {
   const fetchUserData = async (token) => {
     try {
       const decoded = jwtDecode(token);
-      const url = decoded.role === 'student' ? `/auth/student/${decoded.userId}` : `/auth/teacher/${decoded.userId}`;
+      const url = decoded.role === 'student' ? `${apiBaseUrl}/auth/student/${decoded.userId}` : `${apiBaseUrl}/auth/teacher/${decoded.userId}`;
       
       const response = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` },
@@ -42,7 +42,7 @@ export default function AuthProvider({ children }) {
 
       setUserData(response.data);
       setIsAuthenticated(true);
-      setAuth({ token, user: decoded.email, role: decoded.role, userId: decoded.userId ,isAdmin: decoded.isAdmin});
+      setAuth({ token, user: decoded.email, role: decoded.role, userId: decoded.userId });
     } catch (error) {
       console.error('Error fetching user data:', error);
       setIsAuthenticated(false);
