@@ -1,0 +1,36 @@
+/*  */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Red Hat Display", sans-serif;
+  --second-font: "Kaushan Script", cursive;
+}
+
+/* Custom Scrollbar */
+
+/* width */
+::-webkit-scrollbar {
+  width: 7px;
+  border-radius: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #1d1d1d;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #313131;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #3e3e3e;
+  border-radius: 10px;
+}
