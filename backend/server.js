@@ -12,6 +12,7 @@ require('dotenv').config();
 app.use(bodyParser.json());
 app.use(cors({
     origin: 'https://swift-scheduler-frontend.vercel.app',
+    origin: 'https://capstone-ii-group26.vercel.app/',
     credentials: true
 
 }));
