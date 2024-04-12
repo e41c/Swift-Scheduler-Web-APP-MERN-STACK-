@@ -4,7 +4,6 @@ import { useClassContext } from '../../ClassContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp, faArrowDown, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-
 export default function Profile() {
     const { userData, auth } = useAuth();
     const { userClassHistory, loading, error, fetchUserClassHistory, convertDateFormat, extractTime} = useClassContext();

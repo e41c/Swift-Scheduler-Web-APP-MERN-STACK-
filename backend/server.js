@@ -10,10 +10,6 @@ const cors = require('cors');
 require('dotenv').config();
 
 app.use(bodyParser.json());
-app.use(cors({
-    origin: 'https://swift-scheduler-frontend.vercel.app',
-    // origin: 'https://capstone-ii-group26.vercel.app/',
-    credentials: true
 
 }));
 // Update the route prefix for classRouter to '/classes' from '/teacher'

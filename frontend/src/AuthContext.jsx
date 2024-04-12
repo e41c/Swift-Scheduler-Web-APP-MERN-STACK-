@@ -5,6 +5,7 @@ import axios from 'axios';
 
 const AuthContext = createContext({});
 export const useAuth = () => useContext(AuthContext);
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 export default function AuthProvider({ children }) {
   const [auth, setAuth] = useState({
@@ -33,7 +34,7 @@ export default function AuthProvider({ children }) {
   const fetchUserData = async (token) => {
     try {
       const decoded = jwtDecode(token);
-      const url = decoded.role === 'student' ? `/auth/student/${decoded.userId}` : `/auth/teacher/${decoded.userId}`;
+      const url = decoded.role === 'student' ? `${apiBaseUrl}/auth/student/${decoded.userId}` : `${apiBaseUrl}/auth/teacher/${decoded.userId}`;
       
       const response = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` },
