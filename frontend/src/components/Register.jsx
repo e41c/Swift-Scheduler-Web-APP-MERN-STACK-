@@ -4,6 +4,7 @@ import { useAuth } from '../AuthContext';
 
 export default function Register() {
   const { setUserAuthInfo } = useAuth();
+  const apiBaseUrl = 'https://capstone-ii-group26.onrender.com';
 
   // Initial form state
   const getInitialFormState = () => ({
@@ -29,7 +30,7 @@ export default function Register() {
   // Handle form submission
   const onRegister = async (e) => {
     e.preventDefault();
-    const registerUrl = '/auth/register/student';
+    const registerUrl = `${apiBaseUrl}/auth/register/student`;
 
     try {
       // Validation for empty fields

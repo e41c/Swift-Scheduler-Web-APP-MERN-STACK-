@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useAuth } from './AuthContext';
 import moment from 'moment';
 
+
 export const ClassManagementContext = createContext();
 
 // eslint-disable-next-line react/prop-types
@@ -13,6 +14,7 @@ export const ClassManagementProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const { auth } = useAuth();
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
     useEffect(() => {
         console.log("this is the role right before api call in useeffect", auth?.role)
@@ -60,7 +62,7 @@ export const ClassManagementProvider = ({ children }) => {
         setError(null); // Clear previous errors
 
         try {
-            const response = await axios.get('/api/classrooms/available-rooms', {
+            const response = await axios.get(`${apiBaseUrl}/classrooms/available-rooms`, {
                 params: { date },
                 headers: {
                     Authorization: `Bearer ${auth.token}`,

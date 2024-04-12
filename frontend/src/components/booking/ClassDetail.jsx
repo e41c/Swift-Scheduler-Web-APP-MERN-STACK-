@@ -14,7 +14,7 @@ export default function ClassDetail() {
     const classInfo = location.state?.classInfo
     const [loading, setLoading] = useState(false)
     const [status, setStatus] = useState('')
-
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
     const {convertDateFormat, extractTime } = useClassContext()
     
     // const momentDateTime = moment(formatDateTime(classInfo.date, classInfo.time))
@@ -46,7 +46,7 @@ export default function ClassDetail() {
       setLoading(true);
       setStatus('');
       try {
-        const response = await axios.post(`/api/classes/join/${classInfo._id}`, {}, {
+        const response = await axios.post(`${apiBaseUrl}/classes/join/${classInfo._id}`, {}, {
           headers: { Authorization: `Bearer ${auth.token}` }
         });
 
@@ -66,7 +66,7 @@ export default function ClassDetail() {
     const cancelClass = () => {
       setLoading(true);
       setStatus('');
-      axios.post(`/api/classes/remove/${classInfo._id}`, {}, {
+      axios.post(`${apiBaseUrl}/classes/remove/${classInfo._id}`, {}, {
         headers: { Authorization: `Bearer ${auth.token}` }
       }).then(() => {
         setStatus('Class Cancelled Successfully');
