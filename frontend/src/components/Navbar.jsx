@@ -17,7 +17,6 @@ export default function Navbar() {
     
   ];
 
-  console.log(auth.isAdmin)
   return (
     <nav className="w-full h-auto bg-[#1d1d1d] shadow-none lg:px-24 md:px-16 sm:px-6 px-4 py-3">
       <div className="justify-between mx-auto lg:w-full md:items-center md:flex">
